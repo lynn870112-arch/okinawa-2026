@@ -80,13 +80,14 @@
 
     <script>
         const startDate = new Date('2026-01-19');
-        const JPY_RATE = 0.215; 
         const members = ['CN', 'SW', 'William']; 
         const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         
         let currentDay = 1;
         let isLedgerView = false;
         let expenses = JSON.parse(localStorage.getItem('okinawa_expenses') || '[]');
+        // 從 LocalStorage 讀取匯率，若無則預設 0.215
+        let currentRate = parseFloat(localStorage.getItem('okinawa_jpy_rate') || '0.215');
 
         const tripData = {
              1: [
@@ -145,26 +146,23 @@
                 }
             ],
             4: [
-                { time: "10:00", tag: "Stay", title: "飯店 Checkout & 寄放行李", icon: "fa-suitcase", hours: "10:00 截止", desc: "請於10:00前完成退房手續。將行李寄放於櫃台或車站。", img: "https://images.unsplash.com/photo-1614801127022-7776b91c0157?q=80&w=1000", notes: "【行李寄放建議】\n1. 首選：美榮橋站置物櫃 (建議10:00前抵達以免客滿)。\n2. 備案：使用 ecbo cloak 預約或前往國際通觀光案內所。" },
+                { time: "10:00", tag: "Stay", title: "飯店 Checkout & 寄放行李", icon: "fa-suitcase", hours: "10:00 截止", desc: "退房手續。將行李寄放於飯店櫃台或車站。", img: "https://images.unsplash.com/photo-1614801127022-7776b91c0157?q=80&w=1000", notes: "【行李寄放建議】\n1. 首選：美榮橋站置物櫃 (建議10:00前抵達以免客滿)。\n2. 備案：使用 ecbo cloak 預約或前往國際通觀光案內所。" },
                 { 
-                    time: "10:30", tag: "Market", title: "平和通 & 第一牧志市場", icon: "fa-store", map: "牧志市場", mapcode: "33 157 323*52", hours: "08:00-21:00", desc: "第一牧志公設市場是那霸國際通旁一個歷史悠久、充滿活力的傳統市場，被譽為「沖繩人的廚房」，於2023年整修翻新後，提供更舒適的環境，一樓販售新鮮海鮮、肉品、蔬果等在地食材，二樓則有許多食堂，可將在一樓買好的食材「現買現料理」，體驗獨特的沖繩美食文化。市場周邊的商店街（如市場本通）也十分熱鬧，是體驗沖繩生活與尋購特產的必訪地。 ", img: "https://twobunny.tw/wp-content/uploads/2025/12/2025-0821-makishi-public-market-1.jpg",
+                    time: "10:30", tag: "Market", title: "平和通 & 第一牧志市場", icon: "fa-store", map: "牧志市場", mapcode: "33 157 323*52", hours: "08:00-21:00", desc: "「沖繩人的廚房」，可現買現料理。", img: "https://twobunny.tw/wp-content/uploads/2025/12/2025-0821-makishi-public-market-1.jpg",
                     subs: [
                         { type: "甜點", name: "鹽屋 (雪鹽冰淇淋)", hours: "10:00-20:00", map: "鹽屋", desc: "鹹甜交織的多層次驚喜滋味。", img: "https://bobbyfun.tw/wp-content/uploads/pixnet/8c114902489725d46a5d931b46e1a903.jpg" },
                         { type: "午餐", name: "海鮮大餐 (代客料理)", hours: "11:00-19:00", map: "第一牧志市場", desc: "現點現做，極致鮮美享受。", img: "https://plumpyblog.com/wp-content/uploads/2025/10/%E6%97%A5%E6%9C%AC%E6%B2%96%E7%B9%A9-%E9%82%A3%E9%9C%B8%E5%B8%82%E7%AC%AC%E4%B8%80%E7%89%A7%E5%BF%97%E5%85%AC%E8%A8%AD%E5%B8%82%E5%A0%B4-02.jpg" }
                     ]
                 },
-                { time: "14:00", tag: "Transit", title: "回飯店取行李 & 前往機場", icon: "fa-train", map: "那霸機場", desc: "搭乘單軌電車前往機場。領取預約好的波布飯糰，為回程旅途充電。", img: "https://d1grca2t3zpuug.cloudfront.net/2025/06/nahainfo02-1000x582-1748957339.webp" },
-                { time: "16:50", tag: "Bye", title: "那霸機場起飛 (MM929)", icon: "fa-plane-departure", desc: "帶著滿載回憶與戰利品回國。期待下一次再訪沖繩！", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000" }
+                { time: "14:00", tag: "Transit", title: "回飯店取行李 & 前往機場", icon: "fa-train", map: "那霸機場", desc: "搭單軌前往機場，領取預約好的波布飯糰。", img: "https://d1grca2t3zpuug.cloudfront.net/2025/06/nahainfo02-1000x582-1748957339.webp" },
+                { time: "16:50", tag: "Bye", title: "那霸機場起飛 (MM929)", icon: "fa-plane-departure", desc: "結束沖繩極致之旅。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000" }
             ]
         };
 
-        // --- 核心渲染與邏輯 ---
+        // --- 核心渲染函數 ---
 
         function initApp() {
             isLedgerView = false;
-            const lt = document.getElementById('ledger-toggle');
-            lt.classList.remove('ledger-btn-active', 'text-red-500');
-            lt.classList.add('text-gray-300');
             renderDatePicker();
             renderItinerary();
         }
@@ -179,15 +177,13 @@
                 const dayNum = i + 1;
                 const div = document.createElement('div');
                 div.className = `flex flex-col items-center cursor-pointer transition-all ${dayNum === currentDay && !isLedgerView ? 'active-date' : 'text-gray-300'}`;
-                div.onclick = (e) => { 
-                    e.preventDefault();
+                div.onclick = () => { 
                     isLedgerView = false;
                     currentDay = dayNum; 
                     renderDatePicker(); 
                     renderItinerary();
-                    const lt = document.getElementById('ledger-toggle');
-                    lt.classList.remove('ledger-btn-active', 'text-red-500');
-                    lt.classList.add('text-gray-300');
+                    document.getElementById('ledger-toggle').classList.remove('ledger-btn-active', 'text-red-500');
+                    document.getElementById('ledger-toggle').classList.add('text-gray-300');
                 };
                 div.innerHTML = `
                     <span class="text-[7px] font-bold text-gray-400 mb-0.5 uppercase tracking-tighter">JAN</span>
@@ -248,29 +244,43 @@
                         <h3 class="text-lg font-bold mb-4 text-gray-800 flex items-center"><i class="fas fa-plus-circle mr-2 text-red-400"></i> 新增支出</h3>
                         <div class="space-y-3">
                             <input type="date" id="exp-date" value="${todayStr}" class="w-full p-3 bg-gray-50 border-none rounded-xl text-sm outline-none">
+                            
+                            <div class="flex items-center gap-2 bg-amber-50 p-3 rounded-xl border border-amber-100">
+                                <span class="text-xs font-bold text-amber-700 whitespace-nowrap">目前匯率:</span>
+                                <input type="number" id="manual-rate" value="${currentRate}" step="0.0001" onchange="updateRate(this.value)" class="flex-1 bg-transparent border-none font-mono text-sm outline-none text-amber-900">
+                                <span class="text-[10px] text-amber-600">JPY to TWD</span>
+                            </div>
+
                             <div class="flex gap-2">
-                                <input type="number" id="exp-amount" placeholder="金額" class="flex-1 p-3 bg-gray-50 border-none rounded-xl text-sm outline-none">
-                                <select id="exp-currency" class="p-3 bg-gray-50 border-none rounded-xl text-sm outline-none">
-                                    <option value="TWD">TWD</option><option value="JPY">JPY</option>
+                                <input type="number" id="exp-amount" placeholder="金額" class="flex-[2] p-3 bg-gray-50 border-none rounded-xl text-sm outline-none">
+                                <select id="exp-currency" class="flex-1 min-w-[70px] px-1 bg-gray-50 border-none rounded-xl text-xs outline-none">
+                                    <option value="TWD">TWD</option>
+                                    <option value="JPY">JPY</option>
                                 </select>
                             </div>
+                            
                             <input type="text" id="exp-desc" placeholder="項目內容" class="w-full p-3 bg-gray-50 border-none rounded-xl text-sm outline-none">
-                            <div class="text-xs font-bold text-gray-400 tracking-widest mt-2 uppercase">支付者</div>
-                            <select id="exp-payer" class="w-full p-3 bg-gray-50 border-none rounded-xl text-sm outline-none">
+                            <div class="text-xs font-bold text-gray-400 tracking-widest mt-2 uppercase text-center">支付者</div>
+                            <select id="exp-payer" class="w-full p-3 bg-gray-50 border-none rounded-xl text-sm outline-none text-center">
                                 ${members.map(m => `<option value="${m}">${m}</option>`).join('')}
                             </select>
-                            <div class="text-xs font-bold text-gray-400 tracking-widest mt-2 uppercase">分攤對象</div>
-                            <div class="flex gap-4 p-2">${members.map(m => `<label class="flex items-center gap-1 text-sm"><input type="checkbox" name="split-member" value="${m}" checked class="accent-red-500"> ${m}</label>`).join('')}</div>
+                            <div class="text-xs font-bold text-gray-400 tracking-widest mt-2 uppercase text-center">分攤對象</div>
+                            <div class="flex justify-center gap-4 p-2">${members.map(m => `<label class="flex items-center gap-1 text-sm"><input type="checkbox" name="split-member" value="${m}" checked class="accent-red-500"> ${m}</label>`).join('')}</div>
                             <button onclick="addExpense()" class="w-full bg-red-500 text-white py-3 rounded-xl font-bold shadow-md active:scale-95 transition-all mt-2">儲存紀錄</button>
                         </div>
                     </div>
-                    <div class="bg-amber-50 p-5 rounded-2xl border border-amber-100"><h3 class="text-lg font-bold mb-4 text-amber-800 flex items-center"><i class="fas fa-calculator mr-2"></i> 結算 (TWD)</h3><div id="balance-summary" class="space-y-2">${balanceHtml}</div></div>
+                    <div class="bg-amber-50 p-5 rounded-2xl border border-amber-100"><h3 class="text-lg font-bold mb-4 text-amber-800 flex items-center justify-center"><i class="fas fa-calculator mr-2"></i> 結算 (TWD)</h3><div id="balance-summary" class="space-y-2">${balanceHtml}</div></div>
                     <div class="space-y-3 pb-10" id="expense-list">${renderExpenseList()}</div>
                 </div>
             `;
         }
 
-        // --- 資料處理與彈窗 ---
+        // --- 資料處理 ---
+        function updateRate(val) {
+            currentRate = parseFloat(val) || 0.215;
+            localStorage.setItem('okinawa_jpy_rate', currentRate);
+        }
+
         function calculateBalances() {
             let totals = {}; members.forEach(m => totals[m] = 0);
             expenses.forEach(exp => {
@@ -298,7 +308,11 @@
             const checkedBoxes = document.querySelectorAll('input[name="split-member"]:checked');
             const splitWith = Array.from(checkedBoxes).map(cb => cb.value);
             if (!amount || !desc || splitWith.length === 0) { alert('請填寫完整資訊'); return; }
-            expenses.unshift({ id: Date.now(), date, amount, currency, twdAmount: (currency === 'JPY' ? amount * JPY_RATE : amount), desc, payer, splitWith });
+            
+            // 使用手動填寫的匯率計算
+            const twdAmount = currency === 'JPY' ? amount * currentRate : amount;
+            
+            expenses.unshift({ id: Date.now(), date, amount, currency, twdAmount, desc, payer, splitWith });
             localStorage.setItem('okinawa_expenses', JSON.stringify(expenses));
             renderLedger();
         }
@@ -309,6 +323,7 @@
             renderLedger();
         }
 
+        // --- 彈窗邏輯 ---
         function showModal(itemStr) {
             const item = JSON.parse(decodeURIComponent(itemStr));
             const modal = document.getElementById('detail-modal');
