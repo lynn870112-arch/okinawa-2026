@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>沖繩四天三夜自由行 2026</title>
+    <title>沖繩極致之旅 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,49 +15,45 @@
         .active-date .date-dot { background-color: #e53e3e; }
         .timeline-line { position: absolute; left: 19px; top: 0; bottom: 0; width: 2px; background-color: #e2e8f0; }
         .timeline-dot { z-index: 10; background-color: #fff; border: 2px solid #e53e3e; width: 12px; height: 12px; border-radius: 50%; position: absolute; left: 14px; top: 8px; }
-        .sub-card { background-color: #ffffff; border-left: 4px solid #fca5a5; margin-left: 1rem; margin-top: 0.6rem; padding: 0.8rem; border-radius: 0.6rem; box-shadow: 0 2px 4px rgba(0,0,0,0.03); cursor: pointer; }
-        .detail-img-gradient { background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.6)); }
+        .sub-card { background-color: #ffffff; border-left: 4px solid #fca5a5; margin-left: 1rem; margin-top: 0.5rem; padding: 0.7rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.03); cursor: pointer; }
     </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
 
-    <header class="bg-[#fcfaf2] pt-8 pb-4 px-6 sticky top-0 z-30 shadow-sm border-b border-orange-50">
-        <div class="text-center mb-6">
-            <h1 class="text-[10px] tracking-[0.3em] text-gray-400 font-bold uppercase">PREMIUM TRAVEL GUIDE</h1>
-            <h2 class="text-2xl font-bold text-gray-800 mt-1">沖繩極致之旅 <span class="text-sm font-normal text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">2026</span></h2>
+    <header class="bg-[#fcfaf2] pt-4 pb-2 px-6 sticky top-0 z-30 shadow-sm border-b border-orange-50 flex-shrink-0">
+        <div class="flex items-center justify-between mb-3">
+            <div>
+                <h1 class="text-[8px] tracking-[0.2em] text-gray-400 font-bold uppercase">PREMIUM TRAVEL</h1>
+                <h2 class="text-xl font-bold text-gray-800">沖繩極致之旅 <span class="text-xs font-normal text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-full">2026</span></h2>
+            </div>
+            <div class="text-[10px] text-gray-400 font-mono">OKINAWA</div>
         </div>
-        <div class="flex justify-center space-x-8 py-2" id="date-picker"></div>
+        <div class="flex justify-between px-2" id="date-picker"></div>
     </header>
 
-    <main id="content" class="flex-1 overflow-y-auto p-6 relative">
+    <main id="content" class="flex-1 overflow-y-auto p-5 relative pb-10">
         </main>
 
     <div id="detail-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 hidden flex items-end sm:items-center justify-center transition-opacity duration-300 opacity-0">
-        <div class="bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-3xl overflow-hidden max-h-[90vh] flex flex-col transform translate-y-full transition-transform duration-300 ease-out">
-            <div class="relative h-64 flex-shrink-0">
+        <div class="bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-3xl overflow-hidden max-h-[85vh] flex flex-col transform translate-y-full transition-transform duration-300 ease-out">
+            <div class="relative h-56 flex-shrink-0">
                 <img id="modal-img" src="" class="w-full h-full object-cover">
-                <div class="absolute inset-0 detail-img-gradient"></div>
                 <button onclick="closeModal()" class="absolute top-4 right-4 bg-black bg-opacity-40 text-white rounded-full p-2 backdrop-blur-sm"><i class="fas fa-xmark"></i></button>
-                <div class="absolute bottom-4 left-6 right-6 text-white">
-                    <span id="modal-tag" class="text-[10px] font-bold tracking-widest uppercase bg-red-600 px-2 py-1 rounded mb-2 inline-block"></span>
-                    <h3 id="modal-title" class="text-2xl font-bold"></h3>
-                </div>
             </div>
             <div class="p-6 overflow-y-auto">
-                <div id="modal-hours" class="flex items-center text-gray-500 text-xs mb-4 pb-4 border-b border-gray-100">
-                    <i class="far fa-clock mr-2 text-red-400"></i>
-                    <span class="font-medium">營業時間：</span><span class="val ml-1"></span>
-                </div>
-                <p id="modal-desc" class="text-gray-600 leading-relaxed text-sm mb-8 whitespace-pre-line"></p>
+                <span id="modal-tag" class="text-[10px] font-bold tracking-widest uppercase bg-red-600 px-2 py-1 rounded text-white mb-2 inline-block"></span>
+                <h3 id="modal-title" class="text-2xl font-bold text-gray-900 mb-2"></h3>
+                <div id="modal-hours" class="text-xs text-gray-500 mb-4 pb-3 border-b border-gray-100 flex items-center"><i class="far fa-clock mr-2 text-red-400"></i><span></span></div>
+                <p id="modal-desc" class="text-gray-600 leading-relaxed text-sm mb-6 whitespace-pre-line"></p>
                 
-                <div id="modal-mapcode-btn" class="hidden bg-red-50 p-4 rounded-xl border border-red-100 flex items-center justify-between cursor-pointer mb-3 transition-active active:bg-red-100">
+                <div id="modal-mapcode-btn" class="hidden bg-red-50 p-4 rounded-xl border border-red-100 flex items-center justify-between cursor-pointer mb-3">
                     <div class="flex items-center">
-                        <div class="bg-red-500 p-2 rounded-lg text-white mr-3 shadow-sm"><i class="fas fa-map-marked-alt"></i></div>
-                        <div><p class="text-[10px] text-red-500 font-bold uppercase tracking-tighter">Copy MapCode</p><p id="modal-mapcode" class="text-lg font-mono font-bold text-red-900 tracking-wider"></p></div>
+                        <div class="bg-red-500 p-2 rounded-lg text-white mr-3"><i class="fas fa-map-marked-alt"></i></div>
+                        <div><p class="text-[9px] text-red-500 font-bold uppercase">Copy MapCode</p><p id="modal-mapcode" class="text-base font-mono font-bold text-red-900"></p></div>
                     </div>
                     <i class="far fa-copy text-red-400"></i>
                 </div>
-                <a id="modal-google-link" href="#" target="_blank" class="w-full bg-gray-900 text-white py-4 rounded-xl flex items-center justify-center font-bold text-sm shadow-lg active:scale-[0.98] transition-transform">
+                <a id="modal-google-link" href="#" target="_blank" class="w-full bg-gray-900 text-white py-4 rounded-xl flex items-center justify-center font-bold text-sm shadow-md">
                     <i class="fab fa-google mr-2 text-orange-400"></i> Google Maps 導航
                 </a>
             </div>
@@ -69,65 +65,69 @@
         const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         const tripData = {
             1: [
-                { time: "15:20", tag: "Departure", title: "台灣桃園機場起飛 (MM926)", icon: "fa-plane-departure", desc: "帶著滿懷期待的心情，從桃園國際機場出發。建議您提前於起飛前2小時抵達櫃檯辦理登機手續，享受悠閒的免稅購物時光後，準備飛往那霸，開啟南國假期。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000" },
-                { time: "17:50", tag: "Arrival", title: "抵達那霸機場 & 搭乘單軌", icon: "fa-train-subway", desc: "抵達沖繩門戶那霸機場。辦理入境後，請跟隨指標前往國內線航廈二樓，搭乘便捷的單軌電車（Yui Rail）前往市中心，沿途可初步俯瞰那霸市景與繁華燈火。", img: "https://images.unsplash.com/photo-1551632432-0730ee0f4679?q=80&w=1000" },
-                { time: "18:30", tag: "Hotel", title: "Residential Hotel Naha Miebashi", icon: "fa-hotel", hours: "Check-in 15:00-22:00", map: "Residential Hotel Naha Miebashi", desc: "位於美榮橋站旁的精品公寓式飯店。房間設計簡約且溫馨，空間配置非常適合旅人放鬆。這裡步行至國際通僅需數分鐘，不僅鬧中取靜，更是探索那霸夜晚的最佳基地。", img: "https://images.unsplash.com/photo-1618245318763-a15156d6b23c?q=80&w=1000" },
+                { time: "15:20", tag: "Flight", title: "台灣桃園機場起飛 (MM926)", icon: "fa-plane-departure", desc: "開啟極致沖繩之旅。建議提前2小時抵達桃園國際機場辦理登機，準備飛向湛藍南國。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000" },
+                { time: "17:50", tag: "Arrival", title: "抵達那霸機場 & 搭乘單軌", icon: "fa-train-subway", desc: "抵達那霸。跟隨指標前往國內線航廈二樓搭乘單軌電車（Yui Rail），沿途欣賞那霸黃昏街景。", img: "https://images.unsplash.com/photo-1551632432-0730ee0f4679?q=80&w=1000" },
+                { time: "18:30", tag: "Hotel", title: "Residential Hotel Naha Miebashi", icon: "fa-hotel", hours: "Check-in 15:00-22:00", map: "Residential Hotel Naha Miebashi", desc: "位於美榮橋站旁的精品公寓式飯店。房間設施齊全且空間開闊，步行至國際通僅需數分鐘，是兼具寧靜與機能的頂級選擇。", img: "https://images.unsplash.com/photo-1618245318763-a15156d6b23c?q=80&w=1000" },
                 { 
-                    time: "19:30", tag: "Nightlife", title: "國際通 散策", icon: "fa-person-walking-luggage", map: "國際通", hours: "店家多營業至 22:00", desc: "沖繩最受歡迎的商店街，全長1.6公里的奇蹟一哩路。街道兩側充滿特色伴手禮、精品店與熱鬧餐館，是體驗沖繩熱情夜晚、尋寶掃貨與品嚐在地美味的必訪聖地。\n\n【必拍亮點】與街道兩側巨大的石敢當或特色門牌合影。", img: "https://images.unsplash.com/photo-1623150552763-714081518349?q=80&w=1000",
+                    time: "19:30", tag: "Night", title: "國際通 散策", icon: "fa-person-walking", map: "國際通", hours: "10:00-22:00", desc: "沖繩最受歡迎的商店街「奇蹟一哩路」。琳瑯滿目的伴手禮店與在地美食，是體驗沖繩熱情夜晚的最佳首選地。", img: "https://images.unsplash.com/photo-1647336963732-7446b9da7a6f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
                     subs: [
-                        { type: "晚餐", name: "國際通屋台村 (居酒屋)", hours: "11:00-23:00", mapcode: "33 157 444*55", map: "國際通屋台村", desc: "20間極具江戶風情的小店組成，從道地泡盛到創意串燒應有盡有。推薦嘗試各家獨特的招牌菜，感受充滿人情味的居酒屋時光。" },
-                        { type: "晚餐", name: "琉球的牛 (燒肉)", hours: "17:00-22:30", mapcode: "33 157 448*38", map: "琉球的牛", desc: "沖繩高人氣頂級燒肉。嚴選沖繩縣產和牛，細緻的油花分佈保證入口即化。極度建議提前預約，才能享受這份極致的味覺饗宴。" },
-                        { type: "甜點", name: "Blue Seal 冰淇淋", hours: "10:00-22:00", map: "Blue Seal 國際通", desc: "沖繩代表性美式冰淇淋，推薦「紅芋」或「鹽屋味」，甜而不膩的口感是度假必備消暑良伴。" },
-                        { type: "甜點", name: "KOI Thé 飲料店", hours: "10:00-21:00", map: "KOI Thé 國際通", desc: "國際通上的人氣茶飲店，在炎熱的南國夜晚來一杯招牌黃金珍珠奶茶，絕對是舒緩旅途疲勞的最佳選擇。" }
+                        { type: "晚餐", name: "國際通屋台村 (居酒屋)", hours: "11:00-23:00", mapcode: "33 157 444*55", map: "國際通屋台村", desc: "20間特色小店林立。從道地泡盛到創意串燒，這裡充滿了濃厚的人情味與熱絡氣氛。" },
+                        { type: "晚餐", name: "琉球的牛 (燒肉)", hours: "17:00-22:30", mapcode: "33 157 448*38", map: "琉球的牛", desc: "極致縣產和牛體驗。細緻油花入口即化，建議提前預約以享受這份味蕾巔峰。" },
+                        { type: "甜點", name: "Blue Seal 冰淇淋", hours: "10:00-22:00", map: "Blue Seal 國際通", desc: "沖繩代表性滋味。推薦紅芋或雪鹽口味，甜而不膩。" },
+                        { type: "甜點", name: "KOI Thé 飲料店", hours: "10:00-21:00", map: "KOI Thé 國際通", desc: "人氣手搖茶飲。招牌黃金珍珠奶茶，是南國夜晚消暑的最佳搭檔。" }
                     ]
                 }
             ],
             2: [
-                { time: "09:00", tag: "Rental", title: "租車取車 (歌町站)", icon: "fa-car", map: "DFS T Galleria", mapcode: "33 188 295*36", hours: "09:00-20:00", desc: "前往位於新都心的 DFS 取車。辦理手續後，即可開啟自由的自駕之旅。寬敞的街道非常適合適應右駕環境，請帶著愉快的心情北上出發。" },
+                { time: "09:00", tag: "Rental", title: "租車取車 (歌町站)", icon: "fa-car", map: "DFS T Galleria", mapcode: "33 188 295*36", hours: "09:00-20:00", desc: "前往新都心 DFS 櫃台取車。辦理手續後展開北上之旅，寬廣街道適合初次適應右駕。" },
                 { 
-                    time: "10:30", tag: "Beach", title: "古宇利大橋 & 古宇利島", icon: "fa-water", map: "古宇利大橋", mapcode: "485 662 041*33", desc: "橫跨翡翠綠海洋、全長近2公里的長橋，是沖繩最美的兜風路線之一。橋下的古宇利藍海面隨光影變換，美不勝收。\n\n【必看點】跨海大橋向海延伸的視覺張力，建議在橋頭停留拍照。", img: "https://images.unsplash.com/photo-1551632432-0730ee0f4679?q=80&w=1000",
-                    subs: [{ type: "午餐", name: "Kouri Shrimp 古宇利蝦蝦飯", hours: "11:00-18:00", mapcode: "485 692 174*01", map: "Kouri Shrimp", desc: "夏威夷風情的蒜香蝦飯，濃郁香氣配上酥脆蝦殼，是島上最高人氣的美食符號。" }]
+                    time: "10:30", tag: "Island", title: "古宇利大橋 & 古宇利島", icon: "fa-bridge", map: "古宇利大橋", mapcode: "485 662 041*33", desc: "馳騁在絕美的跨海大橋，兩側翠綠海面隨光影變換，令人窒息的「古宇利藍」絕景就在眼前。",
+                    subs: [{ type: "午餐", name: "Kouri Shrimp 古宇利蝦蝦飯", hours: "11:00-18:00", mapcode: "485 692 174*01", map: "Kouri Shrimp", desc: "蒜香奶油風味十足。在海邊貨櫃屋品嚐這份超人氣鮮蝦盛宴。" }]
                 },
                 { 
-                    time: "13:30", tag: "Theme Park", title: "美麗海水族館", icon: "fa-fish", map: "美麗海水族館", mapcode: "553 075 797*77", hours: "08:30-18:30", desc: "坐擁巨型水槽「黑潮之海」，巨大的鯨鯊與鬼蝠魟在您眼前優雅游動，宛如身處海底宮殿。這裡展示了沖繩黑潮帶來的豐富生物多樣性，震撼感十足。\n\n【必看點】15:00與17:00的黑潮之海垂直餵食秀。",
+                    time: "13:30", tag: "Ocean", title: "美麗海水族館", icon: "fa-fish", map: "美麗海水族館", mapcode: "553 075 797*77", hours: "08:30-18:30", desc: "坐擁巨型水槽「黑潮之海」。鯨鯊與鬼蝠魟在眼前優雅游動，震撼感十足。",
                     subs: [
-                        { type: "表演", name: "海豚秀: 15:00/ 17:00", hours: "約20分鐘", map: "海豚劇場", desc: "戶外劇場的人氣表演，海豚們精湛的演出與湛藍大海為景，是全家大小最開心的時刻。" },
-                        { type: "表演", name: "鯨鯊餵食秀: 15:00/ 17:00", hours: "黑潮之海槽前", map: "美麗海水族館", desc: "鯨鯊垂直進食的壯觀畫面僅在餵食時間出現，絕對值得駐足屏息觀看。" }
+                        { type: "表演", name: "海豚秀: 15:00 / 17:00", hours: "約20分鐘", map: "海豚劇場", desc: "戶外劇場的人氣表演，海豚們精湛演出與蔚藍大海為景。" },
+                        { type: "表演", name: "鯨鯊餵食秀: 15:00 / 17:00", hours: "黑潮之海槽前", map: "美麗海水族館", desc: "鯨鯊垂直進食的震撼畫面，是全館參觀的巔峰時刻。" }
                     ]
                 },
                 { 
-                    time: "18:30", tag: "Dining", title: "美國村 散策", icon: "fa-ferris-wheel", map: "美國村", mapcode: "33 526 450*63", desc: "充滿美式情懷的購物中心。傍晚時分，霓虹燈光與海濱落日交織出迷人的異國情調。除了好逛的雜貨店，這裡更是享受特色晚餐的好去處。\n\n【必拍亮點】摩天輪前的繽紛夜景與海濱步道的夕陽。",
+                    time: "18:30", tag: "Dinner", title: "美國村 散策", icon: "fa-ferris-wheel", map: "美國村", mapcode: "33 526 450*63", desc: "異國風情滿溢。傍晚霓虹燈起，海濱落日與摩天輪共構迷人景致，是晚餐與夜遊的首選地。",
                     subs: [
-                        { type: "晚餐", name: "グルメ回転寿司市場", hours: "11:30-21:00", mapcode: "33 526 459*11", map: "グルメ回転寿司市場", desc: "北谷超人氣迴轉壽司，新鮮海味由漁港直送，CP值極高，是造訪美國村的味蕾首選。" },
-                        { type: "晚餐", name: "A&W 漢堡", hours: "09:00-22:00", map: "A&W 美國村", desc: "沖繩限定的美式速食始祖，推薦必點Root Beer沙士與捲捲薯條，感受道地美式風味。" }
+                        { type: "晚餐", name: "グルメ回転寿司市場", hours: "11:30-21:00", mapcode: "33 526 459*11", map: "グルメ回転寿司市場", desc: "北谷高人氣迴轉壽司。產地直送食材新鮮，CP值極高。" },
+                        { type: "晚餐", name: "A&W 漢堡", hours: "09:00-22:00", map: "A&W 美國村", desc: "沖繩限定美式風味。必點沙士配上捲捲薯條，道地厚實口感。" }
                     ]
                 }
             ],
             3: [
-                { time: "09:30", tag: "Culture", title: "首里城 (見學修復工程)", icon: "fa-fort-awesome", map: "首里城", mapcode: "33 161 526*66", hours: "08:30-18:00", desc: "琉球王國精神標誌。雖然正殿修復中，但開放的復興見學步道能讓您親眼目睹傳統工法與朱紅城牆的重生。城廓建築融合中日特色，莊嚴而瑰麗。\n\n【必看點】西展望台可俯瞰整個那霸市區與海平面。" },
+                { time: "09:30", tag: "Heritage", title: "首里城 (見學修復工程)", icon: "fa-fort-awesome", map: "首里城", mapcode: "33 161 526*66", hours: "08:30-18:00", desc: "琉球王國精神象徵。開放式復興見學步道，讓您親睹傳統工法的細膩與重生韌性。" },
                 { 
-                    time: "11:30", tag: "Nature", title: "玉泉洞 / 沖繩世界", icon: "fa-mountain-sun", map: "玉泉洞", mapcode: "232 495 330*28", hours: "09:00-17:30", desc: "日本規模最大的鐘乳石洞，全長800公尺，歷經30萬年歲月淬鍊。洞內石筍與鐘乳石奇絕壯觀，地底藍泉散發著神祕光芒，是探索地心奇蹟的絕佳場域。",
-                    subs: [{ type: "表演", name: "12:30 太鼓表演 (Eisa)", hours: "12:30 準時開始", map: "表演廣場", desc: "震撼靈魂的傳統太鼓舞。表演者動作強而有力，節奏明快，展現沖繩特有的生命力與熱情。" }]
+                    time: "11:30", tag: "Cave", title: "玉泉洞 / 沖繩世界", icon: "fa-mountain-sun", map: "玉泉洞", mapcode: "232 495 330*28", hours: "09:00-17:30", desc: "歷時30萬年淬鍊的地底奇蹟。鐘乳石奇絕壯觀，地底藍泉散發神祕光芒。",
+                    subs: [{ type: "表演", name: "12:30 太鼓表演 (Eisa)", hours: "約30分鐘", map: "表演廣場", desc: "震撼靈魂的太鼓節奏。表演者充滿生命力的舞步，展現沖繩特有魅力。" }]
                 },
-                { time: "13:00", tag: "Dining", title: "屋宜家 (老屋沖繩麵)", icon: "fa-utensils", hours: "11:00-15:30", mapcode: "232 465 718*33", map: "屋宜家", desc: "在被登錄為文化遺產的百年古民家中，享用職人製作的沖繩麵。懷舊的老房子配上豆乳花生豆腐麵，是極富文化韻味的午餐時光。" },
+                { time: "13:00", tag: "Noodle", title: "屋宜家 (老屋沖繩麵)", icon: "fa-utensils", hours: "11:00-15:30", mapcode: "232 465 718*33", map: "屋宜家", desc: "在百年文化財遺產古民家中，品嚐職人手作沖繩麵。環境清幽，充滿懷舊韻味。" },
                 { 
-                    time: "14:30", tag: "Backup", title: "瀨長島 (備案)", icon: "fa-plane-up", map: "瀨長島", mapcode: "33 002 602*06", desc: "被譽為沖繩的聖托里尼。純白建築沿海而立，是觀看那霸機場飛機起降的首選景點。坐在海邊感受徐徐海風，十分愜意。",
-                    subs: [{ type: "甜點", name: "幸福鬆餅 (幸福のパンケーキ)", hours: "11:00-19:00", map: "幸福鬆餅 瀨長島", desc: "鬆軟綿密的舒芙蕾厚鬆餅。配上無敵海景與夕陽，每一口都是滿滿的幸福感。" }]
+                    time: "14:30", tag: "Pancake", title: "瀨長島 (備案)", icon: "fa-plane-up", map: "瀨長島", mapcode: "33 002 602*06", desc: "沖繩聖托里尼。純白建築與絕佳視野，是觀看機場飛機起降的熱門秘境。",
+                    subs: [{ type: "甜點", name: "幸福鬆餅", hours: "11:00-19:00", map: "幸福鬆餅 瀨長島", desc: "空氣感十足的舒芙蕾鬆餅。配上海景與夕陽，每一口都是極致幸福。" }]
                 },
-                { time: "16:00", tag: "Culture", title: "波上宮 & 波之上海灘", icon: "fa-torii-gate", map: "波上宮", mapcode: "33 185 022*00", hours: "09:00-17:00", desc: "蓋在海岸懸崖上的朱紅神殿，為琉球八社之首。神社旁就是清澈的海灘，是鬧區中一抹純淨的風景。在這裡祈求旅途平安後，漫步沙灘，捕捉神殿懸浮於海上的奇觀。" },
-                { time: "18:30", tag: "Task", title: "租車還車 & 逛新都心", icon: "fa-gas-pump", map: "DFS T Galleria", desc: "返回新都心還車（記得先至鄰近加油站加滿油）。還車後，這區寬敞好逛的購物商場正好適合最後衝刺。\n\n【晚餐推薦】目利銀次 (19:00 新都心店)，浮誇的巨大木桶裝潢與新鮮產地直送海味，為自駕之旅慶祝。", img: "https://images.unsplash.com/photo-1563435315793-998c56538514?q=80&w=1000" }
+                { time: "16:00", tag: "Shrine", title: "波上宮 & 波之上海灘", icon: "fa-torii-gate", map: "波上宮", mapcode: "33 185 022*00", hours: "09:00-17:00", desc: "懸崖上的朱紅神殿。參拜後漫步市區內純淨海灘，感受神聖與悠閒的完美融合。" },
+                { time: "18:30", tag: "Return", title: "租車還車 (DFS)", icon: "fa-gas-pump", map: "DFS T Galleria", desc: "返回新都心還車。請記得先加滿油再交還車輛，結束兩天的自駕任務。" },
+                { 
+                    time: "19:00", tag: "Shopping", title: "新都心商圈 (Omoromachi)", icon: "fa-bag-shopping", map: "新都心", desc: "還車後的最終採買中心。寬廣商場如 Main Place 是補貨聖地。",
+                    subs: [{ type: "晚餐", name: "目利銀次", hours: "17:00-01:00", mapcode: "33 188 659*45", map: "目利銀次 新都心", desc: "浮誇木桶裝潢與頂級鮮魚料理。氣氛熱烈，是慶祝假期的最佳晚餐地點。" }]
+                }
             ],
             4: [
-                { time: "10:00", tag: "Stay", title: "飯店 Checkout & 寄放行李", icon: "fa-suitcase", hours: "10:00 截止", desc: "請於10:00前完成退房。將大件行李暫存於櫃台，輕裝出發前往市場進行最後的巡禮與美食探索。" },
+                { time: "10:00", tag: "Checkout", title: "飯店 Checkout & 寄放行李", icon: "fa-suitcase", hours: "10:00 截止", desc: "辦理退房並將行李寄放於美榮橋飯店櫃台。輕裝出發前往市場巡禮。" },
                 { 
-                    time: "10:30", tag: "Market", title: "平和通 & 第一牧志市場", icon: "fa-store", map: "第一牧志公設市場", mapcode: "33 157 323*52", hours: "08:00-21:00", desc: "那霸最富在地氣息的傳統市場。街道中隱藏著各式老店與新潮伴手禮。一樓鮮活的海味與精巧的工藝品應有盡有，是體驗沖繩日常生活感的最佳地點。",
+                    time: "10:30", tag: "Market", title: "平和通 & 第一牧志市場", icon: "fa-store", map: "牧志市場", mapcode: "33 157 323*52", hours: "08:00-21:00", desc: "那霸廚房。充滿老街風味與新鮮海味，是感受在地生活感的絕佳終點。",
                     subs: [
-                        { type: "甜點", name: "鹽屋 (雪鹽冰淇淋)", hours: "10:00-20:00", map: "鹽屋", desc: "必嚐特色甜點。建議灑上各種口味的雪鹽，甜中帶鹹的多層次風味令人驚喜。" },
-                        { type: "午餐", name: "市場代客料理海鮮大餐", hours: "11:00-19:00", map: "牧志市場", desc: "在一樓挑選最心儀的龍蝦、夜光貝或鮮魚，直接上二樓請店家代客烹飪，享受最新鮮的南國海味盛宴。" }
+                        { type: "甜點", name: "鹽屋 (雪鹽冰淇淋)", hours: "10:00-20:00", map: "鹽屋", desc: "多層次鹹甜風味驚喜十足。" },
+                        { type: "午餐", name: "代客料理海鮮大餐", hours: "11:00-19:00", map: "第一牧志市場", desc: "鮮美海味直送上桌。龍蝦、鮮魚現點現做，享受極致海鮮盛宴。" }
                     ]
                 },
-                { time: "14:00", tag: "Transfer", title: "回飯店取行李 & 前往機場", icon: "fa-van-shuttle", map: "那霸機場", desc: "返回美榮橋飯店提取行李。搭乘單軌電車前往那霸機場，別忘了領取預約好的波布飯糰，為回程充電。" },
-                { time: "16:50", tag: "Flight", title: "那霸機場起飛 (MM929)", icon: "fa-plane-departure", desc: "帶著滿滿的回憶與戰利品，搭乘樂桃航空 MM929 班機返回。沖繩，我們下次見！", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000" }
+                { time: "14:00", tag: "Transit", title: "回飯店取行李 & 前往機場", icon: "fa-train", map: "那霸機場", desc: "回美榮橋飯店提取行李。搭乘單軌電車前往機場，領取波布飯糰告別沖繩。" },
+                { time: "16:50", tag: "Bye", title: "那霸機場起飛 (MM929)", icon: "fa-plane-departure", desc: "帶著滿載回憶與戰利品回國。期待下一次沖繩極致之旅。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000" }
             ]
         };
 
@@ -140,15 +140,12 @@
                 const date = new Date(startDate);
                 date.setDate(startDate.getDate() + i);
                 const dayNum = i + 1;
-                const dateNum = date.getDate();
-                const dayName = daysOfWeek[date.getDay()];
-                
                 const div = document.createElement('div');
                 div.className = `flex flex-col items-center cursor-pointer transition-all ${dayNum === currentDay ? 'active-date' : 'text-gray-300'}`;
                 div.onclick = () => { currentDay = dayNum; renderTimeline(); renderDatePicker(); };
                 div.innerHTML = `
-                    <span class="text-[10px] font-bold mb-1 tracking-tighter">${dayName}</span>
-                    <span class="text-2xl date-num font-serif leading-none">${dateNum}</span>
+                    <span class="text-[8px] font-bold mb-0.5">${daysOfWeek[date.getDay()]}</span>
+                    <span class="text-lg date-num font-serif leading-none">${date.getDate()}</span>
                     <div class="h-1 w-1 rounded-full date-dot mt-1"></div>
                 `;
                 picker.appendChild(div);
@@ -158,43 +155,31 @@
         function renderTimeline() {
             const container = document.getElementById('content');
             container.innerHTML = '<div class="timeline-line"></div>';
-            
             tripData[currentDay].forEach(item => {
                 const itemEl = document.createElement('div');
                 itemEl.className = 'relative mb-10 pl-10';
-                
                 let subsHtml = '';
                 if (item.subs) {
                     item.subs.forEach(sub => {
-                        const subStr = encodeURIComponent(JSON.stringify({...sub, tag: sub.type, title: sub.name}));
+                        const subStr = encodeURIComponent(JSON.stringify({...sub, tag: sub.type, title: sub.name, img: item.img || 'https://images.unsplash.com/photo-1542650125-9988298a08c0?q=80&w=1000'}));
                         subsHtml += `
                             <div class="sub-card" onclick="event.stopPropagation(); showModal('${subStr}')">
-                                <div class="flex items-center justify-between mb-1">
-                                    <span class="text-[9px] font-bold px-2 py-0.5 rounded bg-red-50 text-red-500 uppercase tracking-tighter">${sub.type}</span>
-                                    ${sub.hours ? `<span class="text-[8px] text-gray-400 font-medium"><i class="far fa-clock mr-1"></i>${sub.hours}</span>` : ''}
-                                </div>
+                                <div class="flex justify-between mb-1"><span class="text-[9px] font-bold text-red-500 uppercase">${sub.type}</span><span class="text-[8px] text-gray-400 font-medium">${sub.hours || ''}</span></div>
                                 <div class="text-sm font-bold text-gray-700">${sub.name}</div>
                             </div>
                         `;
                     });
                 }
-
                 itemEl.innerHTML = `
                     <div class="timeline-dot"></div>
-                    <div class="flex items-baseline mb-2">
-                        <span class="text-xl font-serif font-bold text-gray-800 mr-3">${item.time}</span>
-                        <div class="h-[1px] flex-1 bg-orange-50"></div>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-orange-50 active:scale-[0.98] transition-all" onclick="showModal('${encodeURIComponent(JSON.stringify(item))}')">
-                        <div class="flex items-center justify-between mb-2">
-                            <div class="flex items-center">
-                                <i class="fas ${item.icon} mr-2 text-red-400 text-xs"></i>
-                                <span class="text-[9px] font-bold text-red-400 uppercase tracking-widest">${item.tag}</span>
-                            </div>
+                    <div class="flex items-baseline mb-2"><span class="text-xl font-serif font-bold text-gray-800 mr-3">${item.time}</span><div class="h-[1px] flex-1 bg-orange-50"></div></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-orange-50 active:scale-95 transition-all" onclick="showModal('${encodeURIComponent(JSON.stringify(item))}')">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <div class="flex items-center"><i class="fas ${item.icon} mr-2 text-red-400 text-xs"></i><span class="text-[9px] font-bold text-red-400 uppercase tracking-widest">${item.tag}</span></div>
                             ${item.hours ? `<span class="text-[9px] text-gray-400 font-medium">${item.hours}</span>` : ''}
                         </div>
                         <h3 class="text-base font-bold text-gray-800 leading-tight">${item.title}</h3>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-1 leading-relaxed">${item.desc}</p>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-1">${item.desc}</p>
                     </div>
                     <div class="space-y-1">${subsHtml}</div>
                 `;
@@ -206,22 +191,18 @@
             const item = JSON.parse(decodeURIComponent(itemStr));
             const modal = document.getElementById('detail-modal');
             const panel = modal.querySelector('div');
-            
             document.getElementById('modal-img').src = item.img || 'https://images.unsplash.com/photo-1542650125-9988298a08c0?q=80&w=1000';
             document.getElementById('modal-tag').textContent = item.tag;
             document.getElementById('modal-title').textContent = item.title;
             document.getElementById('modal-desc').textContent = item.desc;
-            document.getElementById('modal-hours').querySelector('.val').textContent = item.hours || '依現場公告為主';
-            
+            document.getElementById('modal-hours').querySelector('span').textContent = item.hours || '依現場公告為主';
+            document.getElementById('modal-google-link').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.map || item.title)}`;
             const mc = document.getElementById('modal-mapcode-btn');
             if (item.mapcode) {
                 document.getElementById('modal-mapcode').textContent = item.mapcode;
                 mc.classList.remove('hidden');
                 mc.onclick = () => { navigator.clipboard.writeText(item.mapcode); alert('MapCode 已成功複製！'); };
             } else mc.classList.add('hidden');
-
-            document.getElementById('modal-google-link').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.map || item.title)}`;
-
             modal.classList.remove('hidden');
             setTimeout(() => { modal.classList.remove('opacity-0'); panel.classList.remove('translate-y-full'); }, 10);
             document.body.style.overflow = 'hidden';
@@ -229,13 +210,11 @@
 
         function closeModal() {
             const modal = document.getElementById('detail-modal');
-            modal.classList.add('opacity-0');
-            modal.querySelector('div').classList.add('translate-y-full');
+            modal.classList.add('opacity-0'); modal.querySelector('div').classList.add('translate-y-full');
             setTimeout(() => { modal.classList.add('hidden'); document.body.style.overflow = ''; }, 300);
         }
 
-        renderDatePicker();
-        renderTimeline();
+        renderDatePicker(); renderTimeline();
     </script>
 </body>
 </html>
