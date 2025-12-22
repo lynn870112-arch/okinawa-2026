@@ -28,16 +28,16 @@
 <body class="flex flex-col h-screen overflow-hidden">
 
     <header class="bg-[#fcfaf2] pt-4 pb-2 px-6 sticky top-0 z-30 shadow-sm border-b border-orange-50 flex-shrink-0">
-        <div class="text-center mb-3">
+        <div class="text-center mb-2">
             <h1 class="text-[8px] tracking-[0.2em] text-gray-400 font-bold uppercase">PREMIUM TRAVEL GUIDE</h1>
-            <h2 class="text-xl font-bold text-gray-800">沖繩極致之旅 <span class="text-xs font-normal text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-full">2026</span></h2>
+            <h2 class="text-xl font-bold text-gray-800 mt-1">沖繩極致之旅 <span class="text-xs font-normal text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-full">2026</span></h2>
         </div>
         
         <div class="flex justify-center space-x-6 pb-1" id="date-picker"></div>
     </header>
 
     <main id="content" class="flex-1 overflow-y-auto p-5 relative pb-10">
-    </main>
+        </main>
 
     <div id="detail-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 hidden flex items-end sm:items-center justify-center transition-opacity duration-300 opacity-0">
         <div class="bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-3xl overflow-hidden max-h-[85vh] flex flex-col transform translate-y-full transition-transform duration-300 ease-out">
@@ -80,7 +80,7 @@
                 { time: "17:50", tag: "Arrival", title: "抵達那霸機場 & 搭乘單軌", icon: "fa-train-subway", desc: "抵達那霸空港。完成入境手續後，請跟隨指標前往國內線航廈2樓銜接單軌電車（Yui Rail）。這是體驗沖繩都會感的第一步，沿途可初步觀覽那霸市區的繁華景觀與亞熱帶氛圍。", img: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Okinawa-Monorail_Series1000_Asahimachi.jpg", notes: "" },
                 { time: "18:30", tag: "Hotel", title: "Residential Hotel Naha Miebashi", icon: "fa-hotel", hours: "Check-in 15:00-22:00", map: "Residential Hotel Naha Miebashi", desc: "位於美榮橋站旁的現代公寓式飯店，地理位置極佳。房間設計融合簡約風格與高度實用性，配備小廚房與獨立衛浴，提供如家般的隱私與舒適感。步行範圍內即可抵達河畔景觀區與國際通商圈，是兼顧交通便利與寧靜居住環境的頂級選擇。", img: "https://image.space.rakuten.co.jp/d/strg/ctrl/26/c0687c9c1bc7cc716f8b22157b81541d9ce372d1.47.9.26.3.jpg?1762666043", notes: "地址：那霸市前島3-2-21" },
                 { 
-                    time: "19:30", tag: "Night", title: "國際通 散策", icon: "fa-person-walking", map: "國際通", hours: "10:00-22:00", desc: "譽為「奇蹟的一哩路」的那霸第一街。這條全長1.6公里的街道在戰後迅速復甦，現已成為沖繩最繁華的商業核心。街道兩側集結了豐富的土產店、潮流服飾、藥妝旗艦店與各式主題餐廳，是體驗沖繩熱情夜晚、尋寶掃貨與感受南國活力的必訪勝地。\n\n【必拍亮點】與街道兩側巨大的石敢當或色彩鮮艷的商店招牌合影。", img: "https://images.unsplash.com/photo-1647336963732-7446b9da7a6f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    time: "19:30", tag: "Night", title: "國際通 散策", icon: "fa-person-walking", map: "國際通", hours: "10:00-22:00", desc: "譽為「奇蹟的一哩路」的那霸第一街。這條全長1.6公里的街道在戰後迅速復甦，現已成為沖繩最繁華的商業核心。街道兩側集結了豐富的土產店、潮流服飾、藥妝旗艦店與各式主題餐廳，是體驗沖繩熱情夜晚、尋寶掃貨與感受南國活力的必訪勝地。\n\n【必拍亮點】與街道兩側巨大的石敢當或色彩鮮艷的商店招牌合影。", img: "https://images.unsplash.com/photo-1647336963732-7446b9da7a6f?q=80&w=1170&auto=format&fit=crop",
                     subs: [
                         { type: "晚餐", name: "國際通屋台村", hours: "11:00-23:00", mapcode: "33 157 444*55", map: "國際通屋台村", desc: "由20間特色小店組成的居酒屋街。提供道地泡盛與創意料理，是體驗在地生活感與社交氛圍的最佳場所。", img: "https://static.gltjp.com/glt/data/directory/14000/13966/20221104_110633_5122610b_w1920.webp" },
                         { type: "晚餐", name: "琉球的牛", hours: "17:00-22:30", mapcode: "33 157 448*38", map: "琉球的牛", desc: "沖繩高人氣頂級燒肉，嚴選縣產和牛與多樣化精緻套餐。強烈建議提前預約。", img: "https://www.u-shi.net/img/shopinfo/naha2.jpg" },
@@ -90,20 +90,20 @@
                 }
             ],
             2: [
-                { time: "09:00", tag: "Rental", title: "租車取車 (歌町站)", icon: "fa-car", map: "DFS T Galleria", mapcode: "33 188 295*36", hours: "09:00-20:00", desc: "前往新都心 DFS 櫃台辦理取車手續。正式開啟自駕北上之旅，寬廣的現代化街道非常適合適應右駕環境，帶著愉快的心情沿著國道往碧海出發。", img: "https://images.unsplash.com/photo-1565692792224-06c955888b69?q=80&w=1000" },
+                { time: "09:00", tag: "Rental", title: "租車取車 (歌町站)", icon: "fa-car", map: "DFS T Galleria", mapcode: "33 188 295*36", hours: "09:00-20:00", desc: "前往新都心 DFS 櫃台辦理取車手續。正式開啟自駕北上之旅，寬廣的現代化街道非常適合適應右駕環境。", img: "https://images.unsplash.com/photo-1565692792224-06c955888b69?q=80&w=1000" },
                 { 
-                    time: "10:30", tag: "Island", title: "古宇利大橋 & 古宇利島", icon: "fa-bridge", map: "古宇利大橋", mapcode: "485 662 041*33", desc: "橫跨碧綠海洋、全長近2公里的絕美跨海長橋。開車馳騁於橋上，兩側是令人屏息的「古宇利藍」海面，景色隨光影變幻如畫。古宇利島更被傳稱為琉球的「神之島」，充滿寧靜的神聖感。\n\n【必看點】跨海大橋向海延伸的震撼視覺，建議在進入大橋前的停車區捕捉全景。", img: "https://cdn.zekkei-japan.jp/images/articles/488e523c67776b1cf867452f7dc6008a.jpg",
-                    subs: [{ type: "午餐", name: "古宇利蝦蝦飯", hours: "11:00-18:00", mapcode: "485 692 174*01", map: "Kouri Shrimp", desc: "蒜香奶油風味十足。坐在海邊貨櫃屋品嚐這份超人氣鮮蝦盛宴。", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh85q4C8LNsbrpKtmjZi4o-FpP0Sib04q0VA&s" }]
+                    time: "10:30", tag: "Island", title: "古宇利大橋 & 古宇利島", icon: "fa-bridge", map: "古宇利大橋", mapcode: "485 662 041*33", desc: "橫跨碧綠海洋、全長近2公里的絕美跨海長橋。開車馳騁於橋上，兩側是令人屏息的「古宇利藍」海面，景色隨光影變換如畫。", img: "https://cdn.zekkei-japan.jp/images/articles/488e523c67776b1cf867452f7dc6008a.jpg",
+                    subs: [{ type: "午餐", name: "古宇利蝦蝦飯", hours: "11:00-18:00", mapcode: "485 692 174*01", map: "Kouri Shrimp", desc: "蒜香奶油風味十足。在海邊貨櫃屋品嚐這份超人氣鮮蝦盛宴。", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh85q4C8LNsbrpKtmjZi4o-FpP0Sib04q0VA&s" }]
                 },
                 { 
-                    time: "13:30", tag: "Ocean", title: "美麗海水族館", icon: "fa-fish", map: "美麗海水族館", mapcode: "553 075 797*77", hours: "08:30-18:30", desc: "座落於海洋博公園內，其核心「黑潮之海」擁有一座寬35米、高10米的巨大壓克力水槽。這裡展示了世上首例人工繁殖的鯨鯊與鬼蝠魟，場面震撼且優雅。透過環繞式的觀察空間，旅客能深入了解沖繩周邊海洋的生態奧秘。\n\n【必看點】鯨鯊垂直進食的餵食秀（固定場次）。", img: "https://images.unsplash.com/photo-1612476919598-a233d3692cc6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    time: "13:30", tag: "Ocean", title: "美麗海水族館", icon: "fa-fish", map: "美麗海水族館", mapcode: "553 075 797*77", hours: "08:30-18:30", desc: "座落於海洋博公園內，其核心「黑潮之海」擁有一座巨大壓克力水槽。這裡展示了世上首例人工繁殖的鯨鯊與鬼蝠魟，場面震撼且優雅。", img: "https://images.unsplash.com/photo-1612476919598-a233d3692cc6?q=80&w=1170&auto=format&fit=crop",
                     subs: [
                         { type: "表演", name: "海豚秀: 15:00 / 17:00", hours: "約20分鐘", map: "海豚劇場", desc: "戶外劇場的人氣表演，海豚們精湛的演出與湛藍大海為景。", img: "https://images.unsplash.com/photo-1540339832862-1745299be71c?q=80&w=1000" },
                         { type: "表演", name: "鯨鯊餵食秀: 15:00 / 17:00", hours: "黑潮之海槽前", map: "美麗海水族館", desc: "巨型鯨鯊在水中垂直進食的震撼瞬間。", img: "https://images.unsplash.com/photo-1551632432-0730ee0f4679?q=80&w=1000" }
                     ]
                 },
                 { 
-                    time: "18:30", tag: "Dinner", title: "美國村 散策", icon: "fa-ferris-wheel", map: "美國村", mapcode: "33 526 450*63", desc: "由美軍基地改建而成的繽紛購物區。傍晚霓虹燈光閃爍，落日餘暉映照著海濱步道與巨大摩天輪，營造出迷人的異國氛圍。這裡集結了各式藝術雜貨與特色餐飲，是沖繩最具動感的人氣聚集地。\n\n【必拍亮點】入夜後的彩虹摩天輪與海邊露天座位的燈飾。", img: "https://images.unsplash.com/photo-1600523872258-3410d7f1b844?q=80&w=1000",
+                    time: "18:30", tag: "Dinner", title: "美國村 散策", icon: "fa-ferris-wheel", map: "美國村", mapcode: "33 526 450*63", desc: "由美軍基地改建而成的繽紛購物區。傍晚霓虹燈光閃爍，落日餘暉映照著海濱步道與巨大摩天輪。", img: "https://images.unsplash.com/photo-1600523872258-3410d7f1b844?q=80&w=1000",
                     subs: [
                         { type: "晚餐", name: "グルメ回転寿司市場", hours: "11:30-21:00", mapcode: "33 526 459*11", map: "グルメ回転寿司市場", desc: "北谷超人氣迴轉壽司，食材漁港直送，CP值極高。", img: "https://images.unsplash.com/photo-1582266255745-9e509f29bf33?q=80&w=1000" },
                         { type: "晚餐", name: "A&W 漢堡", hours: "09:00-22:00", map: "A&W 美國村", desc: "沖繩限定美式速食，必點沙士配捲捲薯條。", img: "https://images.unsplash.com/photo-1614801127022-7776b91c0157?q=80&w=1000" }
@@ -111,34 +111,36 @@
                 }
             ],
             3: [
-                { time: "09:30", tag: "Heritage", title: "首里城 (見學修復工程)", icon: "fa-fort-awesome", map: "首里城", mapcode: "33 161 526*66", hours: "08:30-18:00", desc: "琉球王國精神的中心。雖然正殿於2019年遭遇火災，但目前的「復興見學」計畫讓旅客能親自目睹工匠們精湛的修復技藝與正殿重生的過程。城廓融合了中日建築精華，展現了昔日王國的輝煌歲月。\n\n【必看點】守禮門與西展望台俯瞰的那霸市景。", img: "https://images.unsplash.com/photo-1581458296068-072e90e7557d?q=80&w=1000" },
+                { time: "09:30", tag: "Heritage", title: "首里城 (見學修復工程)", icon: "fa-landmark", map: "首里城", mapcode: "33 161 526*66", hours: "08:30-18:00", desc: "琉球王國精神的中心。雖然正殿於2019年遭遇火災，但目前的「復興見學」計畫讓旅客能親自目睹工匠們精湛的修復技藝與正殿重生的過程。", img: "https://images.unsplash.com/photo-1581458296068-072e90e7557d?q=80&w=1000" },
                 { 
-                    time: "11:30", tag: "Cave", title: "玉泉洞 / 沖繩世界", icon: "fa-mountain-sun", map: "玉泉洞", mapcode: "232 495 330*28", hours: "09:00-17:30", desc: "歷時30萬年淬鍊的地底奇蹟。玉泉洞是日本規模最大的鐘乳石洞，全長800公尺。地底藍泉與數萬根鐘乳石交織出的神祕光譜，宛如異世界般的壯麗景觀。\n\n【必看點】地底散步道中的「青之泉」。", img: "https://www.nippon.com/ja/ncommon/contents/guide-to-japan/1802260/1802260.jpg",
-                    subs: [{ type: "表演", name: "12:30 太鼓表演", hours: "約30分鐘", map: "表演廣場", desc: "震撼靈魂的傳統舞蹈，展現沖繩生命力。", img: "https://images.unsplash.com/photo-1542650125-9988298a08c0?q=80&w=1000" }]
+                    time: "11:30", tag: "Cave", title: "玉泉洞 / 沖繩世界", icon: "fa-mountain-sun", map: "玉泉洞", mapcode: "232 495 330*28", hours: "09:00-17:30", desc: "歷時30萬年淬鍊的地底奇蹟。玉泉洞是日本規模最大的鐘乳石洞，全長800公尺。", img: "https://www.nippon.com/ja/ncommon/contents/guide-to-japan/1802260/1802260.jpg",
+                    subs: [
+                        { type: "表演", name: "12:30 太鼓表演", hours: "約30分鐘", map: "表演廣場", desc: "震撼靈魂的傳統舞蹈，展現沖繩生命力。", img: "https://images.unsplash.com/photo-1542650125-9988298a08c0?q=80&w=1000" },
+                        { type: "午餐", name: "屋宜家 (老屋沖繩麵)", hours: "11:00-15:30", mapcode: "232 465 718*33", map: "屋宜家", desc: "在被登錄為國家有形文化財的百年老宅中。在充滿懷舊氣息的榻榻米空間裡，享用職人製作的花生豆腐沖繩麵。", img: "https://images.unsplash.com/photo-1563435315793-998c56538514?q=80&w=1000" }
+                    ]
                 },
-                { time: "13:00", tag: "Lunch", title: "屋宜家 (老屋沖繩麵)", icon: "fa-utensils", hours: "11:00-15:30", mapcode: "232 465 718*33", map: "屋宜家", desc: "座落於被登錄為國家有形文化財的百年老宅中。在充滿懷舊氣息的榻榻米空間裡，享用職人製作的花生豆腐沖繩麵，是一場穿越時空的味蕾文化體驗。", img: "https://images.unsplash.com/photo-1563435315793-998c56538514?q=80&w=1000" },
                 { 
-                    time: "14:30", tag: "View", title: "瀨長島 (備案)", icon: "fa-plane-up", map: "瀨長島", mapcode: "33 002 602*06", desc: "被譽為沖繩的聖托里尼。全白階梯狀建築依山面海，是觀賞那霸機場飛機起降的絕佳角度。這裡集結了各色文青小店與景觀餐廳，是極佳的放空場域。", img: "https://images.unsplash.com/photo-1634827011943-4e49f6f698d2?q=80&w=1000",
+                    time: "14:30", tag: "View", title: "瀨長島 (備案)", icon: "fa-plane-up", map: "瀨長島", mapcode: "33 002 602*06", desc: "被譽為沖繩的聖托里尼。全白階梯狀建築依山面海，是觀賞那霸機場飛機起降的絕佳角度。", img: "https://images.unsplash.com/photo-1634827011943-4e49f6f698d2?q=80&w=1000",
                     subs: [{ type: "甜點", name: "幸福鬆餅", hours: "11:00-19:00", map: "幸福鬆餅 瀨長島", desc: "鬆軟綿密的人氣舒芙蕾，配上無敵海景。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000" }]
                 },
-                { time: "16:00", tag: "Shrine", title: "波上宮 & 波之上海灘", icon: "fa-torii-gate", map: "波上宮", mapcode: "33 185 022*00", hours: "09:00-17:00", desc: "守護著那霸港口的朱紅神殿，為琉球八社之首。神社蓋在陡峭的海濱懸崖上，宏偉氣勢令人讚嘆。神社下方的波之上海灘是市內唯一的天然沙灘，非常適合悠閒散步。\n\n【必拍亮點】從旁邊的橋上拍攝蓋在懸崖上的神社全景。", img: "https://images.unsplash.com/photo-1599988450478-0605fb8f9f9b?q=80&w=1000" },
-                { time: "18:30", tag: "Task", title: "租車還車 (DFS)", icon: "fa-gas-pump", map: "DFS T Galleria", desc: "完成精彩自駕任務。還車前請至鄰近加油站將油箱加滿。還車點位於新都心中心，交通極其方便。", img: "https://images.unsplash.com/photo-1634225243712-5718d6c0cb5e?q=80&w=1000" },
+                { time: "16:00", tag: "Shrine", title: "波上宮 & 波之上海灘", icon: "fa-torii-gate", map: "波上宮", mapcode: "33 185 022*00", hours: "09:00-17:00", desc: "守護著那霸港口的朱紅神殿。神社蓋在陡峭的海濱懸崖上，宏偉氣勢令人讚嘆。", img: "https://images.unsplash.com/photo-1599988450478-0605fb8f9f9b?q=80&w=1000" },
+                { time: "18:30", tag: "Task", title: "租車還車 (DFS)", icon: "fa-gas-pump", map: "DFS T Galleria", desc: "完成精彩自駕任務。還車前請至鄰近加油站將油箱加滿。", img: "https://images.unsplash.com/photo-1634225243712-5718d6c0cb5e?q=80&w=1000" },
                 { 
-                    time: "19:00", tag: "Shopping", title: "新都心商圈 (Omoromachi)", icon: "fa-bag-shopping", map: "新都心", desc: "還車後的最終採買中心。這裡街道明亮寬廣，包含精品免稅店、超市與大型商場，是購買電器、美妝與伴手禮的絕佳地點。", img: "https://images.unsplash.com/photo-1623150552763-714081518349?q=80&w=1000",
-                    subs: [{ type: "晚餐", name: "目利銀次", hours: "17:00-01:00", mapcode: "33 188 659*45", map: "目利銀次 新都心", desc: "浮誇木桶裝潢與產地直送海味。氣氛熱烈，是慶祝假期的不二之選。", img: "https://images.unsplash.com/photo-1542650125-9988298a08c0?q=80&w=1000", notes: "" }]
+                    time: "19:00", tag: "Shopping", title: "新都心商圈 (Omoromachi)", icon: "fa-bag-shopping", map: "新都心", desc: "還車後的最終採買中心。這裡街道明亮寬廣，是補貨聖地。", img: "https://images.unsplash.com/photo-1623150552763-714081518349?q=80&w=1000",
+                    subs: [{ type: "晚餐", name: "目利銀次", hours: "17:00-01:00", mapcode: "33 188 659*45", map: "目利銀次 新都心", desc: "浮誇木桶裝潢與頂級鮮魚料理。", img: "https://images.unsplash.com/photo-1542650125-9988298a08c0?q=80&w=1000", notes: "" }]
                 }
             ],
             4: [
-                { time: "10:00", tag: "Stay", title: "飯店 Checkout & 寄放行李", icon: "fa-suitcase", hours: "10:00 截止", desc: "請於10:00前完成退房手續。將行李寄放於櫃台，輕裝進行市場最後的巡禮與美食探訪。", img: "https://images.unsplash.com/photo-1614801127022-7776b91c0157?q=80&w=1000" },
+                { time: "10:00", tag: "Stay", title: "飯店 Checkout & 寄放行李", icon: "fa-suitcase", hours: "10:00 截止", desc: "請於10:00前完成退房手續。將行李寄放於櫃台，輕裝進行市場最後巡禮。", img: "https://images.unsplash.com/photo-1614801127022-7776b91c0157?q=80&w=1000" },
                 { 
-                    time: "10:30", tag: "Market", title: "平和通 & 第一牧志市場", icon: "fa-store", map: "牧志市場", mapcode: "33 157 323*52", hours: "08:00-21:00", desc: "那霸的廚房。這裡保留了懷舊的老街氛圍與最新鮮的島嶼食材。您可以一樓挑選生猛海產，二樓代客烹飪，享受最地道的海鮮饗宴。", img: "https://images.unsplash.com/photo-1638778552139-69e130666e2e?q=80&w=1000",
+                    time: "10:30", tag: "Market", title: "平和通 & 第一牧志市場", icon: "fa-store", map: "牧志市場", mapcode: "33 157 323*52", hours: "08:00-21:00", desc: "那霸的廚房。您可以一樓挑選生猛海產，二樓代客烹飪。", img: "https://images.unsplash.com/photo-1638778552139-69e130666e2e?q=80&w=1000",
                     subs: [
                         { type: "甜點", name: "鹽屋 (雪鹽冰淇淋)", hours: "10:00-20:00", map: "鹽屋", desc: "鹹甜交織的多層次驚喜滋味。", img: "https://images.unsplash.com/photo-1503810473512-f64956d0fa0d?q=80&w=1000" },
                         { type: "午餐", name: "海鮮大餐 (代客料理)", hours: "11:00-19:00", map: "第一牧志市場", desc: "現點現做，極致鮮美享受。", img: "https://images.unsplash.com/photo-1630485654600-1b2005100213?q=80&w=1000" }
                     ]
                 },
-                { time: "14:00", tag: "Transit", title: "回飯店取行李 & 前往機場", icon: "fa-train", map: "那霸機場", desc: "搭乘單軌電車前往機場。別忘了領取預約好的波布飯糰，為回程旅途充電。", img: "https://images.unsplash.com/photo-1540339832862-1745299be71c?q=80&w=1000" },
-                { time: "16:50", tag: "Bye", title: "那霸機場起飛 (MM929)", icon: "fa-plane-departure", desc: "帶著滿載回憶與戰利品回國。期待下一次再訪沖繩！", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000" }
+                { time: "14:00", tag: "Transit", title: "回飯店取行李 & 前往機場", icon: "fa-train", map: "那霸機場", desc: "搭乘單軌電車前往機場。領取預約好的波布飯糰。", img: "https://images.unsplash.com/photo-1540339832862-1745299be71c?q=80&w=1000" },
+                { time: "16:50", tag: "Bye", title: "那霸機場起飛 (MM929)", icon: "fa-plane-departure", desc: "帶著滿載回憶與戰利品回國。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000" }
             ]
         };
 
@@ -155,6 +157,7 @@
                 div.className = `flex flex-col items-center cursor-pointer transition-all ${dayNum === currentDay ? 'active-date' : 'text-gray-300'}`;
                 div.onclick = () => { currentDay = dayNum; renderTimeline(); renderDatePicker(); };
                 div.innerHTML = `
+                    <span class="text-[7px] font-bold text-gray-400 mb-0.5 tracking-tighter uppercase">JAN</span>
                     <span class="text-[8px] font-bold mb-0.5">${daysOfWeek[date.getDay()]}</span>
                     <span class="text-lg date-num font-serif leading-none">${date.getDate()}</span>
                     <div class="h-1 w-1 rounded-full date-dot mt-1"></div>
