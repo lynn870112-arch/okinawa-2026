@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>沖繩歲修之旅 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .active-tab { border-bottom: 4px solid #3b82f6; color: #3b82f6; }
+        body { background-color: #f3f4f6; }
+    </style>
+</head>
+<body class="pb-20">
+
+    <header class="bg-blue-600 text-white p-4 shadow-lg sticky top-0 z-50">
+        <h1 class="text-xl font-bold text-center">Okinawa Trip 2026</h1>
+        <p class="text-xs text-center opacity-80">3人行・自駕・歲修充電中</p>
+    </header>
+
+    <div id="content" class="p-4 space-y-6">
+        </div>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-2 text-gray-500 shadow-2xl">
+        <button onclick="showDay(1)" id="btn1" class="flex flex-col items-center">
+            <i class="fas fa-calendar-day"></i><span class="text-xs">D1</span>
+        </button>
+        <button onclick="showDay(2)" id="btn2" class="flex flex-col items-center">
+            <i class="fas fa-car"></i><span class="text-xs">D2</span>
+        </button>
+        <button onclick="showDay(3)" id="btn3" class="flex flex-col items-center">
+            <i class="fas fa-torii-gate"></i><span class="text-xs">D3</span>
+        </button>
+        <button onclick="showDay(4)" id="btn4" class="flex flex-col items-center">
+            <i class="fas fa-utensils"></i><span class="text-xs">D4</span>
+        </button>
+    </nav>
+
+    <script>
+        const tripData = {
+            1: {
+                title: "Day 1：抵達那霸與市區熱身",
+                items: [
+                    { name: "抵達那霸機場 (MM926)", desc: "16:55 抵達，搭乘單軌電車前往新都心飯店入住。", img: "https://images.unsplash.com/photo-1542650125-9988298a08c0?auto=format&fit=crop&q=80&w=1000", mapcode: "" },
+                    { name: "國際通屋台村", desc: "晚餐首選！由 20 間小店組成的居酒屋街，適合第一晚小酌。", img: "https://images.unsplash.com/photo-1623150552763-714081518349?auto=format&fit=crop&q=80&w=1000", mapcode: "33 157 444*55" }
+                ]
+            },
+            2: {
+                title: "Day 2：北部海岸巡禮",
+                items: [
+                    { name: "古宇利大橋 & 蝦蝦飯", desc: "橫跨碧綠海洋的絕美公路，品嚐蒜香濃郁的必吃蝦飯。", img: "https://images.unsplash.com/photo-1551632432-0730ee0f4679?auto=format&fit=crop&q=80&w=1000", mapcode: "485 662 041*33" },
+                    { name: "美麗海水族館", desc: "震撼黑潮之海鯨鯊，觀賞 14:30 的海豚表演。", img: "https://images.unsplash.com/photo-1582266255745-9e509f29bf33?auto=format&fit=crop&q=80&w=1000", mapcode: "553 075 797*77" },
+                    { name: "萬座毛夕陽", desc: "拍攝標誌性象鼻岩夕陽，入園費僅需 100 日圓。", img: "https://images.unsplash.com/photo-1614801127022-7776b91c0157?auto=format&fit=crop&q=80&w=1000", mapcode: "206 312 039*17" }
+                ]
+            },
+            3: {
+                title: "Day 3：古都歷史與神域",
+                items: [
+                    { name: "首里城", desc: "琉球王國精神象徵，見證強韌的職人復興修復工程。", img: "https://images.unsplash.com/photo-1582266255745-9e509f29bf33?auto=format&fit=crop&q=80&w=1000", mapcode: "33 161 526*66" },
+                    { name: "玉泉洞", desc: "日本最大規模鐘乳石洞，深入探險 30 萬年地底景觀。", img: "https://images.unsplash.com/photo-1614801127022-7776b91c0157?auto=format&fit=crop&q=80&w=1000", mapcode: "232 495 330*28" },
+                    { name: "波上宮", desc: "蓋在懸崖上的朱紅神殿，求御守並在波之上海灘散步。", img: "https://images.unsplash.com/photo-1542650125-9988298a08c0?auto=format&fit=crop&q=80&w=1000", mapcode: "33 185 022*00" }
+                ]
+            },
+            4: {
+                title: "Day 4：最後採買與回程",
+                items: [
+                    { name: "第一牧志市場 & 鹽屋", desc: "那霸的廚房！挑戰雪鹽冰淇淋並選購最後伴手禮。", img: "https://images.unsplash.com/photo-1623150552763-714081518349?auto=format&fit=crop&q=80&w=1000", mapcode: "" },
+                    { name: "機場波布飯糰", desc: "現做熱騰騰的靈魂早餐，請務必先用 App 預約。", img: "https://images.unsplash.com/photo-1542650125-9988298a08c0?auto=format&fit=crop&q=80&w=1000", mapcode: "" }
+                ]
+            }
+        };
+
+        function showDay(day) {
+            const container = document.getElementById('content');
+            let html = `<h2 class="text-2xl font-black text-blue-800 mb-4">${tripData[day].title}</h2>`;
+            
+            tripData[day].items.forEach(item => {
+                html += `
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <img src="${item.img}" class="w-full h-40 object-cover" />
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-gray-800">${item.name}</h3>
+                            <p class="text-sm text-gray-600 mt-1">${item.desc}</p>
+                            ${item.mapcode ? `
+                                <div class="mt-3 flex items-center bg-blue-50 p-2 rounded border border-blue-200 cursor-pointer" onclick="copyMapCode('${item.mapcode}')">
+                                    <i class="fas fa-map-marked-alt text-blue-600 mr-2"></i>
+                                    <span class="text-xs font-mono text-blue-700">MapCode: ${item.mapcode}</span>
+                                    <i class="fas fa-copy ml-auto text-blue-400"></i>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            // Update tab styles
+            for(let i=1; i<=4; i++) {
+                document.getElementById(`btn${i}`).classList.remove('active-tab');
+            }
+            document.getElementById(`btn${day}`).classList.add('active-tab');
+            window.scrollTo(0,0);
+        }
+
+        function copyMapCode(code) {
+            navigator.clipboard.writeText(code);
+            alert('MapCode 已複製: ' + code);
+        }
+
+        // Initialize with Day 1
+        showDay(1);
+    </script>
+</body>
+</html>
