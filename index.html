@@ -31,8 +31,8 @@
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
 
-    <header id="app-header" class="bg-[#fcfaf2] pt-4 pb-3 px-6 sticky top-0 z-30 shadow-sm border-b border-orange-50 flex-shrink-0">
-        <div class="text-center mb-4">
+    <header id="app-header" class="bg-[#fcfaf2] pt-4 pb-3 px-6 sticky top-0 z-30 shadow-sm border-b border-orange-50 flex-shrink-0 text-center">
+        <div class="mb-3">
             <h1 class="text-[8px] tracking-[0.2em] text-gray-400 font-bold uppercase">PREMIUM TRAVEL GUIDE</h1>
             <h2 class="text-xl font-bold text-gray-800">沖繩極致之旅 <span class="text-xs font-normal text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-full">2026</span></h2>
         </div>
@@ -86,7 +86,6 @@
         let currentDay = 1;
         let isLedgerView = false;
         let expenses = JSON.parse(localStorage.getItem('okinawa_expenses') || '[]');
-        // 從 LocalStorage 讀取匯率，若無則預設 0.215
         let currentRate = parseFloat(localStorage.getItem('okinawa_jpy_rate') || '0.215');
 
         const tripData = {
@@ -120,46 +119,46 @@
                 { 
                     time: "18:30", tag: "Dinner", title: "美國村 散策", icon: "fa-ferris-wheel", map: "美國村", mapcode: "33 526 450*63", desc: "由美軍基地歸還土地開發而成，充滿色彩繽紛的美式建築、街頭藝術與異國氛圍。", img: "https://images.unsplash.com/photo-1600523872258-3410d7f1b844?q=80&w=1000",
                     subs: [
-                        { type: "晚餐", name: "グルメ回転寿司市場", hours: "11:30-21:00", mapcode: "33 526 459*11", map: "グルメ回転寿司市場", desc: "北谷超人氣迴轉壽司，食材漁港直送，CP值極高。", img: "https://images.unsplash.com/photo-1582266255745-9e509f29bf33?q=80&w=1000" },
+                        { type: "晚餐", name: "グルメ回転 sushi 市場", hours: "11:30-21:00", mapcode: "33 526 459*11", map: "グルメ回転市場", desc: "北谷超人氣迴轉壽司，食材漁港直送，CP值極高。", img: "https://images.unsplash.com/photo-1582266255745-9e509f29bf33?q=80&w=1000" },
                         { type: "晚餐", name: "A&W 漢堡", hours: "09:00-22:00", map: "A&W 美國村", desc: "沖繩限定美式速食，必點沙士配捲捲薯條。", img: "https://pimg.1px.tw/muzuochen/1448980489-647390745.jpg" }
                     ]
                 }
             ],
             3: [
-                { time: "09:30", tag: "Heritage", title: "首里城 (見學修復工程)", icon: "fa-landmark", map: "首里城", mapcode: "33 161 526*66", hours: "08:30-18:00", desc: "首里城是位於沖繩那霸市、琉球王國的都城與王宮，兼政治、外交、經濟中心，同時也是中央行政機關和舉行祭祀儀式的所在地，見證了琉球國長達500年的歷史與獨特文化，也因與中國和日本的頻繁交流，展現了朱紅色調與石砌技術等獨特魅力。雖在1945年和2019年大火中受損，但正進行重建，預計2026年修復完成。", img: "https://ohh.okinawa/wpdir/wp-content/uploads/2018/10/7ac047596507fadd22e23647ff3ae1d4.jpg" },
+                { time: "09:30", tag: "Heritage", title: "首里城 (見學修復工程)", icon: "fa-landmark", map: "首里城", mapcode: "33 161 526*66", hours: "08:30-18:00", desc: "首里城是位於沖繩那霸市、琉球王國的都城與王宮，兼政治、外交、經濟中心，同時也是中央行政機關和舉行祭祀儀式的所在地。雖在1945年和2019年大火中受損，但正進行重建，預計2026年修復完成。", img: "https://ohh.okinawa/wpdir/wp-content/uploads/2018/10/7ac047596507fadd22e23647ff3ae1d4.jpg" },
                 { 
-                    time: "11:30", tag: "Cave", title: "玉泉洞 / 沖繩世界", icon: "fa-mountain-sun", map: "玉泉洞", mapcode: "232 495 330*28", hours: "09:00-17:30", desc: "玉泉洞是日本沖繩世界文化王國的主體景點，是一個歷經30萬年形成的日本第二大鐘乳洞，擁有超過百萬根鐘乳石與神秘地下水景觀，全長5000公尺，遊客可漫步於對外開放的約890公尺步道，欣賞「青之泉」等奇景；整個園區還包含重現琉球古老街景的「王國村」及「毒蛇博物館」，提供文化體驗與表演，是結合自然、文化、歷史的綜合性主題公園。", img: "https://images.unsplash.com/photo-1550992402-9b1fc58fd76d?q=80&w=1170&auto=format&fit=crop",
+                    time: "11:30", tag: "Cave", title: "玉泉洞 / 沖繩世界", icon: "fa-mountain-sun", map: "玉泉洞", mapcode: "232 495 330*28", hours: "09:00-17:30", desc: "玉泉洞是日本沖繩世界文化王國的主體景點，是一個歷經30萬年形成的日本第二大鐘乳洞，擁有超過百萬根鐘乳石與神秘地下水景觀，全長5000公尺，遊客可漫步於對外開放的約890公尺步道。", img: "https://images.unsplash.com/photo-1550992402-9b1fc58fd76d?q=80&w=1170&auto=format&fit=crop",
                     subs: [
                         { type: "表演", name: "12:30 太鼓表演", hours: "約30分鐘", map: "表演廣場", desc: "震撼靈魂的傳統舞蹈。", img: "https://www.okitour.co.jp/uploads/contents/product/Ifz2McHD8" },
                         { type: "午餐", name: "屋宜家 (老屋沖繩麵)", hours: "11:00-15:30", mapcode: "232 465 718*33", map: "屋宜家", desc: "在被登錄為國家有形文化財的百年老宅中享用美食。", img: "https://okinawa-daily.com/wp-content/uploads/2021/02/46E0F9C9-83D4-4E52-9EB9-27F4960E2CD4.jpeg" }
                     ]
                 },
                 { 
-                    time: "14:30", tag: "View", title: "瀨長島 (備案)", icon: "fa-plane-up", map: "瀨長島", mapcode: "33 002 602*06", desc: "瀨長島是沖繩那霸機場附近一個迷你小島，因有跨海大橋與本島相連，交通極為便利，以純白地中海風格建築群「海風露台(Umikaji Terrace)」聞名，提供美食、伴手禮、溫泉與海景，被譽為「沖繩小希臘」，能近距離觀賞飛機起降，是熱門的打卡點與半日遊首選。 ", img: "https://visitokinawajapan.com/wp-content/themes/visit-okinawa_multi-language/lang/zh-hant/assets/img/destinations/okinawa-main-island/southern-okinawa-main-island/senaga-island/de36_kv_senaga-island-umikaji-terrace.webp",
+                    time: "14:30", tag: "View", title: "瀨長島 (備案)", icon: "fa-plane-up", map: "瀨長島", mapcode: "33 002 602*06", desc: "瀨長島是沖繩那霸機場附近一個迷你小島，以純白地中海風格建築群「海風露台」聞名，提供美食、伴手禮、溫泉與海景，能近距離觀賞飛機起降。", img: "https://visitokinawajapan.com/wp-content/themes/visit-okinawa_multi-language/lang/zh-hant/assets/img/destinations/okinawa-main-island/southern-okinawa-main-island/senaga-island/de36_kv_senaga-island-umikaji-terrace.webp",
                     subs: [{ type: "甜點", name: "幸福鬆餅", hours: "11:00-19:00", map: "幸福鬆餅 瀨長島", desc: "鬆軟綿密的人氣舒芙蕾。", img: "https://dina.tw/wp-content/uploads/2024/04/10%E5%B9%B8%E7%A6%8F%E9%AC%86%E9%A4%85.jpg" }]
                 },
-                { time: "16:00", tag: "Shrine", title: "波上宮 & 波之上海灘", icon: "fa-torii-gate", map: "波上宮", mapcode: "33 185 022*00", hours: "09:00-17:00", desc: "波上宮是沖繩那霸市建立在珊瑚礁懸崖上的古老神社，是琉球八社之首，供奉航海、漁業與五穀豐收之神，以其獨特的「書包御守」（保佑學業交通）和使用沖繩傳統紅型染布製成的「紅型御守」（保佑健康）最為著名，另有結緣、安產、開運等各式御守，設計融入琉球文化，是祈求平安與具收藏價值的護身符。 ", img: "https://s3-ap-northeast-1.amazonaws.com/thegate/2021/02/09/18/08/05/namino_ue_gu_shrine.jpg" },
+                { time: "16:00", tag: "Shrine", title: "波上宮 & 波之上海灘", icon: "fa-torii-gate", map: "波上宮", mapcode: "33 185 022*00", hours: "09:00-17:00", desc: "波上宮是建立在珊瑚礁懸崖上的古老神社，是琉球八社之首，供奉航海、漁業與五穀豐收之神。", img: "https://s3-ap-northeast-1.amazonaws.com/thegate/2021/02/09/18/08/05/namino_ue_gu_shrine.jpg" },
                 { time: "18:30", tag: "Task", title: "租車還車 (DFS)", icon: "fa-gas-pump", map: "DFS T Galleria", desc: "完成精彩自駕任務。", img: "https://www.otsinternational.jp/otsrentacar/img/upload/car_office/4_dfs_1.png", notes: "還車前請至鄰近加油站將油箱加滿。" },
                 { 
-                    time: "19:00", tag: "Shopping", title: "新都心商圈 (Omoromachi)", icon: "fa-bag-shopping", map: "新都心", desc: "沖繩「新都心」（Shintoshin，おもろまち）是那霸市區一個現代化的購物與生活中心，以DFS旗下沖繩T廣場等百貨賣場為核心，集結了免稅精品、日系服飾UQGU、家電、雜貨、超市、美食餐廳和電影院，交通便利（靠近單軌電車歌町站），並有新都心公園，是觀光客購物和當地人休閒的好去處。 ", img: "https://www.tabirai.net/tabirai-uploader/img/0016739/s1_0016739.jpg",
+                    time: "19:00", tag: "Shopping", title: "新都心商圈 (Omoromachi)", icon: "fa-bag-shopping", map: "新都心", desc: "沖繩「新都心」是那霸市區一個現代化的購物與生活中心，集結了免稅精品、日系服飾、家電、雜貨、超市與美食餐廳。", img: "https://www.tabirai.net/tabirai-uploader/img/0016739/s1_0016739.jpg",
                     subs: [{ type: "晚餐", name: "目利銀次", hours: "17:00-01:00", mapcode: "33 188 659*45", map: "目利銀次 新都心", desc: "浮誇木桶裝潢與頂級鮮魚料理。", img: "https://mimigo.tw/wp-content/uploads/20190328181052_47.jpg", notes: "" }]
                 }
             ],
             4: [
-                { time: "10:00", tag: "Stay", title: "飯店 Checkout & 寄放行李", icon: "fa-suitcase", hours: "10:00 截止", desc: "退房手續。將行李寄放於飯店櫃台或車站。", img: "https://images.unsplash.com/photo-1614801127022-7776b91c0157?q=80&w=1000", notes: "【行李寄放建議】\n1. 首選：美榮橋站置物櫃 (建議10:00前抵達以免客滿)。\n2. 備案：使用 ecbo cloak 預約或前往國際通觀光案內所。" },
+                { time: "10:00", tag: "Stay", title: "飯店 Checkout & 寄放行李", icon: "fa-suitcase", hours: "10:00 截止", desc: "請於10:00前完成退房手續。將行李寄放於飯店櫃台或車站。", img: "https://images.unsplash.com/photo-1614801127022-7776b91c0157?q=80&w=1000", notes: "【行李寄放建議】\n1. 首選：美榮橋站置物櫃 (建議10:00前抵達以免客滿)。\n2. 備案：使用 ecbo cloak 預約或前往國際通觀網案內所。" },
                 { 
-                    time: "10:30", tag: "Market", title: "平和通 & 第一牧志市場", icon: "fa-store", map: "牧志市場", mapcode: "33 157 323*52", hours: "08:00-21:00", desc: "「沖繩人的廚房」，可現買現料理。", img: "https://twobunny.tw/wp-content/uploads/2025/12/2025-0821-makishi-public-market-1.jpg",
+                    time: "10:30", tag: "Market", title: "平和通 & 第一牧志市場", icon: "fa-store", map: "牧志市場", mapcode: "33 157 323*52", hours: "08:00-21:00", desc: "第一牧志公設市場是那霸國際通旁一個歷史悠久、充滿活力的傳統市場，被譽為「沖繩人的廚房」。", img: "https://twobunny.tw/wp-content/uploads/2025/12/2025-0821-makishi-public-market-1.jpg",
                     subs: [
                         { type: "甜點", name: "鹽屋 (雪鹽冰淇淋)", hours: "10:00-20:00", map: "鹽屋", desc: "鹹甜交織的多層次驚喜滋味。", img: "https://bobbyfun.tw/wp-content/uploads/pixnet/8c114902489725d46a5d931b46e1a903.jpg" },
                         { type: "午餐", name: "海鮮大餐 (代客料理)", hours: "11:00-19:00", map: "第一牧志市場", desc: "現點現做，極致鮮美享受。", img: "https://plumpyblog.com/wp-content/uploads/2025/10/%E6%97%A5%E6%9C%AC%E6%B2%96%E7%B9%A9-%E9%82%A3%E9%9C%B8%E5%B8%82%E7%AC%AC%E4%B8%80%E7%89%A7%E5%BF%97%E5%85%AC%E8%A8%AD%E5%B8%82%E5%A0%B4-02.jpg" }
                     ]
                 },
-                { time: "14:00", tag: "Transit", title: "回飯店取行李 & 前往機場", icon: "fa-train", map: "那霸機場", desc: "搭單軌前往機場，領取預約好的波布飯糰。", img: "https://d1grca2t3zpuug.cloudfront.net/2025/06/nahainfo02-1000x582-1748957339.webp" },
-                { time: "16:50", tag: "Bye", title: "那霸機場起飛 (MM929)", icon: "fa-plane-departure", desc: "結束沖繩極致之旅。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000" }
+                { time: "14:00", tag: "Transit", title: "回飯店取行李 & 前往機場", icon: "fa-train", map: "那霸機場", desc: "搭乘單軌電車前往機場。領取預約好的波布飯糰。", img: "https://d1grca2t3zpuug.cloudfront.net/2025/06/nahainfo02-1000x582-1748957339.webp" },
+                { time: "16:50", tag: "Bye", title: "那霸機場起飛 (MM929)", icon: "fa-plane-departure", desc: "帶著滿載回憶與戰利品回國。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000" }
             ]
         };
 
-        // --- 核心渲染函數 ---
+        // --- 核心邏輯 ---
 
         function initApp() {
             isLedgerView = false;
@@ -177,13 +176,15 @@
                 const dayNum = i + 1;
                 const div = document.createElement('div');
                 div.className = `flex flex-col items-center cursor-pointer transition-all ${dayNum === currentDay && !isLedgerView ? 'active-date' : 'text-gray-300'}`;
-                div.onclick = () => { 
+                div.onclick = (e) => { 
+                    e.preventDefault();
                     isLedgerView = false;
                     currentDay = dayNum; 
                     renderDatePicker(); 
                     renderItinerary();
-                    document.getElementById('ledger-toggle').classList.remove('ledger-btn-active', 'text-red-500');
-                    document.getElementById('ledger-toggle').classList.add('text-gray-300');
+                    const lt = document.getElementById('ledger-toggle');
+                    lt.classList.remove('ledger-btn-active', 'text-red-500');
+                    lt.classList.add('text-gray-300');
                 };
                 div.innerHTML = `
                     <span class="text-[7px] font-bold text-gray-400 mb-0.5 uppercase tracking-tighter">JAN</span>
@@ -242,30 +243,36 @@
                 <div class="space-y-6">
                     <div class="bg-white p-5 rounded-2xl border border-orange-100 shadow-sm">
                         <h3 class="text-lg font-bold mb-4 text-gray-800 flex items-center"><i class="fas fa-plus-circle mr-2 text-red-400"></i> 新增支出</h3>
-                        <div class="space-y-3">
-                            <input type="date" id="exp-date" value="${todayStr}" class="w-full p-3 bg-gray-50 border-none rounded-xl text-sm outline-none">
+                        <div class="space-y-3 text-sm">
+                            <input type="date" id="exp-date" value="${todayStr}" class="w-full p-3 bg-gray-50 border-none rounded-xl outline-none">
                             
                             <div class="flex items-center gap-2 bg-amber-50 p-3 rounded-xl border border-amber-100">
-                                <span class="text-xs font-bold text-amber-700 whitespace-nowrap">目前匯率:</span>
-                                <input type="number" id="manual-rate" value="${currentRate}" step="0.0001" onchange="updateRate(this.value)" class="flex-1 bg-transparent border-none font-mono text-sm outline-none text-amber-900">
+                                <span class="text-xs font-bold text-amber-700 whitespace-nowrap">匯率:</span>
+                                <input type="number" id="manual-rate" value="${currentRate}" step="0.001" onchange="updateRate(this.value)" class="flex-1 bg-transparent border-none font-mono outline-none text-amber-900">
                                 <span class="text-[10px] text-amber-600">JPY to TWD</span>
                             </div>
 
-                            <div class="flex gap-2">
-                                <input type="number" id="exp-amount" placeholder="金額" class="flex-[2] p-3 bg-gray-50 border-none rounded-xl text-sm outline-none">
-                                <select id="exp-currency" class="flex-1 min-w-[70px] px-1 bg-gray-50 border-none rounded-xl text-xs outline-none">
+                            <div class="flex items-center bg-gray-50 rounded-xl overflow-hidden">
+                                <div class="px-3 border-r border-gray-200">
+                                    <span class="text-xs font-bold text-gray-400">金額</span>
+                                </div>
+                                <select id="exp-currency" class="bg-transparent py-3 pl-2 pr-1 outline-none text-xs font-bold text-gray-600">
                                     <option value="TWD">TWD</option>
                                     <option value="JPY">JPY</option>
                                 </select>
+                                <input type="number" id="exp-amount" placeholder="0" class="flex-1 bg-transparent p-3 outline-none text-right font-mono">
                             </div>
                             
-                            <input type="text" id="exp-desc" placeholder="項目內容" class="w-full p-3 bg-gray-50 border-none rounded-xl text-sm outline-none">
-                            <div class="text-xs font-bold text-gray-400 tracking-widest mt-2 uppercase text-center">支付者</div>
-                            <select id="exp-payer" class="w-full p-3 bg-gray-50 border-none rounded-xl text-sm outline-none text-center">
+                            <input type="text" id="exp-desc" placeholder="項目內容" class="w-full p-3 bg-gray-50 border-none rounded-xl outline-none">
+                            
+                            <div class="text-[10px] font-bold text-gray-400 tracking-widest mt-2 uppercase text-center">支付者</div>
+                            <select id="exp-payer" class="w-full p-3 bg-gray-50 border-none rounded-xl outline-none text-center">
                                 ${members.map(m => `<option value="${m}">${m}</option>`).join('')}
                             </select>
-                            <div class="text-xs font-bold text-gray-400 tracking-widest mt-2 uppercase text-center">分攤對象</div>
-                            <div class="flex justify-center gap-4 p-2">${members.map(m => `<label class="flex items-center gap-1 text-sm"><input type="checkbox" name="split-member" value="${m}" checked class="accent-red-500"> ${m}</label>`).join('')}</div>
+                            
+                            <div class="text-[10px] font-bold text-gray-400 tracking-widest mt-2 uppercase text-center">分攤對象</div>
+                            <div class="flex justify-center gap-4 p-2">${members.map(m => `<label class="flex items-center gap-1 text-xs"><input type="checkbox" name="split-member" value="${m}" checked class="accent-red-500"> ${m}</label>`).join('')}</div>
+                            
                             <button onclick="addExpense()" class="w-full bg-red-500 text-white py-3 rounded-xl font-bold shadow-md active:scale-95 transition-all mt-2">儲存紀錄</button>
                         </div>
                     </div>
@@ -275,7 +282,7 @@
             `;
         }
 
-        // --- 資料處理 ---
+        // --- 資料與邏輯 ---
         function updateRate(val) {
             currentRate = parseFloat(val) || 0.215;
             localStorage.setItem('okinawa_jpy_rate', currentRate);
@@ -296,7 +303,7 @@
 
         function renderExpenseList() {
             if (expenses.length === 0) return '<div class="text-center text-gray-300 py-10 text-sm">尚無紀錄</div>';
-            return expenses.map(exp => `<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center"><div><div class="text-[10px] text-gray-400 font-mono mb-1">${exp.date}</div><div class="text-sm font-bold text-gray-800">${exp.desc}</div><div class="text-[9px] text-gray-400 font-bold mt-1">${exp.payer} 支付 ${exp.amount} ${exp.currency}</div></div><div class="text-right flex items-center gap-3"><span class="text-xs font-mono font-bold text-gray-600">≈ $${Math.round(exp.twdAmount)}</span><button onclick="deleteExpense(${exp.id})" class="text-gray-200 hover:text-red-400"><i class="fas fa-trash-alt"></i></button></div></div>`).join('');
+            return expenses.map(exp => `<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center"><div><div class="text-[10px] text-gray-400 font-mono mb-1">${exp.date}</div><div class="text-sm font-bold text-gray-800">${exp.desc}</div><div class="text-[9px] text-gray-400 font-bold uppercase mt-1">${exp.payer} 支付 ${exp.amount} ${exp.currency}</div></div><div class="text-right flex items-center gap-3"><span class="text-xs font-mono font-bold text-gray-600">≈ $${Math.round(exp.twdAmount)}</span><button onclick="deleteExpense(${exp.id})" class="text-gray-200 hover:text-red-400"><i class="fas fa-trash-alt"></i></button></div></div>`).join('');
         }
 
         function addExpense() {
@@ -309,9 +316,7 @@
             const splitWith = Array.from(checkedBoxes).map(cb => cb.value);
             if (!amount || !desc || splitWith.length === 0) { alert('請填寫完整資訊'); return; }
             
-            // 使用手動填寫的匯率計算
             const twdAmount = currency === 'JPY' ? amount * currentRate : amount;
-            
             expenses.unshift({ id: Date.now(), date, amount, currency, twdAmount, desc, payer, splitWith });
             localStorage.setItem('okinawa_expenses', JSON.stringify(expenses));
             renderLedger();
@@ -323,7 +328,6 @@
             renderLedger();
         }
 
-        // --- 彈窗邏輯 ---
         function showModal(itemStr) {
             const item = JSON.parse(decodeURIComponent(itemStr));
             const modal = document.getElementById('detail-modal');
