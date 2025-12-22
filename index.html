@@ -54,4 +54,139 @@
                 { 
                     time: "10:30", title: "古宇利大橋 & 古宇利島", icon: "fa-bridge", map: "古宇利大橋", mapcode: "485 662 041*33",
                     subs: [
-                        { type: "午餐", name: "Kouri Shrimp 古宇利蝦蝦飯", hours: "11:00-1
+                        { type: "午餐", name: "Kouri Shrimp 古宇利蝦蝦飯", hours: "11:00-18:00", mapcode: "485 692 174*01", map: "Kouri Shrimp" }
+                    ]
+                },
+                { 
+                    time: "13:30", title: "美麗海水族館", icon: "fa-fish", map: "美麗海水族館", mapcode: "553 075 797*77", hours: "08:30-18:30",
+                    subs: [
+                        { type: "表演", name: "海豚秀: 15:00/ 17:00", hours: "約20分鐘", map: "海豚劇場" },
+                        { type: "表演", name: "鯨鯊餵食秀: 15:00/ 17:00", hours: "黑潮之海槽前", map: "美麗海水族館" }
+                    ]
+                },
+                { 
+                    time: "18:30", title: "美國村 散策", icon: "fa-ferris-wheel", map: "美國村", mapcode: "33 526 450*63",
+                    subs: [
+                        { type: "晚餐", name: "グルメ回転寿司市場", hours: "11:30-21:00", mapcode: "33 526 459*11", map: "グルメ回転寿司市場 美浜店" },
+                        { type: "晚餐", name: "A&W 漢堡", hours: "09:00-22:00", map: "A&W 美國村" }
+                    ]
+                }
+            ],
+            3: [
+                { time: "09:30", title: "首里城 (見學修復工程)", icon: "fa-gopuram", map: "首里城", mapcode: "33 161 526*66", hours: "08:30-18:00" },
+                { 
+                    time: "11:30", title: "玉泉洞 / 沖繩世界 (鐘乳石洞)", icon: "fa-mountain-sun", map: "玉泉洞", mapcode: "232 495 330*28", hours: "09:00-17:30",
+                    subs: [
+                        { type: "備案", name: "瀨長島 (幸福鬆餅)", hours: "11:00-19:00", mapcode: "33 002 602*06", map: "幸福鬆餅 瀨長島" }
+                    ]
+                },
+                { time: "16:00", title: "波上宮 & 波之上海灘", icon: "fa-torii-gate", map: "波上宮", mapcode: "33 185 022*00", hours: "09:00-17:00" },
+                { time: "18:30", title: "租車還車 (記得先加滿油)", icon: "fa-gas-pump", map: "DFS T Galleria" },
+                { 
+                    time: "19:00", title: "新都心商圈", icon: "fa-bag-shopping", map: "新都心商圈",
+                    subs: [
+                        { type: "晚餐", name: "目利銀次 (新都心店)", hours: "17:00-01:00", mapcode: "33 188 659*45", map: "目利銀次 新都心" }
+                    ]
+                }
+            ],
+            4: [
+                { time: "10:30", title: "飯店 Check-out & 寄放行李", icon: "fa-suitcase", hours: "10:00-11:00" },
+                { 
+                    time: "10:30", title: "平和通 & 第一牧志公設市場", icon: "fa-store", map: "第一牧志公設市場", mapcode: "33 157 323*52", hours: "08:00-21:00",
+                    subs: [
+                        { type: "甜點", name: "鹽屋 (雪鹽冰淇淋)", hours: "10:00-20:00", map: "鹽屋 平和通" },
+                        { type: "午餐", name: "市場代客料理海鮮大餐", hours: "11:00-19:00", map: "第一牧志公設市場" }
+                    ]
+                },
+                { time: "14:00", title: "回飯店拿行李 & 前往機場", icon: "fa-van-shuttle", map: "那霸機場" },
+                { time: "16:50", title: "那霸機場起飛 (MM929)", icon: "fa-plane-departure" }
+            ]
+        };
+
+        let currentDay = 1;
+
+        function renderDatePicker() {
+            const picker = document.getElementById('date-picker');
+            picker.innerHTML = '';
+            for (let i = 0; i < 4; i++) {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + i);
+                const dayNum = i + 1;
+                const dateNum = date.getDate();
+                const dayName = daysOfWeek[date.getDay()];
+                
+                const div = document.createElement('div');
+                div.className = `flex flex-col items-center cursor-pointer transition-all ${dayNum === currentDay ? 'active-date' : 'text-gray-300'}`;
+                div.onclick = () => { currentDay = dayNum; renderTimeline(); renderDatePicker(); };
+                div.innerHTML = `
+                    <span class="text-[10px] font-bold mb-1">${dayName}</span>
+                    <span class="text-2xl date-num font-serif">${dateNum}</span>
+                    <div class="h-1 w-1 rounded-full date-dot mt-1"></div>
+                `;
+                picker.appendChild(div);
+            }
+        }
+
+        function renderTimeline() {
+            const container = document.getElementById('content');
+            container.innerHTML = '<div class="timeline-line"></div>';
+            
+            tripData[currentDay].forEach(item => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'relative mb-10 pl-10';
+                
+                let subsHtml = '';
+                if (item.subs) {
+                    item.subs.forEach(sub => {
+                        subsHtml += `
+                            <div class="sub-card">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-red-50 text-red-500 uppercase">${sub.type}</span>
+                                    <span class="text-[9px] text-gray-400"><i class="far fa-clock mr-1 text-[8px]"></i>${sub.hours}</span>
+                                </div>
+                                <div class="text-sm font-bold text-gray-700">${sub.name}</div>
+                                <div class="flex gap-2 mt-2">
+                                    ${sub.mapcode ? `<button onclick="copyCode('${sub.mapcode}')" class="text-[9px] bg-gray-50 text-gray-500 px-2 py-1 rounded border border-gray-100"><i class="fas fa-copy mr-1"></i>MapCode</button>` : ''}
+                                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(sub.map)}" target="_blank" class="text-[9px] bg-gray-50 text-gray-500 px-2 py-1 rounded border border-gray-100"><i class="fas fa-map-location-dot mr-1"></i>Google Map</a>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                itemEl.innerHTML = `
+                    <div class="timeline-dot"></div>
+                    <div class="flex items-baseline mb-2">
+                        <span class="text-lg font-serif font-bold text-gray-800 mr-3">${item.time}</span>
+                        <div class="h-[1px] flex-1 bg-gray-100"></div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-orange-50 relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <h3 class="text-base font-bold text-gray-800 flex items-center">
+                                <i class="fas ${item.icon} mr-2 text-red-400 text-sm"></i>
+                                ${item.title}
+                            </h3>
+                        </div>
+                        ${item.hours ? `<div class="text-[10px] text-gray-400 mb-2"><i class="far fa-clock mr-1"></i>${item.hours}</div>` : ''}
+                        <div class="flex gap-2">
+                            ${item.mapcode ? `<button onclick="copyCode('${item.mapcode}')" class="text-[10px] bg-gray-50 text-gray-500 px-2 py-1 rounded border border-gray-100 hover:bg-red-50 transition-colors"><i class="fas fa-copy mr-1 text-[9px]"></i>MapCode</button>` : ''}
+                            ${item.map ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.map)}" target="_blank" class="text-[10px] bg-gray-50 text-gray-500 px-2 py-1 rounded border border-gray-100 hover:bg-red-50 transition-colors"><i class="fas fa-map-location-dot mr-1 text-[9px]"></i>Google Map</a>` : ''}
+                        </div>
+                    </div>
+                    <div class="space-y-2">${subsHtml}</div>
+                `;
+                container.appendChild(itemEl);
+            });
+        }
+
+        function copyCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                alert('MapCode 已複製：' + code);
+            });
+        }
+
+        renderDatePicker();
+        renderTimeline();
+    </script>
+</body>
+</html>
