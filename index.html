@@ -2,113 +2,238 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>沖繩歲修之旅 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2026 沖繩四天三夜自由行</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .active-tab { border-bottom: 4px solid #3b82f6; color: #3b82f6; }
-        body { background-color: #f3f4f6; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        /* Hide scrollbar for date picker */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .active-date .date-num { color: #e53e3e; font-weight: bold; }
+        .active-date .date-dot { background-color: #e53e3e; }
+        .timeline-point {
+            z-index: 10;
+            background-color: #fff;
+            border: 2px solid #e53e3e;
+        }
     </style>
 </head>
-<body class="pb-20">
+<body class="bg-[#f8f9fa] h-screen flex flex-col">
 
-    <header class="bg-blue-600 text-white p-4 shadow-lg sticky top-0 z-50">
-        <h1 class="text-xl font-bold text-center">Okinawa Trip 2026</h1>
-        <p class="text-xs text-center opacity-80">3人行・自駕・歲修充電中</p>
+    <header class="bg-white pt-6 pb-2 px-4 sticky top-0 z-30 shadow-sm">
+        <div class="text-center mb-4">
+            <h1 class="text-sm tracking-widest text-gray-500 uppercase">FAMILY TRIP</h1>
+            <h2 class="text-2xl font-bold text-gray-800">沖繩旅行 <span class="text-lg font-normal bg-gray-100 px-2 py-1 rounded-full ml-1">2026</span></h2>
+        </div>
+        
+        <div class="flex overflow-x-auto no-scrollbar space-x-6 py-2 px-2" id="date-picker">
+            </div>
     </header>
 
-    <div id="content" class="p-4 space-y-6">
-        </div>
+    <main id="content" class="flex-1 overflow-y-auto p-5 space-y-6">
+        </main>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-2 text-gray-500 shadow-2xl">
-        <button onclick="showDay(1)" id="btn1" class="flex flex-col items-center">
-            <i class="fas fa-calendar-day"></i><span class="text-xs">D1</span>
-        </button>
-        <button onclick="showDay(2)" id="btn2" class="flex flex-col items-center">
-            <i class="fas fa-car"></i><span class="text-xs">D2</span>
-        </button>
-        <button onclick="showDay(3)" id="btn3" class="flex flex-col items-center">
-            <i class="fas fa-torii-gate"></i><span class="text-xs">D3</span>
-        </button>
-        <button onclick="showDay(4)" id="btn4" class="flex flex-col items-center">
-            <i class="fas fa-utensils"></i><span class="text-xs">D4</span>
-        </button>
-    </nav>
+    <div id="detail-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-end sm:items-center justify-center transition-opacity duration-300 opacity-0">
+        <div class="bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-3xl overflow-hidden max-h-[90vh] flex flex-col transform translate-y-full transition-transform duration-300 ease-out">
+            <div class="relative h-56 flex-shrink-0">
+                <img id="modal-img" src="" alt="" class="w-full h-full object-cover">
+                <button onclick="closeModal()" class="absolute top-4 right-4 bg-black bg-opacity-50 text-white rounded-full p-2 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto">
+                <div class="flex items-center mb-3 space-x-2">
+                    <span id="modal-tag" class="px-2 py-1 bg-red-100 text-red-600 text-xs font-medium rounded-full"></span>
+                </div>
+                <h3 id="modal-title" class="text-2xl font-bold mb-3 text-gray-900"></h3>
+                <p id="modal-desc" class="text-gray-600 leading-relaxed mb-6"></p>
+                
+                <div id="modal-mapcode-container" class="hidden bg-blue-50 p-4 rounded-xl border border-blue-100 flex items-center justify-between active:bg-blue-100 cursor-pointer transition-colors">
+                    <div class="flex items-center">
+                        <div class="bg-blue-500 p-2 rounded-full text-white mr-3">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-blue-500 font-medium">MapCode (點擊複製)</p>
+                            <p id="modal-mapcode" class="text-lg font-mono font-bold text-blue-800 tracking-wider"></p>
+                        </div>
+                    </div>
+                    <i class="far fa-copy text-blue-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
+        // --- Configuration ---
+        const startDate = new Date('2026-01-19');
+        const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+        // Mock temperatures for realism
+        const temps = [19, 21, 20, 18]; 
+
         const tripData = {
-            1: {
-                title: "Day 1：抵達那霸與市區熱身",
-                items: [
-                    { name: "抵達那霸機場 (MM926)", desc: "16:55 抵達，搭乘單軌電車前往新都心飯店入住。", img: "https://images.unsplash.com/photo-1542650125-9988298a08c0?auto=format&fit=crop&q=80&w=1000", mapcode: "" },
-                    { name: "國際通屋台村", desc: "晚餐首選！由 20 間小店組成的居酒屋街，適合第一晚小酌。", img: "https://images.unsplash.com/photo-1623150552763-714081518349?auto=format&fit=crop&q=80&w=1000", mapcode: "33 157 444*55" }
-                ]
-            },
-            2: {
-                title: "Day 2：北部海岸巡禮",
-                items: [
-                    { name: "古宇利大橋 & 蝦蝦飯", desc: "橫跨碧綠海洋的絕美公路，品嚐蒜香濃郁的必吃蝦飯。", img: "https://images.unsplash.com/photo-1551632432-0730ee0f4679?auto=format&fit=crop&q=80&w=1000", mapcode: "485 662 041*33" },
-                    { name: "美麗海水族館", desc: "震撼黑潮之海鯨鯊，觀賞 14:30 的海豚表演。", img: "https://images.unsplash.com/photo-1582266255745-9e509f29bf33?auto=format&fit=crop&q=80&w=1000", mapcode: "553 075 797*77" },
-                    { name: "萬座毛夕陽", desc: "拍攝標誌性象鼻岩夕陽，入園費僅需 100 日圓。", img: "https://images.unsplash.com/photo-1614801127022-7776b91c0157?auto=format&fit=crop&q=80&w=1000", mapcode: "206 312 039*17" }
-                ]
-            },
-            3: {
-                title: "Day 3：古都歷史與神域",
-                items: [
-                    { name: "首里城", desc: "琉球王國精神象徵，見證強韌的職人復興修復工程。", img: "https://images.unsplash.com/photo-1582266255745-9e509f29bf33?auto=format&fit=crop&q=80&w=1000", mapcode: "33 161 526*66" },
-                    { name: "玉泉洞", desc: "日本最大規模鐘乳石洞，深入探險 30 萬年地底景觀。", img: "https://images.unsplash.com/photo-1614801127022-7776b91c0157?auto=format&fit=crop&q=80&w=1000", mapcode: "232 495 330*28" },
-                    { name: "波上宮", desc: "蓋在懸崖上的朱紅神殿，求御守並在波之上海灘散步。", img: "https://images.unsplash.com/photo-1542650125-9988298a08c0?auto=format&fit=crop&q=80&w=1000", mapcode: "33 185 022*00" }
-                ]
-            },
-            4: {
-                title: "Day 4：最後採買與回程",
-                items: [
-                    { name: "第一牧志市場 & 鹽屋", desc: "那霸的廚房！挑戰雪鹽冰淇淋並選購最後伴手禮。", img: "https://images.unsplash.com/photo-1623150552763-714081518349?auto=format&fit=crop&q=80&w=1000", mapcode: "" },
-                    { name: "機場波布飯糰", desc: "現做熱騰騰的靈魂早餐，請務必先用 App 預約。", img: "https://images.unsplash.com/photo-1542650125-9988298a08c0?auto=format&fit=crop&q=80&w=1000", mapcode: "" }
-                ]
-            }
+            1: [
+                { time: "16:55", icon: "fa-plane-arrival", tag: "FLIGHT", title: "抵達那霸機場 (MM926)", desc: "樂桃航空 MM926 降落。領完行李後，前往國內線航廈搭乘單軌電車。", img: "https://images.unsplash.com/photo-1542650125-9988298a08c0?auto=format&fit=crop&q=80&w=1000" },
+                { time: "18:30", icon: "fa-hotel", tag: "CHECK-IN", title: "飯店辦理入住", desc: "搭乘單軌至「歌町站」(おもろまち)，步行至飯店放行李。建議入住 Daiwa Roynet 或 Libre Garden。", img: "https://images.unsplash.com/photo-1618245318763-a15156d6b23c?auto=format&fit=crop&q=80&w=1000" },
+                { time: "19:30", icon: "fa-utensils", tag: "DINNER", title: "國際通屋台村晚餐 & 散策", desc: "晚餐首選！感受熱鬧氛圍，由 20 間小店組成的居酒屋街，適合第一晚小酌。別忘了去換 Blue Seal 冰淇淋！", img: "https://images.unsplash.com/photo-1623150552763-714081518349?auto=format&fit=crop&q=80&w=1000", mapcode: "33 157 444*55" }
+            ],
+            2: [
+                { time: "09:00", icon: "fa-car", tag: "RENTAL", title: "DFS 取車出發", desc: "前往飯店對面的 T Galleria (DFS) 二樓租車櫃檯辦理取車。記得檢查車況、設定導航，準備開始右駕之旅！", img: "https://images.unsplash.com/photo-1565692792224-06c955888b69?auto=format&fit=crop&q=80&w=1000", mapcode: "33 188 295*36" },
+                { time: "11:00", icon: "fa-bridge", tag: "SIGHTSEEING", title: "古宇利大橋 & 蝦蝦飯", desc: "開車馳騁在橫跨碧綠海洋的絕美公路上！過橋後品嚐必吃的蒜香蝦蝦飯，儀式感滿分。", img: "https://images.unsplash.com/photo-1551632432-0730ee0f4679?auto=format&fit=crop&q=80&w=1000", mapcode: "485 692 174*01" },
+                { time: "13:30", icon: "fa-fish", tag: "AQUARIUM", title: "美麗海水族館", desc: "沖繩北部精神地標！震撼的「黑潮之海」鯨鯊餵食秀，以及戶外的海豚表演都是必看重點。", img: "https://images.unsplash.com/photo-1582266255745-9e509f29bf33?auto=format&fit=crop&q=80&w=1000", mapcode: "553 075 797*77" },
+                { time: "17:00", icon: "fa-sun", tag: "SUNSET", title: "萬座毛夕陽", desc: "在斷崖邊欣賞形似「象鼻」的珊瑚礁岩。這裡是觀賞夕陽落入海平面的絕佳位置。", img: "https://images.unsplash.com/photo-1614801127022-7776b91c0157?auto=format&fit=crop&q=80&w=1000", mapcode: "206 312 039*17" },
+                { time: "18:30", icon: "fa-burger", tag: "DINNER", title: "美國村晚餐 & 夜遊", desc: "充滿異國風情的娛樂區，霓虹燈光浪漫。晚餐推薦迴轉壽司或美式漢堡，享受度假氛圍。", img: "https://images.unsplash.com/photo-1600523872258-3410d7f1b844?auto=format&fit=crop&q=80&w=1000", mapcode: "33 526 450*63" }
+            ],
+            3: [
+                { time: "09:30", icon: "fa-gopuram", tag: "HISTORY", title: "首里城公園", desc: "見證琉球王國的歷史核心。雖然正殿修復中，但「復興見學」能近距離觀察職人精神。西台展望台視野極佳。", img: "https://images.unsplash.com/photo-1627308413433-30477873c78e?auto=format&fit=crop&q=80&w=1000", mapcode: "33 161 526*66" },
+                { time: "12:00", icon: "fa-mountain-sun", tag: "NATURE", title: "玉泉洞 / 沖繩世界", desc: "深入全長 800 公尺、歷時 30 萬年形成的地底鐘乳石洞。園區內還有震撼的 Eisa 太鼓舞表演。", img: "https://images.unsplash.com/photo-1676281444589-d1019b0b613a?auto=format&fit=crop&q=80&w=1000", mapcode: "232 495 330*28" },
+                { time: "16:00", icon: "fa-torii-gate", tag: "CULTURE", title: "波上宮 & 海灘", desc: "建在懸崖上的朱紅神殿，是琉球八社之首。參拜後可到下方的波之上海灘散步，捕捉神殿的經典角度。", img: "https://images.unsplash.com/photo-1599988450478-0605fb8f9f9b?auto=format&fit=crop&q=80&w=1000", mapcode: "33 185 022*00" },
+                { time: "18:30", icon: "fa-gas-pump", tag: "RETURN", title: "DFS 還車", desc: "任務完成！記得先加滿油再回到新都心 DFS 還車。還車後步行回飯店超輕鬆。", img: "https://images.unsplash.com/photo-1634225243712-5718d6c0cb5e?auto=format&fit=crop&q=80&w=1000", mapcode: "33 188 295*36" },
+                { time: "19:30", icon: "fa-beer-mug-empty", tag: "CELEBRATE", title: "目利銀次居酒屋", desc: "就在飯店附近的浮誇系居酒屋！產地直送的鮮魚料理CP值超高，是慶祝自駕成功的最佳地點。", img: "https://images.unsplash.com/photo-1563435315793-998c56538514?auto=format&fit=crop&q=80&w=1000" }
+            ],
+            4: [
+                { time: "10:30", icon: "fa-ice-cream", tag: "SHOPPING", title: "平和通 & 鹽屋", desc: "睡飽退房後的悠閒時光。在充滿昭和氣息的平和通散步，挑戰鹽屋雪鹽冰淇淋的各種鹹甜滋味。", img: "https://images.unsplash.com/photo-1503810473512-f64956d0fa0d?auto=format&fit=crop&q=80&w=1000" },
+                { time: "12:00", icon: "fa-store", tag: "LUNCH", title: "第一牧志公設市場", desc: "那霸的廚房！在一樓挑選生猛海鮮，直接上二樓請店家代客料理，享受最後的海鮮饗宴。", img: "https://images.unsplash.com/photo-1638778552139-69e130666e2e?auto=format&fit=crop&q=80&w=1000" },
+                { time: "15:30", icon: "fa-rice-cracker", tag: "AIRPORT", title: "機場領取波布飯糰", desc: "沖繩靈魂美食！請務必提前用 App 預約，抵達機場國內線後直接領取熱騰騰的飯糰帶上飛機。", img: "https://images.unsplash.com/photo-1630485654600-1b2005100213?auto=format&fit=crop&q=80&w=1000" },
+                { time: "16:50", icon: "fa-plane-departure", tag: "DEPARTURE", title: "起飛回程 (MM929)", desc: "帶著滿滿的電力與回憶，搭乘樂桃航空 MM929 返回溫暖的家。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1000" }
+            ]
         };
 
-        function showDay(day) {
-            const container = document.getElementById('content');
-            let html = `<h2 class="text-2xl font-black text-blue-800 mb-4">${tripData[day].title}</h2>`;
-            
-            tripData[day].items.forEach(item => {
+        let currentDay = 1;
+
+        // --- Functions ---
+
+        function initDatePicker() {
+            const picker = document.getElementById('date-picker');
+            let html = '';
+            for (let i = 0; i < 4; i++) {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + i);
+                const dayName = daysOfWeek[date.getDay()];
+                const dayNum = date.getDate();
+                const temp = temps[i];
+                
                 html += `
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                        <img src="${item.img}" class="w-full h-40 object-cover" />
-                        <div class="p-4">
-                            <h3 class="text-lg font-bold text-gray-800">${item.name}</h3>
-                            <p class="text-sm text-gray-600 mt-1">${item.desc}</p>
-                            ${item.mapcode ? `
-                                <div class="mt-3 flex items-center bg-blue-50 p-2 rounded border border-blue-200 cursor-pointer" onclick="copyMapCode('${item.mapcode}')">
-                                    <i class="fas fa-map-marked-alt text-blue-600 mr-2"></i>
-                                    <span class="text-xs font-mono text-blue-700">MapCode: ${item.mapcode}</span>
-                                    <i class="fas fa-copy ml-auto text-blue-400"></i>
+                    <div onclick="showDay(${i + 1})" class="flex flex-col items-center min-w-[60px] cursor-pointer group ${i + 1 === currentDay ? 'active-date' : 'text-gray-400'}">
+                        <span class="text-xs font-medium tracking-wider mb-1">${dayName}</span>
+                        <span class="text-xl date-num font-medium mb-2 transition-all group-hover:text-red-500">${dayNum}</span>
+                        <div class="h-1 w-1 rounded-full date-dot mb-2 transition-all"></div>
+                        <span class="text-xs">${temp}°</span>
+                    </div>
+                `;
+            }
+            picker.innerHTML = html;
+        }
+
+        function showDay(day) {
+            currentDay = day;
+            initDatePicker(); // Update active state in picker
+            
+            const container = document.getElementById('content');
+            let html = `<div class="relative border-l-2 border-gray-200 ml-4 pl-8 space-y-8 pb-8">`;
+            
+            tripData[day].forEach((item, index) => {
+                // I create a JSON string of the item object to pass it to the showModal function safely
+                const itemStr = encodeURIComponent(JSON.stringify(item));
+                
+                html += `
+                    <div class="relative cursor-pointer group" onclick="showModal('${itemStr}')">
+                        <div class="absolute -left-[41px] top-1 w-5 h-5 rounded-full timeline-point transition-transform group-hover:scale-125"></div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-14 font-mono text-sm text-gray-500 pt-1 mr-4">${item.time}</div>
+                            
+                            <div class="flex-1 bg-white p-4 rounded-2xl shadow-sm border border-gray-100 transition-all group-hover:shadow-md group-active:scale-98">
+                                <div class="flex items-center mb-2">
+                                    <i class="fa-solid ${item.icon} text-red-500 mr-2"></i>
+                                    <span class="text-xs font-bold text-red-500 tracking-wider">${item.tag}</span>
                                 </div>
-                            ` : ''}
+                                <h3 class="text-lg font-bold text-gray-800 mb-2 line-clamp-1">${item.title}</h3>
+                                <p class="text-sm text-gray-500 line-clamp-2 leading-relaxed">${item.desc}</p>
+                            </div>
                         </div>
                     </div>
                 `;
             });
+            html += `</div>`;
             container.innerHTML = html;
+            window.scrollTo(0, 0);
+        }
 
-            // Update tab styles
-            for(let i=1; i<=4; i++) {
-                document.getElementById(`btn${i}`).classList.remove('active-tab');
+        const modal = document.getElementById('detail-modal');
+        const modalPanel = modal.querySelector('div');
+
+        function showModal(itemStr) {
+            const item = JSON.parse(decodeURIComponent(itemStr));
+            
+            document.getElementById('modal-img').src = item.img;
+            document.getElementById('modal-tag').textContent = item.tag;
+            document.getElementById('modal-title').textContent = item.title;
+            document.getElementById('modal-desc').textContent = item.desc;
+
+            const mapcodeContainer = document.getElementById('modal-mapcode-container');
+            if (item.mapcode) {
+                document.getElementById('modal-mapcode').textContent = item.mapcode;
+                mapcodeContainer.classList.remove('hidden');
+                mapcodeContainer.onclick = () => copyMapCode(item.mapcode);
+            } else {
+                mapcodeContainer.classList.add('hidden');
             }
-            document.getElementById(`btn${day}`).classList.add('active-tab');
-            window.scrollTo(0,0);
+
+            modal.classList.remove('hidden');
+            // Use setTimeout to allow the 'hidden' class removal to take effect before animating
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalPanel.classList.remove('translate-y-full');
+            }, 10);
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modalPanel.classList.add('translate-y-full');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300); // Wait for transition to finish
         }
 
         function copyMapCode(code) {
-            navigator.clipboard.writeText(code);
-            alert('MapCode 已複製: ' + code);
+            navigator.clipboard.writeText(code).then(() => {
+                // Visual feedback
+                const container = document.getElementById('modal-mapcode-container');
+                const originalBg = container.classList.contains('bg-blue-50');
+                container.classList.remove('bg-blue-50');
+                container.classList.add('bg-green-100', 'border-green-200');
+                setTimeout(() => {
+                    container.classList.remove('bg-green-100', 'border-green-200');
+                    if(originalBg) container.classList.add('bg-blue-50');
+                }, 500);
+            });
         }
 
-        // Initialize with Day 1
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // --- Initialization ---
+        initDatePicker();
         showDay(1);
+
     </script>
 </body>
 </html>
