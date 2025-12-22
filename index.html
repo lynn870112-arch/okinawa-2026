@@ -3,151 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>沖繩四天三夜自由行 2026</title>
+    <title>沖繩歲修之旅 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8f9fa; color: #333; }
+        body { font-family: -apple-system, "Noto Sans TC", sans-serif; background-color: #fcfaf2; color: #4a4a4a; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .active-date .date-num { color: #e53e3e; font-weight: bold; }
         .active-date .date-dot { background-color: #e53e3e; }
-        .timeline-point { z-index: 10; background-color: #fff; border: 2px solid #e53e3e; }
+        .timeline-line { position: absolute; left: 19px; top: 0; bottom: 0; width: 2px; background-color: #e2e8f0; }
+        .timeline-dot { z-index: 10; background-color: #fff; border: 2px solid #e53e3e; width: 12px; height: 12px; border-radius: 50%; position: absolute; left: 14px; top: 8px; }
+        .sub-card { background-color: #ffffff; border-left: 4px solid #fca5a5; margin-left: 1rem; margin-top: 0.5rem; padding: 0.75rem; border-radius: 0.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
     </style>
 </head>
-<body class="bg-[#f8f9fa] h-screen flex flex-col">
+<body class="flex flex-col h-screen">
 
-    <header class="bg-white pt-6 pb-2 px-4 sticky top-0 z-30 shadow-sm">
-        <div class="text-center mb-4">
-            <h1 class="text-sm tracking-widest text-gray-500 uppercase">岁修充电之旅</h1>
-            <h2 class="text-2xl font-bold text-gray-800">沖繩旅行 <span class="text-lg font-normal bg-gray-100 px-2 py-1 rounded-full ml-1">2026</span></h2>
+    <header class="bg-[#fcfaf2] pt-8 pb-4 px-6 sticky top-0 z-30 shadow-sm border-b border-orange-50">
+        <div class="text-center mb-6">
+            <h1 class="text-[10px] tracking-[0.2em] text-gray-400 font-bold uppercase">FAMILY TRIP</h1>
+            <h2 class="text-2xl font-serif font-bold text-gray-800 mt-1">沖繩旅行 <span class="text-sm font-normal text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">2026</span></h2>
         </div>
-        <div class="flex overflow-x-auto no-scrollbar space-x-6 py-2 px-2" id="date-picker"></div>
+        
+        <div class="flex justify-center space-x-8 py-2" id="date-picker"></div>
     </header>
 
-    <main id="content" class="flex-1 overflow-y-auto p-5 space-y-6"></main>
-
-    <div id="detail-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-end sm:items-center justify-center transition-opacity duration-300 opacity-0">
-        <div class="bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-3xl overflow-hidden max-h-[90vh] flex flex-col transform translate-y-full transition-transform duration-300 ease-out">
-            <div class="relative h-56 flex-shrink-0">
-                <img id="modal-img" src="" class="w-full h-full object-cover">
-                <button onclick="closeModal()" class="absolute top-4 right-4 bg-black bg-opacity-50 text-white rounded-full p-2">
-                    <i class="fas fa-xmark"></i>
-                </button>
-            </div>
-            <div class="p-6 overflow-y-auto">
-                <span id="modal-tag" class="px-2 py-1 bg-red-100 text-red-600 text-xs font-medium rounded-full mb-3 inline-block"></span>
-                <h3 id="modal-title" class="text-2xl font-bold mb-3 text-gray-900"></h3>
-                <p id="modal-desc" class="text-gray-600 leading-relaxed mb-6 whitespace-pre-line"></p>
-                <div id="modal-mapcode-container" class="hidden bg-blue-50 p-4 rounded-xl border border-blue-100 flex items-center justify-between cursor-pointer">
-                    <div class="flex items-center">
-                        <div class="bg-blue-500 p-2 rounded-full text-white mr-3"><i class="fas fa-map-marker-alt"></i></div>
-                        <div><p class="text-xs text-blue-500 font-medium">MapCode (點擊複製)</p><p id="modal-mapcode" class="text-lg font-mono font-bold text-blue-800 tracking-wider"></p></div>
-                    </div>
-                    <i class="far fa-copy text-blue-500 text-xl"></i>
-                </div>
-            </div>
-        </div>
-    </div>
+    <main id="content" class="flex-1 overflow-y-auto p-6 relative">
+        </main>
 
     <script>
         const startDate = new Date('2026-01-19');
         const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+        
         const tripData = {
             1: [
-                { time: "15:20", icon: "fa-plane-departure", tag: "FLIGHT", title: "桃園機場起飛 (MM926)", desc: "搭乘樂桃航空前往那霸，開啟歲修假期。", img: "https://images.unsplash.com/photo-1542650125-9988298a08c0?q=80&w=1000" },
-                { time: "17:50", icon: "fa-plane-arrival", tag: "ARRIVAL", title: "抵達那霸機場", desc: "17:50 降落後領取行李，搭乘單軌電車前往市區。", img: "https://images.unsplash.com/photo-1551632432-0730ee0f4679?q=80&w=1000" },
-                { time: "18:30", icon: "fa-hotel", tag: "STAY", title: "飯店 Check-in (美榮橋站)", desc: "前往美榮橋站飯店放行李。此區交通便利，鄰近國際通。", img: "https://images.unsplash.com/photo-1618245318763-a15156d6b23c?q=80&w=1000" },
-                { time: "19:30", icon: "fa-fire-alt", tag: "DINNER", title: "國際通與居酒屋饗宴", desc: "晚餐建議：\n1. 琉球的牛 (燒肉)\n2. 國際通屋台村\n\n甜點/飲料：\n- Blue Seal 冰淇淋\n- KOI The 飲料店", img: "https://images.unsplash.com/photo-1623150552763-714081518349?q=80&w=1000", mapcode: "33 157 444*55" }
+                { time: "15:20", title: "台灣桃園機場起飛 (MM926)", icon: "fa-plane-departure" },
+                { time: "17:50", title: "抵達那霸機場 (MM926)", icon: "fa-plane-arrival", map: "那霸機場", mapcode: "33 123 351*38" },
+                { time: "18:30", title: "飯店 Check-in (美榮橋站)", icon: "fa-hotel", map: "美榮橋站", hours: "Check-in 15:00+" },
+                { 
+                    time: "19:30", title: "國際通 散策", icon: "fa-person-walking", hours: "24H", map: "國際通",
+                    subs: [
+                        { type: "晚餐", name: "國際通屋台村 (居酒屋)", hours: "11:00-23:00", mapcode: "33 157 444*55", map: "國際通屋台村" },
+                        { type: "晚餐", name: "琉球的牛 (燒肉)", hours: "17:00-22:30", mapcode: "33 157 448*38", map: "琉球的牛 那霸店" },
+                        { type: "甜點", name: "Blue Seal 冰淇淋", hours: "10:00-22:00", map: "Blue Seal 國際通" },
+                        { type: "甜點", name: "KOI Thé 飲料店", hours: "10:00-21:00", map: "KOI The 國際通" }
+                    ]
+                }
             ],
             2: [
-                { time: "09:00", icon: "fa-car", tag: "RENTAL", title: "租車取車 (歌町站)", desc: "前往 DFS 取車。準備開始自駕之旅，記得檢查日文譯本。", img: "https://images.unsplash.com/photo-1565692792224-06c955888b69?q=80&w=1000", mapcode: "33 188 295*36" },
-                { time: "10:30", icon: "fa-bridge", tag: "SCENE", title: "古宇利大橋 & 蝦蝦飯", desc: "跨海大橋絕景。午餐享用 Kouri Shrimp 蝦蝦飯。", img: "https://images.unsplash.com/photo-1551632432-0730ee0f4679?q=80&w=1000", mapcode: "485 692 174*01" },
-                { time: "13:30", icon: "fa-fish", tag: "OCEAN", title: "美麗海水族館", desc: "表演場次：\n- 海豚秀: 15:00 / 17:00\n- 鯨鯊餵食: 15:00 / 17:00", img: "https://images.unsplash.com/photo-1582266255745-9e509f29bf33?q=80&w=1000", mapcode: "553 075 797*77" },
-                { time: "18:30", icon: "fa-shrimp", tag: "DINNER", title: "美國村散策與晚餐", desc: "美式風情。晚餐建議：\n1. グルメ回転寿司市場\n2. A&W 漢堡", img: "https://images.unsplash.com/photo-1600523872258-3410d7f1b844?q=80&w=1000", mapcode: "33 526 450*63" }
-            ],
-            3: [
-                { time: "09:30", icon: "fa-gopuram", tag: "HISTORY", title: "首里城見學", desc: "觀察古蹟修復工法，感受琉球歷史。", img: "https://images.unsplash.com/photo-1627308413433-30477873c78e?q=80&w=1000", mapcode: "33 161 526*66" },
-                { time: "11:30", icon: "fa-utensils", tag: "LUNCH", title: "午餐：屋宜家 (Yagiya)", desc: "【推薦】在百年老屋享用道地的沖繩麵，氛圍極佳。\n後續前往玉泉洞 / 沖繩世界探險。", img: "https://images.unsplash.com/photo-1563435315793-998c56538514?q=80&w=1000", mapcode: "232 465 718*33" },
-                { time: "15:00", icon: "fa-pancake", tag: "BACKUP", title: "備案：瀨長島", desc: "若有空檔可去幸福鬆餅，看飛機起降。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000" },
-                { time: "16:00", icon: "fa-torii-gate", tag: "CULTURE", title: "波上宮 & 海灘", desc: "參拜懸崖神殿，在波之上海灘踏浪。", img: "https://images.unsplash.com/photo-1599988450478-0605fb8f9f9b?q=80&w=1000", mapcode: "33 185 022*00" },
-                { time: "18:30", icon: "fa-gas-pump", tag: "RETURN", title: "租車還車 & 新都心", desc: "記得加滿油！還車後逛新都心商圈。\n晚餐：目利銀次 (浮誇系居酒屋)。", img: "https://images.unsplash.com/photo-1634225243712-5718d6c0cb5e?q=80&w=1000", mapcode: "33 188 295*36" }
-            ],
-            4: [
-                { time: "10:30", icon: "fa-bag-shopping", tag: "MARKET", title: "飯店退房與市場巡禮", desc: "寄存行李後前往平和通與牧志市場。\n必吃：鹽屋雪鹽冰淇淋、海鮮大餐。", img: "https://images.unsplash.com/photo-1638778552139-69e130666e2e?q=80&w=1000" },
-                { time: "14:00", icon: "fa-car", tag: "FINISH", title: "前往機場", desc: "回飯店取行李，帶著波布飯糰告別沖繩。", img: "https://images.unsplash.com/photo-1630485654600-1b2005100213?q=80&w=1000" },
-                { time: "16:50", icon: "fa-plane-departure", tag: "BYE", title: "飛機起飛 (MM929)", desc: "結束歲修假期，返回溫暖的家。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000" }
-            ]
-        };
-
-        let currentDay = 1;
-        function initDatePicker() {
-            const picker = document.getElementById('date-picker');
-            let html = '';
-            for (let i = 0; i < 4; i++) {
-                const date = new Date(startDate);
-                date.setDate(startDate.getDate() + i);
-                const dayNum = date.getDate();
-                html += `
-                    <div onclick="showDay(${i+1})" class="flex flex-col items-center min-w-[60px] cursor-pointer ${i+1===currentDay ? 'active-date' : 'text-gray-400'}">
-                        <span class="text-xs mb-1">${daysOfWeek[date.getDay()]}</span>
-                        <span class="text-xl date-num">${dayNum}</span>
-                        <div class="h-1 w-1 rounded-full date-dot mt-1"></div>
-                    </div>`;
-            }
-            picker.innerHTML = html;
-        }
-
-        function showDay(day) {
-            currentDay = day;
-            initDatePicker();
-            const container = document.getElementById('content');
-            let html = `<div class="relative border-l-2 border-gray-200 ml-4 pl-8 space-y-8 pb-8">`;
-            tripData[day].forEach(item => {
-                const itemStr = encodeURIComponent(JSON.stringify(item));
-                html += `
-                    <div class="relative group" onclick="showModal('${itemStr}')">
-                        <div class="absolute -left-[41px] top-1 w-5 h-5 rounded-full timeline-point"></div>
-                        <div class="flex items-start">
-                            <div class="w-14 font-mono text-sm text-gray-500 pt-1 mr-4">${item.time}</div>
-                            <div class="flex-1 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-                                <div class="flex items-center mb-1"><i class="fa-solid ${item.icon} text-red-500 mr-2 text-xs"></i><span class="text-xs font-bold text-red-500">${item.tag}</span></div>
-                                <h3 class="text-lg font-bold text-gray-800 line-clamp-1">${item.title}</h3>
-                                <p class="text-sm text-gray-500 line-clamp-2">${item.desc.replace('\n', ' ')}</p>
-                            </div>
-                        </div>
-                    </div>`;
-            });
-            container.innerHTML = html + '</div>';
-            window.scrollTo(0,0);
-        }
-
-        function showModal(itemStr) {
-            const item = JSON.parse(decodeURIComponent(itemStr));
-            document.getElementById('modal-img').src = item.img;
-            document.getElementById('modal-tag').textContent = item.tag;
-            document.getElementById('modal-title').textContent = item.title;
-            document.getElementById('modal-desc').textContent = item.desc;
-            const container = document.getElementById('modal-mapcode-container');
-            if (item.mapcode) {
-                document.getElementById('modal-mapcode').textContent = item.mapcode;
-                container.classList.remove('hidden');
-                container.onclick = () => { navigator.clipboard.writeText(item.mapcode); alert('已複製 MapCode!'); };
-            } else { container.classList.add('hidden'); }
-            const modal = document.getElementById('detail-modal');
-            const panel = modal.querySelector('div');
-            modal.classList.remove('hidden');
-            setTimeout(() => { modal.classList.remove('opacity-0'); panel.classList.remove('translate-y-full'); }, 10);
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('detail-modal');
-            const panel = modal.querySelector('div');
-            modal.classList.add('opacity-0'); panel.classList.add('translate-y-full');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
-
-        initDatePicker();
-        showDay(1);
-    </script>
-</body>
-</html>
+                { time: "09:00", title: "租車取車 (歌町站)", icon: "fa-car", map: "DFS T Galleria", mapcode: "33 188 295*36", hours: "09:00-20:00" },
+                { 
+                    time: "10:30", title: "古宇利大橋 & 古宇利島", icon: "fa-bridge", map: "古宇利大橋", mapcode: "485 662 041*33",
+                    subs: [
+                        { type: "午餐", name: "Kouri Shrimp 古宇利蝦蝦飯", hours: "11:00-1
