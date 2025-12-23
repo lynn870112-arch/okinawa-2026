@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="沖繩2026">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/826/826070.png">
     <link rel="manifest" href="manifest.json">
-
     <title>沖繩極致之旅 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,27 +18,38 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .active-date .date-num { color: #e53e3e; font-weight: bold; }
         .active-date .date-dot { background-color: #e53e3e; }
-        
         .timeline-wrapper { position: relative; width: 100%; min-height: 200px; }
         .timeline-line { position: absolute; left: 19px; top: 10px; bottom: 20px; width: 2px; background-color: #e2e8f0; z-index: 0; }
         .timeline-dot { z-index: 10; background-color: #fff; border: 2px solid #e53e3e; width: 12px; height: 12px; border-radius: 50%; position: absolute; left: 14px; top: 8px; }
         .sub-card { background-color: #ffffff; border-left: 4px solid #fca5a5; margin-left: 1rem; margin-top: 0.5rem; padding: 0.7rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.03); cursor: pointer; }
-        
         .nav-btn-active { color: #e53e3e !important; }
+        .weather-badge { background: rgba(255,255,255,0.6); backdrop-blur: sm; border-radius: 12px; padding: 4px 10px; border: 1px solid rgba(255,255,255,0.3); }
     </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
 
     <header id="app-header" class="bg-[#fcfaf2] pt-4 pb-3 px-5 sticky top-0 z-30 shadow-sm border-b border-orange-50 flex-shrink-0 text-center">
-        <div class="mb-4">
+        <div id="countdown" class="text-[9px] font-bold text-red-500 text-center mb-1 tracking-widest uppercase"></div>
+        <div class="text-center mb-3">
             <h1 class="text-[8px] tracking-[0.2em] text-gray-400 font-bold uppercase">PREMIUM TRAVEL GUIDE</h1>
             <h2 class="text-xl font-bold text-gray-800">沖繩極致之旅 <span class="text-xs font-normal text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-full">2026</span></h2>
-            <p class="text-[6px] text-gray-300 mt-1 uppercase tracking-tighter">Last Update: 12/23 23:55 (Full Restoration)</p>
+        </div>
+
+        <div class="flex justify-center gap-3 mb-4" id="weather-info">
+            <div class="weather-badge flex items-center gap-2">
+                <span class="text-[10px] font-bold text-gray-400">TODAY</span>
+                <i id="w-icon-0" class="fas fa-circle-notch fa-spin text-orange-400 text-xs"></i>
+                <span id="w-temp-0" class="text-xs font-mono font-bold text-gray-600">--°</span>
+            </div>
+            <div class="weather-badge flex items-center gap-2">
+                <span class="text-[10px] font-bold text-gray-400">TOMO</span>
+                <i id="w-icon-1" class="fas fa-circle-notch fa-spin text-blue-400 text-xs"></i>
+                <span id="w-temp-1" class="text-xs font-mono font-bold text-gray-600">--°</span>
+            </div>
         </div>
         
         <div class="relative flex justify-center items-end min-h-[42px]">
             <div id="date-picker-container" class="flex space-x-5"></div>
-            
             <div class="absolute right-0 flex space-x-4 items-end pb-0.5">
                 <button onclick="toggleView('checklist')" id="checklist-toggle" class="flex flex-col items-center text-gray-300 transition-all">
                     <i class="fas fa-clipboard-list text-lg mb-0.5"></i>
@@ -54,7 +63,7 @@
         </div>
     </header>
 
-    <main id="content" class="flex-1 overflow-y-auto p-5 pb-20 bg-[#fcfaf2]"></main>
+    <main id="content" class="flex-1 overflow-y-auto p-5 pb-24 bg-[#fcfaf2]"></main>
 
     <div id="detail-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 hidden flex items-end sm:items-center justify-center transition-opacity duration-300 opacity-0">
         <div class="bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-3xl overflow-hidden max-h-[85vh] flex flex-col transform translate-y-full transition-transform duration-300 ease-out">
@@ -67,10 +76,17 @@
                 <h3 id="modal-title" class="text-2xl font-bold text-gray-900 mb-2 leading-tight"></h3>
                 <div id="modal-hours" class="text-xs text-gray-500 mb-4 pb-3 border-b border-gray-100 flex items-center"><i class="far fa-clock mr-2 text-red-400"></i><span></span></div>
                 <p id="modal-desc" class="text-gray-600 leading-relaxed text-sm mb-6 whitespace-pre-line"></p>
+                
                 <div id="modal-notes-container" class="hidden mb-6 bg-amber-50 p-4 rounded-xl border border-amber-100">
                     <h4 class="text-[10px] font-bold text-amber-600 uppercase mb-1"><i class="fas fa-pen-fancy mr-1"></i> 重要資訊</h4>
-                    <p id="modal-notes" class="text-xs text-amber-800 leading-relaxed"></p>
+                    <p id="modal-notes" class="text-xs text-amber-800 leading-relaxed mb-3"></p>
+                    <div id="modal-link-btn" class="hidden">
+                        <a id="modal-pdf-link" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-amber-600 text-white py-2 rounded-lg text-xs font-bold shadow-sm">
+                            <i class="fas fa-file-pdf"></i> 查看訂單憑證 (PDF/雲端)
+                        </a>
+                    </div>
                 </div>
+
                 <div id="modal-mapcode-btn" class="hidden bg-red-50 p-4 rounded-xl border border-red-100 flex items-center justify-between cursor-pointer mb-3">
                     <div class="flex items-center">
                         <div class="bg-red-500 p-2 rounded-lg text-white mr-3 shadow-sm"><i class="fas fa-map-marked-alt"></i></div>
@@ -86,7 +102,7 @@
     </div>
 
     <script>
-        const startDate = new Date('2026-01-19');
+        const startDate = new Date('2026-01-19T15:20:00');
         const members = ['CN', 'SW', 'William']; 
         const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         
@@ -100,7 +116,7 @@
              1: [
                 { time: "15:20", tag: "Departure", title: "台灣桃園機場起飛 (MM926)", icon: "fa-plane-departure", desc: "開啟南國沖繩極致之旅。建議旅客於起飛前2小時抵達桃園國際機場辦理登機與行李託運。飛行時間約1.5小時，可於機上稍作休息，預備迎接充滿琉球風情的假期。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000", notes: "" },
                 { time: "17:50", tag: "Arrival", title: "抵達那霸機場 & 搭乘單軌", icon: "fa-train-subway", desc: "抵達那霸空港。完成入境手續後，請跟隨指標前往國內線航廈2樓銜接單軌電車（Yui Rail）。這是體驗沖繩都會感的第一步，沿途可初步觀覽那霸市區的繁華景觀與亞熱帶氛圍。", img: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Okinawa-Monorail_Series1000_Asahimachi.jpg", notes: "" },
-                { time: "18:45", tag: "Hotel", title: "東橫INN 那霸 Omoromachi 站前", icon: "fa-hotel", hours: "Check-in 15:00+", map: "東橫INN 那霸 Omoromachi 站前", desc: "緊鄰單軌歌町站，地理位置優越。飯店提供免費早餐，且正對面即是 DFS 租車點，是自駕行程的最佳基地。周邊有新都心商圈、大國藥妝與超市，生活機能強大。", img: "https://image.kkday.com/v2/image/get/w_1900%2Cc_fit/s1.kkday.com/product_152772/20230923055533_i6bm4/jpg", notes: "地址：那霸市歌町1-6-6\n電話：+81-98-862-1045", notes: "訂單編號:5422314614" },
+                { time: "18:45", tag: "Hotel", title: "東橫INN 那霸 Omoromachi 站前", icon: "fa-hotel", hours: "Check-in 15:00+", map: "東橫INN 那霸 Omoromachi 站前", desc: "緊鄰單軌歌町站，地理位置優越。飯店提供免費早餐，且正對面即是 DFS 租車點，是自駕行程的最佳基地。周邊有新都心商圈、大國藥妝與超市，生活機能強大。", img: "https://image.kkday.com/v2/image/get/w_1900%2Cc_fit/s1.kkday.com/product_152772/20230923055533_i6bm4/jpg", notes: "訂單編號: 5422314614\n地址：那霸市歌町1-6-6\n電話：+81-98-862-1045\nhttps://drive.google.com/file/d/1x6wEhdO34cDj6wGcgBg95QDzNLPSyOwA/view?usp=sharing" },
                 { 
                     time: "19:30", tag: "Night", title: "國際通 散策", icon: "fa-person-walking", map: "國際通", hours: "10:00-22:00", desc: "譽為「奇蹟的一哩路」的那霸第一街。這條全長1.6公里的街道在戰後迅速復甦，現已成為沖繩最繁華的商業核心。街道兩側集結了豐富的土產店、潮流服飾、藥妝旗艦店與各式主題餐廳，是體驗沖繩熱情夜晚、尋寶掃貨與感受南國活力的必訪勝地。", img: "https://images.unsplash.com/photo-1647336963732-7446b9da7a6f?q=80&w=1170&auto=format&fit=crop",
                     subs: [
@@ -115,7 +131,7 @@
                 { time: "09:00", tag: "Rental", title: "租車取車 (DFS T Galleria)", icon: "fa-car", map: "DFS T Galleria", mapcode: "33 188 295*36", desc: "步行過馬路即可抵達 DFS 櫃台辦理取車。飯店就在對面，省去交通負擔，輕鬆開啟北上自駕之旅。", img: "https://www.otsinternational.jp/otsrentacar/img/upload/car_office/4_dfs_1.png" },
                 { 
                     time: "10:30", tag: "Island", title: "古宇利大橋 & 古宇利島", icon: "fa-bridge", map: "古宇利大橋", mapcode: "485 662 041*33", desc: "古宇利大橋是一座全長 1,960公尺 的跨海大橋，連接沖繩本島（名護市屋我地島）與「神之島」古宇利島。以其兩側一望無際的翡翠綠海洋景觀而聞名，是沖繩極受歡迎的自駕兜風路線。古宇利島本身由珊瑚礁形成，島上有許多值得探索的景點。\n\n古宇利海灘: 位於古宇利交流廣場旁，有著美麗的沙灘和完善的設施，提供水上活動。\n古宇利海洋塔: 位於島上高處，可以搭乘自動駕駛的高爾夫球車前往塔頂，俯瞰全島及古宇利大橋的壯麗景色。", img: "https://cdn.zekkei-japan.jp/images/articles/488e523c67776b1cf867452f7dc6008a.jpg",
-                    subs: [{ type: "午餐", name: "古宇利蝦蝦飯", hours: "11:00-18:00", mapcode: "485 692 174*01", map: "Kouri Shrimp", desc: "蒜香奶油風味十足。在海邊貨櫃屋品嚐這份超人氣鮮蝦盛宴。", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh85q4C8LNsbrpKtmjZi4o-FpP0Sib04q0VA&s" }]
+                    subs: [{ type: "午餐", name: "古宇利蝦蝦飯", hours: "11:00-18:00", mapcode: "485 692 174*01", map: "Kouri Shrimp", desc: "蒜香奶油風味十足。在海邊貨櫃屋品嚐這份超人氣鮮蝦盛宴。", img: "https://cc.tvbs.com.tw/img/program/upload/2023/06/30/20230630153541-410273ba.jpg" }]
                 },
                 { 
                     time: "13:30", tag: "Ocean", title: "美麗海水族館", icon: "fa-fish", map: "美麗海水族館", mapcode: "553 075 797*77", hours: "08:30-18:30", desc: "沖繩美麗海水族館（Churaumi Aquarium）是海洋博公園內的人氣景點，以「美麗的海洋」為主題，展示沖繩豐富多樣的海洋生態，其特色是巨大的「黑潮之海」水槽，飼養著世界最大魚類鯨鯊與鬼蝠魟，並有陽光灑落的「珊瑚之海」和神祕的「深海之旅」區域，還有免費海豚秀、海龜館等周邊設施，是體驗沖繩海洋魅力的必訪之地。", img: "https://images.unsplash.com/photo-1612476919598-a233d3692cc6?q=80&w=1170&auto=format&fit=crop",
@@ -167,16 +183,56 @@
         };
 
         const packingList = [
-            { cat: "隨身行李", items: ["護照 (效期6個月以上)", "錢包 (外幣)/信用卡", "交通卡 Suica/ICOCA (可iphone綁定)", "駕照正本+日文譯本", "電子機票憑證", "訂房證明", "租車預約單", "行動電源 (不可託運)", "日本網卡/eSIM", "個人藥品 (胃藥/感冒藥/暈車藥)", "外套 (防風為佳)", "圍巾/帽子", "相機", "小垃圾袋/夾鏈袋", "隨身包衛生紙"] },
-            { cat: "託運行李", items: ["充電器/轉接頭", "刮鬍刀", "牙刷/牙膏 (雖然飯店有)", "外衣/外褲 (3-4套)", "內衣/內褲/襪子 (3-4套)", "睡衣", "摺疊傘", "環保購物袋 (超市好用)", "髒衣收納袋" ] },
+            { cat: "隨身行李", items: ["護照 (效期6個月以上)", "錢報 (外幣)/信用卡", "交通卡 Suica/ICOCA (iPhone)", "駕照正本+日文譯本", "機票/訂房/租車憑證", "行動電源", "日本網卡/eSIM", "個人藥品", "外套/圍巾/帽子", "相機/腳架", "隨身面紙/夾鏈袋"] },
+            { cat: "託運行李", items: ["充電器/轉接頭", "刮鬍刀", "牙刷/牙膏", "換洗衣物 (3-4套)", "內衣褲/襪子", "睡衣", "摺疊傘", "環保購物袋", "髒衣收納袋", "車充轉接頭"] }
         ];
 
-        // --- 核心渲染函數 ---
+        const phrases = [
+            { j: "お会計をお願いします", r: "O-kaikei o negai shimasu", e: "我要結帳" },
+            { j: "トイレはどこですか？", r: "Toire wa doko desu ka?", e: "廁所在哪？" },
+            { j: "これをください", r: "Kore o kudasai", e: "請給我這個 (指圖)" },
+            { j: "領収書をください", r: "Ryoushuusho o kudasai", e: "請給我收據 (還車加油用)" }
+        ];
+
+        // --- 核心邏輯 ---
+
+        async function fetchWeather() {
+            try {
+                const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=26.2124&longitude=127.6809&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo");
+                const data = await res.json();
+                for (let i = 0; i < 2; i++) {
+                    const code = data.daily.weathercode[i];
+                    const max = Math.round(data.daily.temperature_2m_max[i]);
+                    const min = Math.round(data.daily.temperature_2m_min[i]);
+                    document.getElementById(`w-temp-${i}`).textContent = `${min}°/${max}°`;
+                    document.getElementById(`w-icon-${i}`).className = "fas " + getWeatherIcon(code);
+                }
+            } catch (e) { console.error("Weather Error", e); }
+        }
+
+        function getWeatherIcon(code) {
+            if (code <= 1) return "fa-sun text-orange-400";
+            if (code <= 3) return "fa-cloud-sun text-yellow-500";
+            if (code <= 65) return "fa-cloud-showers-heavy text-blue-400";
+            return "fa-cloud text-gray-400";
+        }
+
+        function updateCountdown() {
+            const diff = startDate - new Date();
+            const el = document.getElementById('countdown');
+            if (diff < 0) { el.textContent = "Journey in Progress 🌴"; return; }
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hrs = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            el.textContent = `Countdown: ${days}D ${hrs}H to Okinawa`;
+        }
 
         function initApp() {
             activeTab = 'itinerary';
             renderDatePicker();
             renderItinerary();
+            fetchWeather();
+            updateCountdown();
+            setInterval(updateCountdown, 60000);
         }
 
         function renderDatePicker() {
@@ -189,20 +245,14 @@
                 const dayNum = i + 1;
                 const div = document.createElement('div');
                 div.className = `flex flex-col items-center cursor-pointer transition-all ${dayNum === currentDay && activeTab === 'itinerary' ? 'active-date' : 'text-gray-300'}`;
-                div.onclick = (e) => { 
-                    e.preventDefault();
+                div.onclick = () => { 
                     activeTab = 'itinerary';
                     currentDay = dayNum; 
                     updateTabStyles();
                     renderDatePicker(); 
                     renderItinerary();
                 };
-                div.innerHTML = `
-                    <span class="text-[7px] font-bold text-gray-400 mb-0.5 uppercase tracking-tighter">JAN</span>
-                    <span class="text-[8px] font-bold mb-0.5">${daysOfWeek[date.getDay()]}</span>
-                    <span class="text-lg date-num font-serif leading-none">${date.getDate()}</span>
-                    <div class="h-1 w-1 rounded-full date-dot mt-1"></div>
-                `;
+                div.innerHTML = `<span class="text-[7px] font-bold text-gray-400 mb-0.5 uppercase tracking-tighter">JAN</span><span class="text-[8px] font-bold mb-0.5">${daysOfWeek[date.getDay()]}</span><span class="text-lg date-num font-serif leading-none">${date.getDate()}</span><div class="h-1 w-1 rounded-full date-dot mt-1"></div>`;
                 picker.appendChild(div);
             }
         }
@@ -217,19 +267,10 @@
                 if (item.subs) {
                     item.subs.forEach(sub => {
                         const subStr = encodeURIComponent(JSON.stringify({...sub, tag: sub.type, title: sub.name}));
-                        subsHtml += `<div class="sub-card" onclick="event.stopPropagation(); showModal('${subStr}')">
-                            <div class="flex justify-between mb-1"><span class="text-[9px] font-bold text-red-500 uppercase">${sub.type}</span><span class="text-[8px] text-gray-400 font-medium">${sub.hours || ''}</span></div>
-                            <div class="text-sm font-bold text-gray-700">${sub.name}</div>
-                        </div>`;
+                        subsHtml += `<div class="sub-card" onclick="event.stopPropagation(); showModal('${subStr}')"><div class="flex justify-between mb-1"><span class="text-[9px] font-bold text-red-500 uppercase">${sub.type}</span></div><div class="text-sm font-bold text-gray-700">${sub.name}</div></div>`;
                     });
                 }
-                html += `<div class="relative mb-10 pl-10"><div class="timeline-dot"></div>
-                    <div class="flex items-baseline mb-2"><span class="text-xl font-serif font-bold text-gray-800 mr-3">${item.time}</span><div class="h-[1px] flex-1 bg-orange-50"></div></div>
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-orange-50 active:scale-95 transition-all" onclick="showModal('${encodeURIComponent(JSON.stringify(item))}')">
-                        <div class="flex items-center justify-between mb-1.5"><div class="flex items-center"><i class="fas ${item.icon} mr-2 text-red-400 text-xs"></i><span class="text-[9px] font-bold text-red-400 uppercase tracking-widest">${item.tag}</span></div>${item.hours ? `<span class="text-[9px] text-gray-400 font-medium">${item.hours}</span>` : ''}</div>
-                        <h3 class="text-base font-bold text-gray-800 leading-tight">${item.title}</h3>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-1 leading-relaxed">${item.desc}</p>
-                    </div><div class="space-y-1">${subsHtml}</div></div>`;
+                html += `<div class="relative mb-10 pl-10"><div class="timeline-dot"></div><div class="flex items-baseline mb-2"><span class="text-xl font-serif font-bold text-gray-800 mr-3">${item.time}</span><div class="h-[1px] flex-1 bg-orange-50"></div></div><div class="bg-white p-4 rounded-xl shadow-sm border border-orange-50 active:scale-95 transition-all" onclick="showModal('${encodeURIComponent(JSON.stringify(item))}')"><div class="flex items-center justify-between mb-1.5"><div class="flex items-center"><i class="fas ${item.icon} mr-2 text-red-400 text-xs"></i><span class="text-[9px] font-bold text-red-400 uppercase tracking-widest">${item.tag}</span></div></div><h3 class="text-base font-bold text-gray-800 leading-tight">${item.title}</h3><p class="text-[11px] text-gray-400 mt-2 line-clamp-1 leading-relaxed">${item.desc}</p></div><div class="space-y-1">${subsHtml}</div></div>`;
             });
             container.innerHTML = html + '</div>';
         }
@@ -253,25 +294,19 @@
             const container = document.getElementById('content');
             let html = `<div class="space-y-6">`;
             packingList.forEach(group => {
-                html += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-orange-100">
-                    <h3 class="text-sm font-bold text-red-500 mb-4 flex items-center"><i class="fas fa-check-circle mr-2"></i> ${group.cat}</h3>
-                    <div class="space-y-3">`;
+                html += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-orange-100"><h3 class="text-sm font-bold text-red-500 mb-4 flex items-center"><i class="fas fa-check-circle mr-2"></i> ${group.cat}</h3><div class="space-y-3">`;
                 group.items.forEach(item => {
                     const isChecked = checklistState[item] ? 'checked' : '';
-                    html += `<label class="flex items-center justify-between p-3 bg-gray-50 rounded-xl cursor-pointer active:bg-gray-100">
-                        <span class="text-sm font-medium text-gray-700">${item}</span>
-                        <input type="checkbox" onchange="toggleCheckItem('${item}')" ${isChecked} class="w-5 h-5 accent-red-500">
-                    </label>`;
+                    html += `<label class="flex items-center justify-between p-3 bg-gray-50 rounded-xl"><span class="text-sm font-medium text-gray-700">${item}</span><input type="checkbox" onchange="toggleCheckItem('${item}')" ${isChecked} class="w-5 h-5 accent-red-500"></label>`;
                 });
                 html += `</div></div>`;
             });
-            container.innerHTML = html + `</div>`;
+            html += `<div class="bg-gray-800 p-5 rounded-2xl shadow-lg text-white"><h3 class="text-sm font-bold mb-4 flex items-center text-orange-400"><i class="fas fa-language mr-2"></i> 小白求救對話卡</h3><div class="space-y-4">`;
+            phrases.forEach(p => { html += `<div class="border-b border-gray-700 pb-2"><p class="text-xs text-gray-400 mb-1">${p.e}</p><p class="text-lg font-bold">${p.j}</p><p class="text-[10px] italic text-orange-300 opacity-70">${p.r}</p></div>`; });
+            container.innerHTML = html + `</div></div></div>`;
         }
 
-        function toggleCheckItem(item) {
-            checklistState[item] = !checklistState[item];
-            localStorage.setItem('okinawa_checklist', JSON.stringify(checklistState));
-        }
+        function toggleCheckItem(item) { checklistState[item] = !checklistState[item]; localStorage.setItem('okinawa_checklist', JSON.stringify(checklistState)); }
 
         function renderLedger() {
             const container = document.getElementById('content');
@@ -297,9 +332,7 @@
                             </div>
                             <input type="text" id="exp-desc" placeholder="項目內容 (如: 燒肉)" class="w-full p-3 bg-gray-50 border-none rounded-xl text-sm outline-none">
                             <div class="text-[10px] font-bold text-gray-400 tracking-widest mt-2 uppercase text-center">支付者</div>
-                            <select id="exp-payer" class="w-full p-3 bg-gray-50 border-none rounded-xl text-sm outline-none text-center">
-                                ${members.map(m => `<option value="${m}">${m}</option>`).join('')}
-                            </select>
+                            <select id="exp-payer" class="w-full p-3 bg-gray-50 border-none rounded-xl text-sm outline-none text-center">${members.map(m => `<option value="${m}">${m}</option>`).join('')}</select>
                             <div class="text-[10px] font-bold text-gray-400 tracking-widest mt-2 uppercase text-center">分攤對象</div>
                             <div class="flex justify-center gap-5 p-2">${members.map(m => `<label class="flex items-center gap-1 text-xs"><input type="checkbox" name="split-member" value="${m}" checked class="accent-red-500"> ${m}</label>`).join('')}</div>
                             <button onclick="addExpense()" class="w-full bg-red-500 text-white py-4 rounded-xl font-bold shadow-md active:scale-95 transition-all mt-2">儲存紀錄</button>
@@ -311,70 +344,48 @@
             `;
         }
 
-        // --- 邏輯功能 ---
         function updateRate(val) { currentRate = parseFloat(val) || 0.215; localStorage.setItem('okinawa_jpy_rate', currentRate); }
-
         function calculateBalances() {
             let totals = {}; members.forEach(m => totals[m] = 0);
-            expenses.forEach(exp => {
-                const perPerson = exp.twdAmount / exp.splitWith.length;
-                totals[exp.payer] += exp.twdAmount;
-                exp.splitWith.forEach(m => { totals[m] -= perPerson; });
-            });
-            return members.map(m => {
-                const val = Math.round(totals[m]);
-                return `<div class="flex justify-between font-bold text-sm bg-white p-3 rounded-lg shadow-sm"><span>${m}</span><span class="${val >= 0 ? 'text-green-600' : 'text-red-500'}">${val >= 0 ? '應收回' : '應支付'} $${Math.abs(val)}</span></div>`;
-            }).join('');
+            expenses.forEach(exp => { const perPerson = exp.twdAmount / exp.splitWith.length; totals[exp.payer] += exp.twdAmount; exp.splitWith.forEach(m => { totals[m] -= perPerson; }); });
+            return members.map(m => `<div class="flex justify-between font-bold bg-white p-3 rounded-lg shadow-sm"><span>${m}</span><span class="${Math.round(totals[m]) >= 0 ? 'text-green-600' : 'text-red-500'}">${Math.round(totals[m]) >= 0 ? '應收回' : '應支付'} $${Math.abs(Math.round(totals[m]))}</span></div>`).join('');
         }
-
-        function renderExpenseList() {
-            if (expenses.length === 0) return '<div class="text-center text-gray-300 py-10 text-sm">尚無消費紀錄</div>';
-            return expenses.map(exp => `<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center"><div><div class="text-[10px] text-gray-400 font-mono mb-1">${exp.date}</div><div class="text-sm font-bold text-gray-800">${exp.desc}</div><div class="text-[9px] text-gray-400 font-bold uppercase mt-1">${exp.payer} 支付 ${exp.amount} ${exp.currency}</div></div><div class="text-right flex items-center gap-3"><span class="text-xs font-mono font-bold text-gray-600">≈ $${Math.round(exp.twdAmount)}</span><button onclick="deleteExpense(${exp.id})" class="text-gray-200 hover:text-red-400"><i class="fas fa-trash-alt"></i></button></div></div>`).join('');
-        }
-
+        function renderExpenseList() { if (expenses.length === 0) return '<div class="text-center text-gray-300 py-10 text-sm">尚無紀錄</div>'; return expenses.map(exp => `<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center mb-2"><div><div class="text-[10px] text-gray-400 font-mono mb-1">${exp.date}</div><div class="text-sm font-bold text-gray-800">${exp.desc}</div><div class="text-[9px] text-gray-400 font-bold uppercase mt-1">${exp.payer} 支付 ${exp.amount} ${exp.currency}</div></div><div class="text-right flex items-center gap-3"><span class="text-xs font-mono font-bold text-gray-600">≈ $${Math.round(exp.twdAmount)}</span><button onclick="deleteExpense(${exp.id})" class="text-gray-200 hover:text-red-400"><i class="fas fa-trash-alt"></i></button></div></div>`).join(''); }
         function addExpense() {
-            const amount = parseFloat(document.getElementById('exp-amount').value);
-            const currency = document.getElementById('exp-currency').value;
-            const desc = document.getElementById('exp-desc').value;
-            const payer = document.getElementById('exp-payer').value;
-            const date = document.getElementById('exp-date').value;
-            const checkedBoxes = document.querySelectorAll('input[name="split-member"]:checked');
-            const splitWith = Array.from(checkedBoxes).map(cb => cb.value);
+            const amount = parseFloat(document.getElementById('exp-amount').value); const currency = document.getElementById('exp-currency').value; const desc = document.getElementById('exp-desc').value; const payer = document.getElementById('exp-payer').value; const date = document.getElementById('exp-date').value; const checkedBoxes = document.querySelectorAll('input[name="split-member"]:checked'); const splitWith = Array.from(checkedBoxes).map(cb => cb.value);
             if (!amount || !desc || splitWith.length === 0) { alert('請填寫完整資訊'); return; }
-            const twdAmount = currency === 'JPY' ? amount * currentRate : amount;
-            expenses.unshift({ id: Date.now(), date, amount, currency, twdAmount, desc, payer, splitWith });
-            localStorage.setItem('okinawa_expenses', JSON.stringify(expenses));
-            renderLedger();
+            expenses.unshift({ id: Date.now(), date, amount, currency, twdAmount: (currency === 'JPY' ? amount * currentRate : amount), desc, payer, splitWith }); localStorage.setItem('okinawa_expenses', JSON.stringify(expenses)); renderLedger();
         }
-
         function deleteExpense(id) { expenses = expenses.filter(e => e.id !== id); localStorage.setItem('okinawa_expenses', JSON.stringify(expenses)); renderLedger(); }
 
-        // --- 詳情視窗 ---
         function showModal(itemStr) {
             const item = JSON.parse(decodeURIComponent(itemStr));
             const modal = document.getElementById('detail-modal');
-            document.getElementById('modal-img').src = item.img || 'https://images.unsplash.com/photo-1542650125-9988298a08c0?q=80&w=1000';
+            document.getElementById('modal-img').src = item.img;
             document.getElementById('modal-tag').textContent = item.tag || 'INFO';
             document.getElementById('modal-title').textContent = item.title;
-            document.getElementById('modal-desc').textContent = item.desc || '';
+            document.getElementById('modal-desc').textContent = item.desc;
             document.getElementById('modal-hours').querySelector('span').textContent = item.hours || '依現場公告為主';
             const nc = document.getElementById('modal-notes-container');
-            if (item.notes) { document.getElementById('modal-notes').textContent = item.notes; nc.classList.remove('hidden'); } else nc.classList.add('hidden');
+            const pdfBtn = document.getElementById('modal-link-btn');
+            if (item.notes) {
+                const urlMatch = item.notes.match(/https?:\/\/[^\s]+/);
+                if (urlMatch) {
+                    document.getElementById('modal-pdf-link').href = urlMatch[0];
+                    pdfBtn.classList.remove('hidden');
+                    document.getElementById('modal-notes').textContent = item.notes.replace(urlMatch[0], '').trim();
+                } else { pdfBtn.classList.add('hidden'); document.getElementById('modal-notes').textContent = item.notes; }
+                nc.classList.remove('hidden');
+            } else nc.classList.add('hidden');
             const mc = document.getElementById('modal-mapcode-btn');
             if (item.mapcode) { document.getElementById('modal-mapcode').textContent = item.mapcode; mc.classList.remove('hidden'); mc.onclick = () => { navigator.clipboard.writeText(item.mapcode); alert('MapCode 已複製！'); }; } else mc.classList.add('hidden');
             document.getElementById('modal-google-link').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.map || item.title)}`;
             modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); modal.querySelector('div').classList.remove('translate-y-full'); }, 10);
             document.body.style.overflow = 'hidden';
         }
-
-        function closeModal() {
-            const modal = document.getElementById('detail-modal');
-            modal.classList.add('opacity-0'); modal.querySelector('div').classList.add('translate-y-full');
-            setTimeout(() => { modal.classList.add('hidden'); document.body.style.overflow = ''; }, 300);
-        }
+        function closeModal() { const modal = document.getElementById('detail-modal'); modal.classList.add('opacity-0'); modal.querySelector('div').classList.add('translate-y-full'); setTimeout(() => { modal.classList.add('hidden'); document.body.style.overflow = ''; }, 300); }
 
         window.addEventListener('load', initApp);
     </script>
 </body>
 </html>
-
