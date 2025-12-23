@@ -24,41 +24,41 @@
         .sub-card { background-color: #ffffff; border-left: 4px solid #fca5a5; margin-left: 1rem; margin-top: 0.5rem; padding: 0.7rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.03); cursor: pointer; }
         .nav-btn-active { color: #e53e3e !important; }
         .weather-badge { background: rgba(255,255,255,0.6); backdrop-blur: sm; border-radius: 12px; padding: 4px 10px; border: 1px solid rgba(255,255,255,0.3); }
-        /* 沉浸式字卡動畫 */
         #phrase-modal { transition: all 0.3s ease-in-out; }
     </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
 
-    <header id="app-header" class="bg-[#fcfaf2] pt-6 pb-3 px-5 sticky top-0 z-30 shadow-sm border-b border-orange-50 flex-shrink-0 text-center">
+    <header id="app-header" class="bg-[#fcfaf2] pt-8 pb-3 px-5 sticky top-0 z-30 shadow-sm border-b border-orange-50 flex-shrink-0 text-center">
         <div class="text-center mb-3">
             <h1 class="text-[8px] tracking-[0.2em] text-gray-400 font-bold uppercase">PREMIUM TRAVEL GUIDE</h1>
-            <h2 class="text-xl font-bold text-gray-800">沖繩極致之旅 <span class="text-xs font-normal text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-full">2026</span></h2>
+            <h2 class="text-2xl font-bold text-gray-800">沖繩極致之旅 <span class="text-xs font-normal text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-full">2026</span></h2>
         </div>
 
-        <div class="flex justify-center gap-3 mb-4" id="weather-info">
+        <div class="flex justify-center gap-3 mb-5" id="weather-info">
             <div class="weather-badge flex items-center gap-2">
                 <span class="text-[10px] font-bold text-gray-400">TODAY</span>
-                <i id="w-icon-0" class="fas fa-circle-notch fa-spin text-orange-400 text-xs"></i>
-                <span id="w-temp-0" class="text-xs font-mono font-bold text-gray-600">--°</span>
+                <i id="w-icon-0" class="fas fa-circle-notch fa-spin text-orange-400 text-sm"></i>
+                <span id="w-temp-0" class="text-sm font-mono font-bold text-gray-600">--°</span>
             </div>
             <div class="weather-badge flex items-center gap-2">
                 <span class="text-[10px] font-bold text-gray-400">TOMO</span>
-                <i id="w-icon-1" class="fas fa-circle-notch fa-spin text-blue-400 text-xs"></i>
-                <span id="w-temp-1" class="text-xs font-mono font-bold text-gray-600">--°</span>
+                <i id="w-icon-1" class="fas fa-circle-notch fa-spin text-blue-400 text-sm"></i>
+                <span id="w-temp-1" class="text-sm font-mono font-bold text-gray-600">--°</span>
             </div>
         </div>
         
-        <div class="relative flex justify-center items-end min-h-[42px]">
-            <div id="date-picker-container" class="flex space-x-5"></div>
-            <div class="absolute right-0 flex space-x-4 items-end pb-0.5">
+        <div class="relative flex justify-center items-end min-h-[50px] mb-1">
+            <div id="date-picker-container" class="flex space-x-6"></div>
+            
+            <div class="absolute right-0 flex space-x-5 items-end pb-0.5">
                 <button onclick="toggleView('checklist')" id="checklist-toggle" class="flex flex-col items-center text-gray-300 transition-all">
-                    <i class="fas fa-clipboard-list text-lg mb-0.5"></i>
-                    <span class="text-[9px] font-bold">清單</span>
+                    <i class="fas fa-toolbox text-2xl mb-1"></i>
+                    <span class="text-[10px] font-bold">助手</span>
                 </button>
                 <button onclick="toggleView('ledger')" id="ledger-toggle" class="flex flex-col items-center text-gray-300 transition-all">
-                    <i class="fas fa-wallet text-lg mb-0.5"></i>
-                    <span class="text-[9px] font-bold">帳本</span>
+                    <i class="fas fa-wallet text-2xl mb-1"></i>
+                    <span class="text-[10px] font-bold">帳本</span>
                 </button>
             </div>
         </div>
@@ -80,7 +80,7 @@
                 <div id="modal-notes-container" class="hidden mb-6 bg-amber-50 p-4 rounded-xl border border-amber-100">
                     <h4 class="text-[10px] font-bold text-amber-600 uppercase mb-1"><i class="fas fa-pen-fancy mr-1"></i> 重要資訊</h4>
                     <p id="modal-notes" class="text-xs text-amber-800 leading-relaxed mb-3"></p>
-                    <div id="modal-link-btn" class="hidden"><a id="modal-pdf-link" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-amber-600 text-white py-2 rounded-lg text-xs font-bold shadow-sm"><i class="fas fa-file-pdf"></i> 查看訂單憑證 (PDF/雲端)</a></div>
+                    <div id="modal-link-btn" class="hidden"><a id="modal-pdf-link" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-amber-600 text-white py-2 rounded-lg text-xs font-bold shadow-sm"><i class="fas fa-file-pdf"></i> 查看訂單憑證 (預覽)</a></div>
                 </div>
                 <div id="modal-mapcode-btn" class="hidden bg-red-50 p-4 rounded-xl border border-red-100 flex items-center justify-between cursor-pointer mb-3">
                     <div class="flex items-center"><div class="bg-red-500 p-2 rounded-lg text-white mr-3 shadow-sm"><i class="fas fa-map-marked-alt"></i></div><div><p class="text-[9px] text-red-500 font-bold uppercase">Copy MapCode</p><p id="modal-mapcode" class="text-base font-mono font-bold text-red-900"></p></div></div><i class="far fa-copy text-red-400"></i>
@@ -112,7 +112,7 @@
              1: [
                 { time: "15:20", tag: "Departure", title: "台灣桃園機場起飛 (MM926)", icon: "fa-plane-departure", desc: "開啟南國沖繩極致之旅。建議旅客於起飛前2小時抵達桃園國際機場辦理登機與行李託運。飛行時間約1.5小時，可於機上稍作休息，預備迎接充滿琉球風情的假期。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000", notes: "" },
                 { time: "17:50", tag: "Arrival", title: "抵達那霸機場 & 搭乘單軌", icon: "fa-train-subway", desc: "抵達那霸空港。完成入境手續後，請跟隨指標前往國內線航廈2樓銜接單軌電車（Yui Rail）。這是體驗沖繩都會感的第一步，沿途可初步觀覽那霸市區的繁華景觀與亞熱帶氛圍。", img: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Okinawa-Monorail_Series1000_Asahimachi.jpg", notes: "" },
-                { time: "18:45", tag: "Hotel", title: "東橫INN 那霸 Omoromachi 站前", icon: "fa-hotel", hours: "Check-in 15:00+", map: "東橫INN 那霸 Omoromachi 站前", desc: "緊鄰單軌歌町站，地理位置優越。飯店提供免費早餐，且正對面即是 DFS 租車點，是自駕行程的最佳基地。周邊有新都心商圈、大國藥妝與超市，生活機能強大。", img: "https://image.kkday.com/v2/image/get/w_1900%2Cc_fit/s1.kkday.com/product_152772/20230923055533_i6bm4/jpg", notes: "訂單編號: 5422314614\n地址：那霸市歌町1-6-6\n電話：+81-98-862-1045\nhttps://drive.google.com/uc?id=1x6wEhdO34cDj6wGcgBg95QDzNLPSyOwA" },
+                { time: "18:45", tag: "Hotel", title: "東橫INN 那霸 Omoromachi 站前", icon: "fa-hotel", hours: "Check-in 15:00+", map: "東橫INN 那霸 Omoromachi 站前", desc: "緊鄰單軌歌町站，地理位置優越。飯店提供免費早餐，且正對面即是 DFS 租車點，是自駕行程的最佳基地。周邊有新都心商圈、大國藥妝與超市，生活機能強大。", img: "https://image.kkday.com/v2/image/get/w_1900%2Cc_fit/s1.kkday.com/product_152772/20230923055533_i6bm4/jpg", notes: "訂單編號: 5422314614\n地址：那霸市歌町1-6-6\n電話：+81-98-862-1045\nhttps://drive.google.com/file/d/1x6wEhdO34cDj6wGcgBg95QDzNLPSyOwA/view?usp=sharing" },
                 { 
                     time: "19:30", tag: "Night", title: "國際通 散策", icon: "fa-person-walking", map: "國際通", hours: "10:00-22:00", desc: "譽為「奇蹟的一哩路」的那霸第一街。這條全長1.6公里的街道在戰後迅速復甦，現已成為沖繩最繁華的商業核心。街道兩側集結了豐富的土產店、潮流服飾、藥妝旗艦店與各式主題餐廳，是體驗沖繩熱情夜晚、尋寶掃貨與感受南國活力的必訪勝地。", img: "https://images.unsplash.com/photo-1647336963732-7446b9da7a6f?q=80&w=1170&auto=format&fit=crop",
                     subs: [
@@ -183,6 +183,13 @@
             { cat: "託運行李", items: ["充電器/轉接頭", "刮鬍刀", "牙刷/牙膏", "換洗衣物 (3-4套)", "內衣褲/襪子", "睡衣", "摺疊傘", "環保購物袋", "髒衣收納袋"] }
         ];
 
+        const emergencyContacts = [
+            { name: "日本警察局 (報案)", tel: "110" },
+            { name: "日本消防/救護車", tel: "119" },
+            { name: "駐那霸辦事處 (急難救助)", tel: "090-1942-1340" },
+            { name: "東橫INN Omoromachi", tel: "098-862-1045" }
+        ];
+
         const phrases = [
             { j: "お会計をお願いします", r: "O-kaikei o negai shimasu", e: "我要結帳" },
             { j: "トイレはどこですか？", r: "Toire wa doko desu ka?", e: "廁所在哪？" },
@@ -190,10 +197,10 @@
             { j: "予約しています", r: "Yoyaku shite imasu", e: "我有預約 (訂位用)" },
             { j: "駐車場はありますか？", r: "Chuushajou wa arimasu ka?", e: "請問有停車場嗎？" },
             { j: "免税になりますか？", r: "Menzei ni narimasu ka?", e: "請問可以退稅嗎？" },
-            { j: "領収書をください", r: "Ryoushuusho o kudasai", e: "請給我收據 (還車加油用)" }
+            { j: "領収書をください", r: "Ryoushuusho o kudasai", e: "請給我收據 (加油用)" }
         ];
 
-        // --- 核心渲染函數 ---
+        // --- 核心邏輯 ---
 
         async function fetchWeather() {
             try {
@@ -240,7 +247,7 @@
                     renderDatePicker(); 
                     renderItinerary();
                 };
-                div.innerHTML = `<span class="text-[7px] font-bold text-gray-400 mb-0.5 uppercase tracking-tighter">JAN</span><span class="text-[8px] font-bold mb-0.5">${daysOfWeek[date.getDay()]}</span><span class="text-lg date-num font-serif leading-none">${date.getDate()}</span><div class="h-1 w-1 rounded-full date-dot mt-1"></div>`;
+                div.innerHTML = `<span class="text-[8px] font-bold text-gray-400 mb-0.5 uppercase tracking-tighter">JAN</span><span class="text-[9px] font-bold mb-0.5">${daysOfWeek[date.getDay()]}</span><span class="text-xl date-num font-serif leading-none">${date.getDate()}</span><div class="h-1.5 w-1.5 rounded-full date-dot mt-1"></div>`;
                 picker.appendChild(div);
             }
         }
@@ -268,7 +275,7 @@
             updateTabStyles();
             renderDatePicker();
             if (view === 'ledger') renderLedger();
-            else if (view === 'checklist') renderChecklist();
+            else if (view === 'checklist') renderAssistant();
         }
 
         function updateTabStyles() {
@@ -278,9 +285,23 @@
             ct.className = `flex flex-col items-center pb-0.5 transition-all ${activeTab === 'checklist' ? 'nav-btn-active' : 'text-gray-300'}`;
         }
 
-        function renderChecklist() {
+        function renderAssistant() {
             const container = document.getElementById('content');
             let html = `<div class="space-y-6">`;
+            
+            // 緊急聯絡專區
+            html += `<div class="bg-red-50 p-5 rounded-2xl shadow-sm border border-red-100">
+                <h3 class="text-xs font-bold text-red-600 mb-4 flex items-center uppercase tracking-widest"><i class="fas fa-phone-alt mr-2"></i> 緊急聯絡專區</h3>
+                <div class="grid grid-cols-2 gap-3">`;
+            emergencyContacts.forEach(c => {
+                html += `<a href="tel:${c.tel}" class="bg-white p-3 rounded-xl border border-red-100 flex flex-col items-center justify-center active:bg-red-100 transition-all">
+                    <span class="text-[10px] text-gray-500 font-bold mb-1">${c.name}</span>
+                    <span class="text-xs font-mono font-bold text-red-600">${c.tel}</span>
+                </a>`;
+            });
+            html += `</div></div>`;
+
+            // 行李清單
             packingList.forEach(group => {
                 html += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-orange-100"><h3 class="text-sm font-bold text-red-500 mb-4 flex items-center"><i class="fas fa-check-circle mr-2"></i> ${group.cat}</h3><div class="space-y-3">`;
                 group.items.forEach(item => {
@@ -289,7 +310,8 @@
                 });
                 html += `</div></div>`;
             });
-            // 日語求救卡區塊
+
+            // 對話卡
             html += `<div class="bg-gray-800 p-5 rounded-2xl shadow-lg text-white"><h3 class="text-sm font-bold mb-4 flex items-center text-orange-400"><i class="fas fa-language mr-2"></i> 小白沉浸式求救卡 (點擊放大)</h3><div class="grid grid-cols-1 gap-3">`;
             phrases.forEach(p => { 
                 html += `<div class="bg-gray-700 p-4 rounded-xl active:scale-95 transition-all" onclick="showPhrase('${p.e}', '${p.j}', '${p.r}')">
@@ -304,14 +326,10 @@
             document.getElementById('phrase-en').textContent = e;
             document.getElementById('phrase-jp').textContent = j;
             document.getElementById('phrase-romaji').textContent = r;
-            const modal = document.getElementById('phrase-modal');
-            modal.classList.remove('hidden');
+            document.getElementById('phrase-modal').classList.remove('hidden');
         }
 
-        function closePhrase() {
-            document.getElementById('phrase-modal').classList.add('hidden');
-        }
-
+        function closePhrase() { document.getElementById('phrase-modal').classList.add('hidden'); }
         function toggleCheckItem(item) { checklistState[item] = !checklistState[item]; localStorage.setItem('okinawa_checklist', JSON.stringify(checklistState)); }
 
         function renderLedger() {
