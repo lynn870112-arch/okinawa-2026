@@ -31,7 +31,6 @@
         .weather-badge { background: rgba(255,255,255,0.7); backdrop-blur: sm; border-radius: 12px; padding: 3px 10px; border: 1px solid rgba(229, 62, 62, 0.05); }
         #map-container { height: 260px; width: 100%; border-radius: 1.5rem; margin-top: 1.5rem; border: 4px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.08); z-index: 10; }
         #phrase-modal { transition: all 0.3s ease-in-out; }
-        /* 帳本防出框 Grid 佈局 */
         .ledger-row { display: grid; grid-template-columns: 5.5rem 1fr; align-items: center; background: #fff; border: 1px solid #f3f4f6; border-radius: 1rem; padding: 0.6rem 0.8rem; margin-bottom: 0.5rem; gap: 0.5rem; overflow: hidden; }
         .ledger-row-label { font-size: 0.7rem; font-weight: 800; border-radius: 0.4rem; padding: 0.2rem 0; width: 100%; text-align: center; }
         .row-gray { background-color: #f3f4f6; color: #6b7280; }
@@ -111,13 +110,11 @@
         <p id="phrase-romaji" class="text-gray-500 text-sm italic"></p>
         <p class="absolute bottom-10 text-gray-600 text-[10px] uppercase tracking-widest">Tap anywhere to close</p>
     </div>
-
     <script>
         const startDate = new Date('2026-01-19T15:20:00');
         const members = ['CN', 'SW', 'William']; 
         const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         const SYNC_URL = 'https://script.google.com/macros/s/AKfycbwnAoDsbgiHImkf54L8jG0paehqET1gixBQxSSRwr_wW3cKDRMKcJ5K_QmkIspncwzfGA/exec';
-
         let currentDay = 1;
         let activeTab = 'itinerary';
         let expenses = JSON.parse(localStorage.getItem('okinawa_expenses') || '[]');
@@ -125,6 +122,7 @@
         let checklistState = JSON.parse(localStorage.getItem('okinawa_checklist') || '{}');
         let map = null;
 
+        // 核心資料：100% 採用您提供的備份內容，並精準植入建議與功能 Link
         const tripData = {
              1: [
                 { time: "15:20", tag: "Departure", title: "台灣桃園機場起飛 (MM926)", icon: "fa-plane-departure", desc: "開啟南國沖繩極致之旅。建議旅客於起飛前2小時抵達桃園國際機場辦理登機與行李託運。飛行時間約1.5小時，可於機上稍作休息，預備迎接充滿琉球風情的假期。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000", lat: 25.079, lng: 121.234 },
@@ -149,8 +147,8 @@
                 { 
                     time: "13:30", tag: "Ocean", title: "美麗海水族館", icon: "fa-fish", map: "美麗海水族館", mapcode: "553 075 797*77", hours: "08:30-18:30", desc: "以「美麗的海洋」為主題，展示沖繩豐富多樣的海洋生態，其特色是巨大的「黑潮之海」水槽，飼養著世界最大魚類鯨鯊與鬼蝠魟，並有陽光灑落的「珊瑚之海」和神祕的「深海之旅」區域，還有免費海豚秀、海龜館等周邊設施，是體驗沖繩海洋魅力的必訪之地。", img: "https://images.unsplash.com/photo-1612476919598-a233d3692cc6?q=80&w=1170&auto=format&fit=crop", lat: 26.694, lng: 127.877, parking: "【無料】請導航至「P7 北口立體停車場」，離入口最近。", parkingLink: "https://maps.app.goo.gl/f2XzY2qG9Y2qG9Y2qG8",
                     subs: [
-                        { type: "表演", name: "海豚秀 (15:00 / 17:00)", hours: "約20分鐘", img: "https://churaumi.okinawa/userfiles/images/area/surrounding/DSC02344.jpg" },
-                        { type: "表演", name: "鯨鯊餵食秀 (15:00 / 17:00)", hours: "黑潮之海槽前", img: "https://assets.funliday.com/posts/wp-content/uploads/2023/03/05233404/IMG_8454-scaled.jpg" }
+                        { type: "表演", name: "海豚秀 (15:00 / 17:00)", hours: "約20分鐘", desc: "以湛藍大海為背景的戶外劇場。看聰明的海豚們展現驚人的高空彈跳、唱歌、以及與訓練員的完美默契，搭配活潑的音樂，是美麗海最歡樂的環節。\n\n場次提醒：15:00 / 17:00（每場約 20 分鐘）。", img: "https://churaumi.okinawa/userfiles/images/area/surrounding/DSC02344.jpg" },
+                        { type: "表演", name: "鯨鯊餵食秀 (15:00 / 17:00)", hours: "黑潮之海槽前", desc: "在巨大的「黑潮之海」水槽前，看全世界最大的魚類「鯨鯊」垂直在水中進食的震撼瞬間。數萬條魚群跟隨穿梭，光影與水面的流動讓人屏息。\n\n場次提醒：15:00 / 17:00（建議提前 15 分鐘到場佔位）。", img: "https://assets.funliday.com/posts/wp-content/uploads/2023/03/05233404/IMG_8454-scaled.jpg" }
                     ]
                 },
                 { 
@@ -164,10 +162,10 @@
             3: [
                 { time: "09:30", tag: "Heritage", title: "首里城 (見學修復工程)", icon: "fa-landmark", map: "首里城", mapcode: "33 161 526*66", hours: "08:30-18:00", desc: "首里城是位於沖繩那霸市、琉球王國的都城與王宮，兼政治、外交、經濟中心，同時也是中央行政機關和舉行祭祀儀式的所在地，見證了琉球國長達500年的歷史與獨特文化。雖在1945年和2019年大火中受損，但正進行重建，預計2026年修復完成。", img: "https://ohh.okinawa/wpdir/wp-content/uploads/2018/10/7ac047596507fadd22e23647ff3ae1d4.jpg", lat: 26.217, lng: 127.719, parking: "【有料】地下停車場 320 日圓/次。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG0" },
                 { 
-                    time: "11:30", tag: "Cave", title: "玉泉洞 / 沖繩世界", icon: "fa-mountain-sun", map: "玉泉洞", mapcode: "232 495 330*28", hours: "09:00-17:30", desc: "歷經30萬年形成的日本第二大鐘乳洞，擁有超過百萬根鐘乳石與神秘地下水景觀，全長5000公尺，遊客可漫步於對外開放的約890公尺步道欣賞奇景；整個園區還包含重現琉球古老街景的「王國村」及「毒蛇博物館」", img: "https://images.unsplash.com/photo-1612476919598-a233d3692cc6?q=80&w=1170&auto=format&fit=crop", lat: 26.139, lng: 127.750, parking: "【無料】園內大型免費停車場。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG1",
+                    time: "11:30", tag: "Cave", title: "玉泉洞 / 沖繩世界", icon: "fa-mountain-sun", map: "玉泉洞", mapcode: "232 495 330*28", hours: "09:00-17:30", desc: "歷經30萬年形成的日本第二大鐘乳洞，擁有超過百萬根鐘乳石與神秘地下水景觀，全長5000公尺，遊客可漫步於對外開放的約890公尺步道欣賞奇景；整個園區還包含重現琉球古老街景的「王國村」及「毒蛇博物館」", img: "https://images.unsplash.com/photo-1550992402-9b1fc58fd76d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", lat: 26.139, lng: 127.750, parking: "【無料】園內大型免費停車場。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG1",
                     subs: [
-                        { type: "表演", name: "12:30 太鼓表演", hours: "約30分鐘", desc: "震撼靈魂的傳統舞蹈。", img: "https://www.okitour.co.jp/uploads/contents/product/Ifz2McHD8" },
-                        { type: "午餐", name: "屋宜家 (老屋沖繩麵)", hours: "11:00-15:30", mapcode: "232 465 718*33", map: "屋宜家", desc: "位於被登錄為國家有形文化財的百年老宅中，一邊品嚐沖繩麵一邊欣賞日式庭園，極具文化韻味。\n\n建議必吃：豆乳沖繩麵、黑糖黃粉紅豆湯圓。", parking: "【無料】門口專用位。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG2" }
+                        { type: "表演", name: "12:30 太鼓表演", hours: "約30分鐘", desc: "位於沖繩世界文化王國，展現琉球傳統祭典的力與美。強而有力的鼓聲伴隨熱血的舞姿與嘹亮的吆喝聲，能瞬間燃起現場觀眾的熱情。", img: "https://www.okitour.co.jp/uploads/contents/product/Ifz2McHD8" },
+                        { type: "午餐", name: "屋宜家 (老屋沖繩麵)", hours: "11:00-15:30", mapcode: "232 465 718*33", map: "屋宜家", desc: "位於被登錄為國家有形文化財的百年老宅中，一邊品嚐沖繩麵一邊欣賞日式庭園，極具文化韻味。\n\n建議必吃：豆乳沖繩麵、黑糖黃粉紅豆湯圓。", img: "https://icrvb3jy.xinmedia.com/solomo/article/d/4/a/d4aa36b2-01f1-439d-adbd-fd33ab8ac0be.jpeg", parking: "【無料】門口專用位。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG2" }
                     ]
                 },
                 { 
@@ -194,13 +192,12 @@
         };
 
         const packingList = [
-            { cat: "隨身行李", items: ["護照 (效期6個月以上)", "錢包/外幣 (2-3萬日圓現金)", "Icoca/Suica (可手機綁定)", "駕照正本+日文譯本", "機票/訂房/租車憑證", "行動電源", "日本網卡/eSIM", "個人藥品", "外套/圍巾/帽子", "相機/腳架", "隨身面紙/夾鏈袋"] },
+            { cat: "隨身行李", items: ["護照 (效期6個月以上)", "錢包/外幣 (2-3萬日圓現金)", "ICOCA/Suica (可手機綁定)", "駕照正本+日文譯本", "機票/訂房/租車憑證", "行動電源", "網卡/eSIM", "個人藥品", "外套/圍巾/帽子", "相機/腳架", "隨身面紙/夾鏈袋"] },
             { cat: "託運行李", items: ["充電器/轉接頭", "刮鬍刀", "牙刷/牙膏", "換洗衣物 (3-4套)", "內衣褲/襪子", "睡衣", "摺疊傘", "環保購物袋", "髒衣收納袋"] }
         ];
 
         const shoppingList = [
-            { cat: "必買名產", items: ["御菓子御殿 紅芋塔", "南風堂 雪鹽金楚糕", "邊銀食堂 石垣島辣油", "35 Coffee (扶桑花茶包)", "Orion 啤酒/零嘴", "沖繩泡麵 (そば風味)"] },
-            { cat: "藥妝/小物", items: ["LuLuLun 限定面膜", "SuiSavon 首里石鹼", "曬黑款 Hello Kitty", "美麗海水族館 鯨鯊扭蛋", "風獅爺 (シーサー) 擺飾"] }
+            { cat: "沖繩必買購物清單", items: ["御菓子御殿 紅芋塔", "南風堂 雪鹽金楚糕", "邊銀食堂 石垣島辣油", "35 Coffee 扶桑花茶", "Orion 啤酒/零嘴", "沖繩泡麵 (そば風味)", "LuLuLun 限定面膜", "SuiSavon 首里石鹼", "曬黑款 Hello Kitty", "美麗海水族館 鯨鯊扭蛋", "風獅爺 (シーサー) 擺飾"] }
         ];
 
         const phrases = [
@@ -213,6 +210,7 @@
             { j: "領収書をください", r: "Ryoushuusho o kudasai", e: "請給我收據 (加油用)" }
         ];
 
+        // --- 核心與同步邏輯 ---
         async function fetchWeather() {
             try {
                 const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=26.2124&longitude=127.6809&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo");
@@ -222,45 +220,31 @@
                     document.getElementById(`w-temp-${i}`).textContent = `${Math.round(data.daily.temperature_2m_min[i])}°/${Math.round(data.daily.temperature_2m_max[i])}°`;
                     document.getElementById(`w-icon-${i}`).className = "fas " + getWeatherIcon(code);
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) {}
         }
-
         function getWeatherIcon(code) {
             if (code <= 1) return "fa-sun text-orange-400";
             if (code <= 3) return "fa-cloud-sun text-yellow-500";
             if (code <= 65) return "fa-cloud-showers-heavy text-blue-400";
             return "fa-cloud text-gray-400";
         }
-
         async function autoSyncFromCloud() {
             if (activeTab !== 'ledger') return;
             try {
-                const response = await fetch(SYNC_URL);
-                const data = await response.json();
+                const res = await fetch(SYNC_URL);
+                const data = await res.json();
                 if (data && data.length > 0) {
-                    expenses = data;
-                    localStorage.setItem('okinawa_expenses', JSON.stringify(expenses));
-                    renderLedger();
+                    expenses = data; localStorage.setItem('okinawa_expenses', JSON.stringify(expenses)); renderLedger();
                 }
-            } catch (e) { console.log("Sync Silent fail"); }
+            } catch (e) {}
         }
-
         async function syncToCloudSilently() {
-            try {
-                await fetch(SYNC_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(expenses) });
-            } catch (e) { console.error("Cloud backup failed"); }
+            try { await fetch(SYNC_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(expenses) });
+            } catch (e) {}
         }
-
-        function initApp() {
-            activeTab = 'itinerary';
-            renderDatePicker();
-            renderItinerary();
-            fetchWeather();
-        }
-
+        function initApp() { renderDatePicker(); renderItinerary(); fetchWeather(); }
         function renderDatePicker() {
             const picker = document.getElementById('date-picker-container');
-            if (!picker) return;
             picker.innerHTML = '';
             for (let i = 0; i < 4; i++) {
                 const date = new Date(startDate);
@@ -273,7 +257,6 @@
                 picker.appendChild(div);
             }
         }
-
         function renderItinerary() {
             const container = document.getElementById('content');
             container.innerHTML = '';
@@ -283,27 +266,14 @@
                 if (item.subs) {
                     item.subs.forEach(sub => {
                         const subStr = encodeURIComponent(JSON.stringify({...sub, tag: sub.type, title: sub.name}));
-                        subsHtml += `<div class="sub-card" onclick="event.stopPropagation(); showModal('${subStr}')">
-                            <div class="flex justify-between mb-1"><span class="text-[9px] font-bold text-red-500 uppercase">${sub.type}</span><span class="text-[8px] text-gray-400 font-medium">${sub.hours || ''}</span></div>
-                            <div class="text-sm font-bold text-gray-700">${sub.name}</div>
-                        </div>`;
+                        subsHtml += `<div class="sub-card" onclick="event.stopPropagation(); showModal('${subStr}')"><div class="flex justify-between mb-1"><span class="text-[9px] font-bold text-red-500 uppercase">${sub.type}</span><span class="text-[8px] text-gray-400 font-medium">${sub.hours || ''}</span></div><div class="text-sm font-bold text-gray-700">${sub.name}</div></div>`;
                     });
                 }
-                html += `<div class="relative mb-10 pl-10"><div class="timeline-dot"></div>
-                    <div class="flex items-baseline mb-2"><span class="text-xl font-serif font-bold text-gray-800 mr-3">${item.time}</span><div class="h-[1px] flex-1 bg-orange-100"></div></div>
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-orange-50 active:scale-95 transition-all" onclick="showModal('${encodeURIComponent(JSON.stringify(item))}')">
-                        <div class="flex items-center justify-between mb-1.5">
-                            <div class="flex items-center"><i class="fas ${item.icon} mr-2 text-red-400 text-xs"></i><span class="text-[9px] font-bold text-red-400 uppercase tracking-widest">${item.tag}</span></div>
-                            ${item.hours ? `<span class="text-[9px] text-gray-400 font-medium">${item.hours}</span>` : ''}
-                        </div>
-                        <h3 class="text-base font-bold text-gray-800 leading-tight">${item.title}</h3>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-1 leading-relaxed">${item.desc}</p>
-                    </div><div class="space-y-1">${subsHtml}</div></div>`;
+                html += `<div class="relative mb-10 pl-10"><div class="timeline-dot"></div><div class="flex items-baseline mb-2"><span class="text-xl font-serif font-bold text-gray-800 mr-3">${item.time}</span><div class="h-[1px] flex-1 bg-orange-100"></div></div><div class="bg-white p-4 rounded-xl shadow-sm border border-orange-50 active:scale-95 transition-all" onclick="showModal('${encodeURIComponent(JSON.stringify(item))}')"><div class="flex items-center justify-between mb-1.5"><div class="flex items-center"><i class="fas ${item.icon} mr-2 text-red-400 text-xs"></i><span class="text-[9px] font-bold text-red-400 uppercase tracking-widest">${item.tag}</span></div>${item.hours ? `<span class="text-[9px] text-gray-400 font-medium">${item.hours}</span>` : ''}</div><h3 class="text-base font-bold text-gray-800 leading-tight">${item.title}</h3><p class="text-[11px] text-gray-400 mt-2 line-clamp-1 leading-relaxed">${item.desc}</p></div><div class="space-y-1">${subsHtml}</div></div>`;
             });
             container.innerHTML = html + '</div>';
             renderDailyMap();
         }
-
         function renderDailyMap() {
             const container = document.getElementById('content');
             const mapDiv = document.createElement('div');
@@ -313,51 +283,34 @@
             map = L.map('map-container', { zoomControl: false });
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '© OSM' }).addTo(map);
             const markers = [];
-            tripData[currentDay].forEach((p, idx) => {
-                if (p.lat && p.lng) {
-                    L.marker([p.lat, p.lng]).addTo(map).bindPopup(`<b style="color:#e53e3e">#${idx+1} ${p.title}</b>`);
-                    markers.push([p.lat, p.lng]);
-                }
-            });
-            if (markers.length > 0) {
-                const polyline = L.polyline(markers, {color: '#fca5a5', weight: 3, dashArray: '5, 10'}).addTo(map);
-                map.fitBounds(polyline.getBounds(), { padding: [40, 40] });
-            }
+            tripData[currentDay].forEach((p, idx) => { if (p.lat && p.lng) { L.marker([p.lat, p.lng]).addTo(map).bindPopup(`<b style="color:#e53e3e">#${idx+1} ${p.title}</b>`); markers.push([p.lat, p.lng]); } });
+            if (markers.length > 0) { const polyline = L.polyline(markers, {color: '#fca5a5', weight: 3, dashArray: '5, 10'}).addTo(map); map.fitBounds(polyline.getBounds(), { padding: [40, 40] }); }
         }
-
-        function toggleView(view) { activeTab = view; updateTabStyles(); renderDatePicker(); if (view === 'ledger') { renderLedger(); autoSyncFromCloud(); } else if (view === 'checklist') renderAssistant(); }
+        function toggleView(view) { activeTab = view; updateTabStyles(); renderDatePicker(); if (view === 'ledger') { renderLedger(); autoSyncFromCloud(); } else if (view === 'checklist') { renderAssistant(); } else { renderItinerary(); } }
         function updateTabStyles() {
             const lt = document.getElementById('ledger-toggle'); const ct = document.getElementById('checklist-toggle');
             lt.className = `flex flex-col items-center pb-0.5 transition-all ${activeTab === 'ledger' ? 'nav-btn-active' : 'text-gray-300'}`;
             ct.className = `flex flex-col items-center pb-0.5 transition-all ${activeTab === 'checklist' ? 'nav-btn-active' : 'text-gray-300'}`;
         }
-
         function renderAssistant() {
             const container = document.getElementById('content');
             let html = `<div class="space-y-6">`;
             packingList.forEach(group => {
                 html += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-orange-100"><h3 class="text-sm font-bold text-red-500 mb-4 flex items-center uppercase tracking-wider"><i class="fas fa-check-circle mr-2"></i> ${group.cat}</h3><div class="space-y-3">`;
-                group.items.forEach(item => {
-                    const isChecked = checklistState[item] ? 'checked' : '';
-                    html += `<label class="flex items-center justify-between p-3 bg-gray-50 rounded-xl transition-all active:bg-orange-50"><span class="text-sm font-medium text-gray-700">${item}</span><input type="checkbox" onchange="toggleCheckItem('${item}')" ${isChecked} class="w-5 h-5 accent-red-500"></label>`;
-                });
+                group.items.forEach(item => { const isChecked = checklistState[item] ? 'checked' : ''; html += `<label class="flex items-center justify-between p-3 bg-gray-50 rounded-xl"><span class="text-sm font-medium text-gray-700">${item}</span><input type="checkbox" onchange="toggleCheckItem('${item}')" ${isChecked} class="w-5 h-5 accent-red-500"></label>`; });
                 html += `</div></div>`;
             });
-            html += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-blue-100"><h3 class="text-sm font-bold text-blue-500 mb-4 flex items-center uppercase tracking-wider"><i class="fas fa-shopping-bag mr-2"></i> 沖繩必買購物清單</h3><div class="space-y-3">`;
             shoppingList.forEach(group => {
-                group.items.forEach(item => {
-                    const isChecked = checklistState[item] ? 'checked' : '';
-                    html += `<label class="flex items-center justify-between p-3 bg-blue-50/30 rounded-xl transition-all active:bg-blue-100"><span class="text-sm font-medium text-gray-700">${item}</span><input type="checkbox" onchange="toggleCheckItem('${item}')" ${isChecked} class="w-5 h-5 accent-blue-500"></label>`;
-                });
+                html += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-blue-100"><h3 class="text-sm font-bold text-blue-500 mb-4 flex items-center uppercase tracking-wider"><i class="fas fa-shopping-bag mr-2"></i> ${group.cat}</h3><div class="space-y-3">`;
+                group.items.forEach(item => { const isChecked = checklistState[item] ? 'checked' : ''; html += `<label class="flex items-center justify-between p-3 bg-blue-50/30 rounded-xl"><span class="text-sm font-medium text-gray-700">${item}</span><input type="checkbox" onchange="toggleCheckItem('${item}')" ${isChecked} class="w-5 h-5 accent-blue-500"></label>`; });
+                html += `</div></div>`;
             });
-            html += `</div></div>`;
             html += `<div class="bg-gray-800 p-5 rounded-2xl shadow-lg text-white"><h3 class="text-sm font-bold mb-4 flex items-center text-orange-400"><i class="fas fa-language mr-2"></i> 小白沉浸式求救卡 (點擊放大)</h3><div class="grid grid-cols-1 gap-3">`;
             phrases.forEach(p => { html += `<div class="bg-gray-700 p-4 rounded-xl active:scale-95 transition-all" onclick="showPhrase('${p.e}', '${p.j}', '${p.r}')"><p class="text-[10px] text-gray-400 mb-1 font-bold uppercase tracking-wider">${p.e}</p><p class="text-base font-bold">${p.j}</p></div>`; });
             html += `</div></div><div class="bg-red-50 p-5 rounded-2xl shadow-sm border border-red-100"><h3 class="text-xs font-bold text-red-600 mb-4 flex items-center uppercase tracking-widest"><i class="fas fa-phone-alt mr-2"></i> 緊急聯絡專區</h3><div class="grid grid-cols-2 gap-3">`;
             emergencyContacts.forEach(c => { html += `<div onclick="confirmCall('${c.name}', '${c.tel}')" class="bg-white p-3 rounded-xl border border-red-100 flex flex-col items-center justify-center active:bg-red-100 transition-all cursor-pointer"><span class="text-[10px] text-gray-500 font-bold mb-1">${c.name}</span><span class="text-xs font-mono font-bold text-red-600">${c.tel}</span></div>`; });
             container.innerHTML = html + `</div></div></div>`;
         }
-
         function renderLedger() {
             const container = document.getElementById('content');
             const todayStr = new Date().toISOString().split('T')[0];
@@ -379,7 +332,6 @@
                 </div>
             `;
         }
-
         async function addExpense() {
             const amount = parseFloat(document.getElementById('exp-amount').value); const currency = document.getElementById('exp-currency').value; const desc = document.getElementById('exp-desc').value; const payer = document.getElementById('exp-payer').value; const date = document.getElementById('exp-date').value; const checkedBoxes = document.querySelectorAll('input[name="split-member"]:checked'); const splitWith = Array.from(checkedBoxes).map(cb => cb.value);
             if (!amount || !desc || splitWith.length === 0) { alert('請填寫完整資訊'); return; }
@@ -387,12 +339,10 @@
             expenses.unshift({ id: Date.now(), date, amount, currency, twdAmount, desc, payer, splitWith }); localStorage.setItem('okinawa_expenses', JSON.stringify(expenses)); 
             renderLedger(); await syncToCloudSilently();
         }
-
         function deleteExpense(id) { expenses = expenses.filter(e => e.id !== id); localStorage.setItem('okinawa_expenses', JSON.stringify(expenses)); renderLedger(); syncToCloudSilently(); }
         function calculateBalances() { let totals = {}; members.forEach(m => totals[m] = 0); expenses.forEach(exp => { const perPerson = exp.twdAmount / exp.splitWith.length; totals[exp.payer] += exp.twdAmount; exp.splitWith.forEach(m => { totals[m] -= perPerson; }); }); return members.map(m => `<div class="flex justify-between font-bold bg-white p-3 rounded-xl shadow-sm border border-gray-100"><span>${m}</span><span class="${Math.round(totals[m]) >= 0 ? 'text-green-600' : 'text-red-500'}">${Math.round(totals[m]) >= 0 ? '應收回' : '應支付'} $${Math.abs(Math.round(totals[m]))}</span></div>`).join(''); }
         function renderExpenseList() { if (expenses.length === 0) return '<div class="text-center text-gray-300 py-10 text-sm font-bold">尚無紀錄</div>'; return expenses.map(exp => `<div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center mb-2"><div><div class="text-[10px] text-gray-400 font-bold mb-1 font-mono text-xs">${exp.date}</div><div class="text-sm font-bold text-gray-800">${exp.desc}</div><div class="text-[9px] text-gray-400 font-bold uppercase mt-1">${exp.payer} 支付 ${exp.amount} ${exp.currency}</div></div><div class="text-right flex items-center gap-3"><span class="text-xs font-mono font-bold text-gray-600">≈ $${Math.round(exp.twdAmount)}</span><button onclick="deleteExpense(${exp.id})" class="text-gray-200 hover:text-red-400"><i class="fas fa-trash-alt"></i></button></div></div>`).join(''); }
         function updateRate(val) { currentRate = parseFloat(val) || 0.21; localStorage.setItem('okinawa_jpy_rate', currentRate); }
-
         function showModal(itemStr) {
             const item = JSON.parse(decodeURIComponent(itemStr));
             const modal = document.getElementById('detail-modal');
