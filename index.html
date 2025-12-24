@@ -110,7 +110,6 @@
         <p id="phrase-romaji" class="text-gray-500 text-sm italic"></p>
         <p class="absolute bottom-10 text-gray-600 text-[10px] uppercase tracking-widest">Tap anywhere to close</p>
     </div>
-
     <script>
         const startDate = new Date('2026-01-19T15:20:00');
         const members = ['CN', 'SW', 'William']; 
@@ -126,8 +125,8 @@
 
         const tripData = {
              1: [
-                { time: "15:20", tag: "Departure", title: "台灣桃園機場起飛 (MM926)", icon: "fa-plane-departure", desc: "開啟南國沖繩極致之旅。建議旅客於起飛前2小時抵達桃園國際機場辦理登機與行李託運。飛行時間約1.5小時，可於機上稍作休息，預備迎接充滿琉球風情的假期。", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000", lat: 25.079, lng: 121.234 },
-                { time: "17:50", tag: "Arrival", title: "抵達那霸機場 & 搭乘單軌", icon: "fa-train-subway", desc: "抵達那霸空港。完成入境手續後，前往國內線航廈 2 樓搭乘單軌電車 (Yui Rail)。\n\n【交通攻略】\n目的地：Omoromachi 站 (歌町站)。\n出口：請由「西口」出站，步行即可抵達飯店與 DFS。\n票價：約 330 日圓 (Android 夥伴請準備實體 IC 卡或現金)。", img: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Okinawa-Monorail_Series1000_Asahimachi.jpg", lat: 26.206, lng: 127.646 },
+                { time: "15:20", tag: "Departure", title: "台灣桃園機場起飛 (MM926)", icon: "fa-plane-departure", map: "桃園國際機場", desc: "開啟南國沖繩極致之旅。建議旅客於起飛前2小時抵達桃園國際機場辦理登機與行李託運。飛行時間約1.5小時，可於機上稍作休息", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000", lat: 25.079, lng: 121.234 },
+                { time: "17:50", tag: "Arrival", title: "抵達那霸機場 & 搭乘單軌", icon: "fa-train-subway", map: "那霸機場", desc: "抵達那霸空港。完成入境手續後，前往國內線航廈 2 樓搭乘單軌電\n\n【交通攻略】\n目的地：Omoromachi 站 (歌町站)。\n出口：請由「西口」出站，步行即可抵達飯店與 DFS。\n票價：約 330 日圓 (Android 夥伴請準備實體 IC 卡或現金)。", img: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Okinawa-Monorail_Series1000_Asahimachi.jpg", lat: 26.206, lng: 127.646 },
                 { time: "18:45", tag: "Hotel", title: "東橫INN 那霸 Omoromachi 站前", icon: "fa-hotel", hours: "Check-in 15:00+", map: "東橫INN 那霸 Omoromachi 站前", desc: "緊鄰單軌歌町站，地理位置優越。飯店提供免費早餐，且正對面即是 DFS 租車點，是自駕行程的最佳基地。周邊有新都心商圈、大國藥妝與超市，生活機能強大。", img: "https://image.kkday.com/v2/image/get/w_1900%2Cc_fit/s1.kkday.com/product_152772/20230923055533_i6bm4/jpg", notes: "訂單編號: 5422314614\n地址：那霸市歌町1-6-6\n電話：+81-98-862-1045\nhttps://drive.google.com/file/d/1x6wEhdO34cDj6wGcgBg95QDzNLPSyOwA/view?usp=sharing", lat: 26.223, lng: 127.696 },
                 { 
                     time: "19:30", tag: "Night", title: "國際通 散策", icon: "fa-person-walking", map: "國際通", hours: "10:00-22:00", desc: "譽為「奇蹟的一哩路」的那霸第一街。這條全長1.6公里的街道在戰後迅速復甦，現已成為沖繩最繁華的商業核心。街道兩側集結了豐富的土產店、潮流服飾、藥妝旗艦店與各式主題餐廳，是體驗沖繩熱情夜晚、尋寶掃貨與感受南國活力的必訪勝地。", img: "https://images.unsplash.com/photo-1647336963732-7446b9da7a6f?q=80&w=1170&auto=format&fit=crop", lat: 26.215, lng: 127.684,
@@ -140,7 +139,7 @@
                 }
             ],
             2: [
-                { time: "09:00", tag: "Rental", title: "租車取車 (DFS T Galleria)", icon: "fa-car", map: "DFS T Galleria", mapcode: "33 188 295*36", desc: "前往新都心 DFS 櫃台辦理取車手續。正式開啟自駕北上之旅。\n\n【重要提醒】\n1. 確認合約是否包含 NOC (保險)。\n2. 檢查車身刮痕並拍照紀錄。", img: "https://www.otsinternational.jp/otsrentacar/img/upload/car_office/4_dfs_1.png", lat: 26.222, lng: 127.695, parking: "【有料】DFS 大型停車場，取車客戶通常享有折抵。", parkingLink: "https://maps.app.goo.gl/f2XzY2qG9Y2qG9Y2qG5" },
+                { time: "09:00", tag: "Rental", title: "租車取車 (DFS T Galleria)", icon: "fa-car", map: "DFS T Galleria", mapcode: "33 188 295*36", desc: "前往新都心 DFS 櫃台辦理取車手續。正式開啟自駕北上之旅。", img: "https://www.otsinternational.jp/otsrentacar/img/upload/car_office/4_dfs_1.png", notes: "【重要提醒】\n1. 確認合約是否包含 NOC (保險)。\n2. 檢查車身刮痕並拍照紀錄。", lat: 26.222, lng: 127.695, parking: "【有料】DFS 大型停車場，取車客戶通常享有折抵。", parkingLink: "https://maps.app.goo.gl/f2XzY2qG9Y2qG9Y2qG5" },
                 { 
                     time: "10:30", tag: "Island", title: "古宇利大橋 & 古宇利島", icon: "fa-bridge", map: "古宇利大橋", mapcode: "485 662 041*33", desc: "古宇利大橋是一座全長 1,960公尺 的跨海大橋，連接沖繩本島與「神之島」古宇利島。以其兩側一望無際的翡翠綠海洋景觀而聞名，是沖繩極受歡迎的自駕兜風路線。古宇利島本身由珊瑚礁形成，島上有許多值得探索的景點。\n\n古宇利海灘: 位於古宇利交流廣場旁，有著美麗的沙灘和完善的設施，提供水上活動。\n古宇利海洋塔: 位於島上高處，可以搭乘自動駕駛的高爾夫球車前往塔頂，俯瞰全島及古宇利大橋的壯麗景色。", img: "https://cdn.zekkei-japan.jp/images/articles/488e523c67776b1cf867452f7dc6008a.jpg", lat: 26.697, lng: 128.016, parking: "【無料】橋頭兩側皆有大型免費停車場。", parkingLink: "https://maps.app.goo.gl/f2XzY2qG9Y2qG9Y2qG6",
                     subs: [{ type: "午餐", name: "古宇利蝦蝦飯", hours: "11:00-18:00", mapcode: "485 692 174*01", map: "Kouri Shrimp", desc: "位於古宇利島的小山坡上，以充滿蒜香與奶油香氣的夏威夷式蝦餐點聞名，配上無敵海景是視覺與味覺的雙重享受。\n\n建議必吃：原味蒜香蝦餐 (Garlic Shrimp Original)、辣味加量版。", img: "https://cc.tvbs.com.tw/img/program/upload/2023/06/30/20230630153541-410273ba.jpg", parking: "【無料】店門口備有約 10-15 個專屬停車位。", parkingLink: "https://maps.app.goo.gl/f2XzY2qG9Y2qG9Y2qG7" }]
@@ -174,7 +173,7 @@
                     subs: [{ type: "甜點", name: "幸福鬆餅", hours: "11:00-19:00", img: "https://dina.tw/wp-content/uploads/2024/04/10%E5%B9%B8%E7%A6%8F%E9%AC%86%E9%A4%85.jpg" }]
                 },
                 { time: "16:00", tag: "Shrine", title: "波上宮 & 波之上海灘", icon: "fa-torii-gate", map: "波上宮", mapcode: "33 185 022*00", hours: "09:00-17:00", desc: "建立在珊瑚礁懸崖上的古老神社，琉球八社之首。下方的波之上海灘是市內唯一的天然沙灘。", img: "https://s3-ap-northeast-1.amazonaws.com/thegate/2021/02/09/18/08/05/namino_ue_gu_shrine.jpg", lat: 26.220, lng: 127.671, parking: "【有料】濱海收費區。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG4" },
-                { time: "18:30", tag: "Task", title: "租車還車 (DFS)", icon: "fa-gas-pump", map: "DFS T Galleria", desc: "結束自駕旅程。\n\n【加油規範】\n還車前請至鄰近加油站 (推薦 ENEOS 或 Shell 新都心店) 將油箱加滿，並保留收據備查。", img: "https://www.otsinternational.jp/otsrentacar/img/upload/car_office/4_dfs_1.png" },
+                { time: "18:30", tag: "Task", title: "租車還車 (DFS)", icon: "fa-gas-pump", map: "DFS T Galleria", desc: "結束自駕旅程。", img: "https://www.otsinternational.jp/otsrentacar/img/upload/car_office/4_dfs_1.png", notes: "【加油規範】\n還車前請至鄰近加油站 (推薦 ENEOS 或 Shell 新都心店) 將油箱加滿，並保留收據備查。" },
                 { 
                     time: "19:00", tag: "Shopping", title: "新都心商圈 (Omoromachi)", icon: "fa-bag-shopping", map: "新都心", hours: "10:00-22:00", desc: "那霸現代化購物與生活中心，集結 DFS、UQ、GU、家電與美食餐廳。還車點就在飯店對面。", img: "https://www.tabirai.net/tabirai-uploader/img/0016739/s1_0016739.jpg", lat: 26.224, lng: 127.693, parking: "【無料】Naha Main Place 大型停車場。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG5",
                     subs: [{ type: "晚餐", name: "目利銀次", hours: "17:00-01:00",  map: "目利きの銀次 新都心本舗", desc: "位於新都心的浮誇系居酒屋，裝潢以巨大木桶為特色。海鮮每日由產地直送，食材水準極高。\n\n建議必吃：產地直送生魚片拼盤 (超便宜)、烤生蠔、海膽飯糰。", img: "https://mimigo.tw/wp-content/uploads/20190328181052_47.jpg" }]
@@ -192,13 +191,15 @@
             ]
         };
 
+
         const packingList = [
             { cat: "隨身行李", items: ["護照 (效期6個月以上)", "錢包/外幣 (2-3萬日圓現金)", "ICOCA/Suica (可手機綁定)", "駕照正本+日文譯本", "機票/訂房/租車憑證", "行動電源", "日本網卡/eSIM", "個人藥品", "外套/圍巾/帽子", "相機/腳架", "隨身面紙/夾鏈袋"] },
             { cat: "託運行李", items: ["充電器/轉接頭", "刮鬍刀", "牙刷/牙膏", "換洗衣物 (3-4套)", "內衣褲/襪子", "睡衣", "摺疊傘", "環保購物袋", "髒衣收納袋"] }
         ];
 
         const shoppingList = [
-            { cat: "沖繩必買名產", items: ["御菓子御殿 紅芋塔", "南風堂 雪鹽金楚糕", "邊銀食堂 石垣島辣油", "35 Coffee (扶桑花茶包)", "Orion 啤酒/零嘴", "沖繩泡麵 (そば風味)", "LuLuLun 限定面膜", "SuiSavon 首里石鹼", "曬黑款 Hello Kitty", "美麗海水族館 鯨鯊扭蛋"] }
+            { cat: "必買名產", items: ["御菓子御殿 紅芋塔", "南風堂 雪鹽金楚糕", "邊銀食堂 石垣島辣油", "35 Coffee (扶桑花茶包)", "Orion 啤酒/零嘴", "沖繩泡麵 (そば風味)"] },
+            { cat: "藥妝/小物", items: ["LuLuLun 限定面膜", "SuiSavon 首里石鹼", "曬黑款 Hello Kitty", "美麗海水族館 鯨鯊扭蛋", "風獅爺 (シーサー) 擺飾"] }
         ];
 
         const phrases = [
@@ -211,7 +212,8 @@
             { j: "領収書をください", r: "Ryoushuusho o kudasai", e: "請給我收據 (加油用)" }
         ];
 
-        // --- 核心邏輯 ---
+        // --- 以下是功能電路區 (保證恢復功能) ---
+
         async function fetchWeather() {
             try {
                 const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=26.2124&longitude=127.6809&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo");
@@ -221,7 +223,7 @@
                     document.getElementById(`w-temp-${i}`).textContent = `${Math.round(data.daily.temperature_2m_min[i])}°/${Math.round(data.daily.temperature_2m_max[i])}°`;
                     document.getElementById(`w-icon-${i}`).className = "fas " + getWeatherIcon(code);
                 }
-            } catch (e) { console.error("Weather Error", e); }
+            } catch (e) {}
         }
 
         function getWeatherIcon(code) {
@@ -234,32 +236,23 @@
         async function autoSyncFromCloud() {
             if (activeTab !== 'ledger') return;
             try {
-                const response = await fetch(SYNC_URL);
-                const data = await response.json();
+                const res = await fetch(SYNC_URL);
+                const data = await res.json();
                 if (data && data.length > 0) {
-                    expenses = data;
-                    localStorage.setItem('okinawa_expenses', JSON.stringify(expenses));
-                    renderLedger();
+                    expenses = data; localStorage.setItem('okinawa_expenses', JSON.stringify(expenses)); renderLedger();
                 }
-            } catch (e) { console.log("Sync Silent fail"); }
+            } catch (e) {}
         }
 
         async function syncToCloudSilently() {
-            try {
-                await fetch(SYNC_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(expenses) });
-            } catch (e) { console.error("Cloud backup failed"); }
+            try { await fetch(SYNC_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(expenses) });
+            } catch (e) {}
         }
 
-        function initApp() {
-            activeTab = 'itinerary';
-            renderDatePicker();
-            renderItinerary();
-            fetchWeather();
-        }
+        function initApp() { renderDatePicker(); renderItinerary(); fetchWeather(); }
 
         function renderDatePicker() {
             const picker = document.getElementById('date-picker-container');
-            if (!picker) return;
             picker.innerHTML = '';
             for (let i = 0; i < 4; i++) {
                 const date = new Date(startDate);
@@ -312,16 +305,8 @@
             map = L.map('map-container', { zoomControl: false });
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '© OSM' }).addTo(map);
             const markers = [];
-            tripData[currentDay].forEach((p, idx) => {
-                if (p.lat && p.lng) {
-                    L.marker([p.lat, p.lng]).addTo(map).bindPopup(`<b style="color:#e53e3e">#${idx+1} ${p.title}</b>`);
-                    markers.push([p.lat, p.lng]);
-                }
-            });
-            if (markers.length > 0) {
-                const polyline = L.polyline(markers, {color: '#fca5a5', weight: 3, dashArray: '5, 10'}).addTo(map);
-                map.fitBounds(polyline.getBounds(), { padding: [40, 40] });
-            }
+            tripData[currentDay].forEach((p, idx) => { if (p.lat && p.lng) { L.marker([p.lat, p.lng]).addTo(map).bindPopup(`<b style="color:#e53e3e">#${idx+1} ${p.title}</b>`); markers.push([p.lat, p.lng]); } });
+            if (markers.length > 0) { const polyline = L.polyline(markers, {color: '#fca5a5', weight: 3, dashArray: '5, 10'}).addTo(map); map.fitBounds(polyline.getBounds(), { padding: [40, 40] }); }
         }
 
         function toggleView(view) { activeTab = view; updateTabStyles(); renderDatePicker(); if (view === 'ledger') { renderLedger(); autoSyncFromCloud(); } else if (view === 'checklist') { renderAssistant(); } else { renderItinerary(); } }
