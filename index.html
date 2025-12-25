@@ -60,17 +60,18 @@
             <div class="col-start-1"></div>
             <div id="date-picker-container" class="flex space-x-5 justify-center items-end pb-1"></div>
             <div class="flex justify-end space-x-3 pb-0.5">
-                <button onclick="toggleView('checklist')" id="checklist-toggle" class="flex flex-col items-center text-gray-300">
+                <button onclick="toggleView('checklist')" id="checklist-toggle" class="flex flex-col items-center text-gray-300 transition-all">
                     <i class="fas fa-toolbox text-lg mb-0.5"></i>
                     <span class="text-[9px] font-bold">助手</span>
                 </button>
-                <button onclick="toggleView('ledger')" id="ledger-toggle" class="flex flex-col items-center text-gray-300">
+                <button onclick="toggleView('ledger')" id="ledger-toggle" class="flex flex-col items-center text-gray-300 transition-all">
                     <i class="fas fa-wallet text-lg mb-0.5"></i>
                     <span class="text-[9px] font-bold">帳本</span>
                 </button>
             </div>
         </div>
     </header>
+
     <main id="content" class="flex-1 overflow-y-auto p-5 pb-24 bg-[#fcfaf2]"></main>
 
     <div id="detail-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 hidden flex items-end sm:items-center justify-center transition-opacity duration-300 opacity-0">
@@ -86,7 +87,7 @@
                 <p id="modal-desc" class="text-gray-600 leading-relaxed text-sm mb-6 whitespace-pre-line"></p>
                 <div id="modal-parking-container" class="hidden mb-6 bg-blue-50 p-4 rounded-xl border border-blue-100">
                     <div class="flex justify-between items-center mb-1">
-                        <h4 class="text-[10px] font-bold text-blue-600 uppercase"><i class="fas fa-parking mr-1"></i> 停車指引</h4>
+                        <h4 class="text-[10px] font-bold text-blue-600 uppercase"><i class="fas fa-parking mr-1"></i> 停車指引 (自駕必看)</h4>
                         <a id="modal-parking-link" href="#" target="_blank" class="bg-blue-600 text-white text-[10px] px-2 py-1 rounded font-bold shadow-sm flex items-center gap-1"><i class="fas fa-location-arrow"></i> 導航</a>
                     </div>
                     <p id="modal-parking" class="text-xs text-blue-800 leading-relaxed"></p>
@@ -112,8 +113,10 @@
     </div>
 
     <script>
+        // 核心設定與消失的變數 (daysOfWeek 已找回)
         const startDate = new Date('2026-01-19T15:20:00');
         const members = ['CN', 'SW', 'William']; 
+        const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         const SYNC_URL = 'https://script.google.com/macros/s/AKfycbwnAoDsbgiHImkf54L8jG0paehqET1gixBQxSSRwr_wW3cKDRMKcJ5K_QmkIspncwzfGA/exec';
 
         let currentDay = 1;
@@ -123,7 +126,7 @@
         let checklistState = JSON.parse(localStorage.getItem('okinawa_checklist') || '{}');
         let map = null;
 
-        // 核心內容：完全鎖定您的修改
+        // 行程資料 (鎖定您的所有內容)
         const tripData = {
              1: [
                 { time: "15:20", tag: "Departure", title: "台灣桃園機場起飛 (MM926)", icon: "fa-plane-departure", map: "桃園國際機場", desc: "開啟南國沖繩極致之旅。建議旅客於起飛前2小時抵達桃園國際機場辦理登機與行李託運。飛行時間約1.5小時，可於機上稍作休息", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000", lat: 25.079, lng: 121.234 },
@@ -133,29 +136,29 @@
                     time: "19:30", tag: "Night", title: "國際通 散策", icon: "fa-person-walking", map: "國際通", hours: "10:00-22:00", desc: "譽為「奇蹟的一哩路」的那霸第一街。這條全長1.6公里的街道在戰後迅速復甦，現已成為沖繩最繁華的商業核心。街道兩側集結了豐富的土產店、潮流服飾、藥妝旗艦店與各式主題餐廳，是體驗沖繩熱情夜晚、尋寶掃貨與感受南國活力的必訪勝地。", img: "https://images.unsplash.com/photo-1647336963732-7446b9da7a6f?q=80&w=1170&auto=format&fit=crop", lat: 26.215, lng: 127.684,
                     subs: [
                         { type: "晚餐", name: "國際通屋台村", hours: "11:00-23:00", mapcode: "33 157 444*55", map: "國際通屋台村", desc: "集結了 20 間特色小店，從道地琉球料理到創意居酒屋應有盡有，是感受沖繩熱鬧深夜食堂氛圍的最佳去處。\n\n建議必吃：阿古豬餃子 (Agu Pork)、石垣牛串燒、泡盛調酒。", img: "https://static.gltjp.com/glt/data/directory/14000/13966/20221104_110633_5122610b_w1920.webp" },
-                        { type: "晚餐", name: "琉球的牛", hours: "17:00-22:30", mapcode: "33 157 448*38", map: "燒肉 琉球之牛 那霸國際通（3F）", desc: "沖繩超人氣頂級燒肉店，以入口即化的縣產和牛聞名，排隊時間極長，建議一定要提早預約。\n\n建議必吃：頂級和牛套餐、炙燒牛肉握壽司。", img: "https://www.u-shi.net/img/shopinfo/naha2.jpg" },
-                        { type: "甜點", name: "Blue Seal 冰淇淋", hours: "10:00-22:00", map: "Blue Seal 國際通", desc: "源自美國、在沖繩發揚光大的標誌性品牌，結合了美式濃郁與沖繩在地食材，是南國消暑首選。\n\n建議必吃：紅芋 (Beni-imo)、沖繩鹽鮮奶 (Okinawan Salt Cookies)。", img: "https://sydney-blog.com/wp-content/uploads/2024/06/s__64839791-197690351-e1718103592320.jpg?w=1400" },
-                        { type: "甜點", name: "KOI Thé 飲料店", hours: "10:00-21:00", map: "KOI Thé 國際通", desc: "源自台灣的高品質茶飲品牌，在那霸極受歡迎，適合在逛完街後買一杯帶著走。\n\n建議必吃：黃金珍珠奶茶、烏龍拿鐵。", img: "https://i0.wp.com/carollin.tw/wp-content/uploads/20170418013350_6.jpg?ssl=1" }
+                        { type: "晚餐", name: "琉球的牛", hours: "17:00-22:30", mapcode: "33 157 448*38", map: "燒肉 琉球之牛 那霸國際通（3F）", desc: "沖繩高人氣頂級燒肉店，以入口即化的縣產和牛聞名，排隊時間極長，建議一定要提早預約。", img: "https://www.u-shi.net/img/shopinfo/naha2.jpg" },
+                        { type: "甜點", name: "Blue Seal 冰淇淋", hours: "10:00-22:00", map: "Blue Seal 國際通", desc: "源自美國、在沖繩發揚光大的標誌性品牌，結合了美式濃郁與沖繩在地食材，是南國消暑首選。必吃紅芋、雪鹽味。", img: "https://sydney-blog.com/wp-content/uploads/2024/06/s__64839791-197690351-e1718103592320.jpg?w=1400" },
+                        { type: "甜點", name: "KOI Thé 飲料店", hours: "10:00-21:00", map: "KOI Thé 國際通", desc: "源自台灣的高品質茶飲品牌，在那霸極受歡迎，適合在逛完街後買一杯帶著走。", img: "https://i0.wp.com/carollin.tw/wp-content/uploads/20170418013350_6.jpg?ssl=1" }
                     ]
                 }
             ],
             2: [
-                { time: "09:00", tag: "Rental", title: "租車取車 (DFS T Galleria)", icon: "fa-car", map: "DFS T Galleria", mapcode: "33 188 295*36", desc: "前往新都心 DFS 櫃台辦理取車手續。正式開啟自駕北上之旅。", img: "https://www.otsinternational.jp/otsrentacar/img/upload/car_office/4_dfs_1.png", notes: `重要提醒:\n1. 確認合約是否包含 NOC (保險)。\n2. 檢查車身刮痕並拍照紀錄。`, lat: 26.222, lng: 127.695, parking: "【有料】DFS 大型停車場，取車客戶通常享有折抵。", parkingLink: "https://maps.app.goo.gl/f2XzY2qG9Y2qG9Y2qG5" },
+                { time: "09:00", tag: "Rental", title: "租車取車 (DFS T Galleria)", icon: "fa-car", map: "DFS T Galleria", mapcode: "33 188 295*36", desc: "前往新都心 DFS 櫃台辦理取車手續。正式開啟自駕北上之旅。", img: "https://www.otsinternational.jp/otsrentacar/img/upload/car_office/4_dfs_1.png", notes: `重要提醒:\n1. 確認合約是否包含 NOC (保險)。\n2. 檢查車身刮痕並拍照紀錄。`, lat: 26.222, lng: 127.695, parking: "【有料】DFS 大型停車場，取車客戶通常享有折抵。", parkingLink: "https://www.google.com/maps/search/?api=1&query=" },
                 { 
-                    time: "10:30", tag: "Island", title: "古宇利大橋 & 古宇利島", icon: "fa-bridge", map: "古宇利大橋", mapcode: "485 662 041*33", desc: "古宇利大橋是一座全長 1,960公尺 的跨海大橋，連接沖繩本島與「神之島」古宇利島。以其兩側一望無際的翡翠綠海洋景觀而聞名，是沖繩極受歡迎的自駕兜風路線。", img: "https://cdn.zekkei-japan.jp/images/articles/488e523c67776b1cf867452f7dc6008a.jpg", lat: 26.697, lng: 128.016, parking: "【無料】橋頭兩側皆有大型免費停車場。", parkingLink: "https://maps.app.goo.gl/f2XzY2qG9Y2qG9Y2qG6",
-                    subs: [{ type: "午餐", name: "古宇利蝦蝦飯", hours: "11:00-18:00", mapcode: "485 692 174*01", map: "Kouri Shrimp", desc: "位於古宇利島的小山坡上，以充滿蒜香與奶油香氣的夏威夷式蝦餐點聞名，配上無敵海景是視覺與味覺的雙重享受。\n\n建議必吃：原味蒜香蝦餐 (Garlic Shrimp Original)、辣味加量版。", img: "https://cc.tvbs.com.tw/img/program/upload/2023/06/30/20230630153541-410273ba.jpg", parking: "【無料】店門口備有約 10-15 個專屬停車位。", parkingLink: "https://maps.app.goo.gl/f2XzY2qG9Y2qG9Y2qG7" }]
+                    time: "10:30", tag: "Island", title: "古宇利大橋 & 古宇利島", icon: "fa-bridge", map: "古宇利大橋", mapcode: "485 662 041*33", desc: "古宇利大橋是一座全長 1,960公尺 的跨海大橋，連接沖繩本島與「神之島」古宇利島。以其兩側一望無際的翡翠綠海洋景觀而聞名。", img: "https://cdn.zekkei-japan.jp/images/articles/488e523c67776b1cf867452f7dc6008a.jpg", lat: 26.697, lng: 128.016, parking: "【無料】橋頭兩側皆有大型免費停車場。", parkingLink: "https://maps.app.goo.gl/f2XzY2qG9Y2qG9Y2qG6",
+                    subs: [{ type: "午餐", name: "古宇利蝦蝦飯", hours: "11:00-18:00", mapcode: "485 692 174*01", map: "Kouri Shrimp", desc: "位於古宇利島的小山坡上，以充滿蒜香與奶油香氣的夏威夷式蝦餐點聞名，配上無敵海景是視覺與味覺的雙重享受。", img: "https://cc.tvbs.com.tw/img/program/upload/2023/06/30/20230630153541-410273ba.jpg", parking: "【無料】店門口備有約 10-15 個專屬停車位。", parkingLink: "https://maps.app.goo.gl/f2XzY2qG9Y2qG9Y2qG7" }]
                 },
                 { 
                     time: "13:30", tag: "Ocean", title: "美麗海水族館", icon: "fa-fish", map: "美麗海水族館", mapcode: "553 075 797*77", hours: "08:30-18:30", desc: "以「美麗的海洋」為主題，展示沖繩豐富多樣的海洋生態，其特色是巨大的「黑潮之海」水槽，飼養著世界最大魚類鯨鯊與鬼蝠魟。", img: "https://images.unsplash.com/photo-1612476919598-a233d3692cc6?q=80&w=1170&auto=format&fit=crop", lat: 26.694, lng: 127.877, parking: "【無料】請導航至「P7 北口立體停車場」，離入口最近。", parkingLink: "https://maps.app.goo.gl/f2XzY2qG9Y2qG9Y2qG8",
                     subs: [
-                        { type: "表演", name: "海豚秀 (15:00 / 17:00)", hours: "約20分鐘", desc: "以湛藍大海為背景的戶外劇場。看聰明的海豚們展現精彩演出。", img: "https://churaumi.okinawa/userfiles/images/area/surrounding/DSC02344.jpg" },
-                        { type: "表演", name: "鯨鯊餵食秀 (15:00 / 17:00)", hours: "黑潮之海槽前", desc: "在巨大的「黑潮之海」水槽前，看全世界最大的魚類「鯨鯊」垂直在水中進食的震撼瞬間。", img: "https://assets.funliday.com/posts/wp-content/uploads/2023/03/05233404/IMG_8454-scaled.jpg" }
+                        { type: "表演", name: "海豚秀 (15:00 / 17:00)", hours: "約20分鐘", img: "https://churaumi.okinawa/userfiles/images/area/surrounding/DSC02344.jpg" },
+                        { type: "表演", name: "鯨鯊餵食秀 (15:00 / 17:00)", hours: "黑潮之海槽前", img: "https://assets.funliday.com/posts/wp-content/uploads/2023/03/05233404/IMG_8454-scaled.jpg" }
                     ]
                 },
                 { 
-                    time: "18:30", tag: "Dinner", title: "美國村", icon: "fa-ferris-wheel", map: "美國村", mapcode: "33 526 450*63", hours: "10:00-22:00", desc: "充滿色彩繽紛的美式建築。這裡集結了約350間商店、餐廳、電影院、遊樂場。Depot Island 是熱門拍照點。", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiTiTfQo0lBlgTRpdltj6PVc5eW9G2C3yEnjJ1xGmWk4jOKmDTNTzZ2R_xqaPAyYjX5dMRSuV9NebKGmZ4-Mq_FJDrI3B2ET5Ayha8cSG77fo5rc-U4Nydp1NdGhsFkXBX0ZOXpsFZiu7I9jdCAv2FBpriMbWQHpuZ7PTNvKkc1rU7okfqbvRItGQvUmVjA/s1600-rw/Okinawa-American-Village-3.jpg", lat: 26.316, lng: 127.755, parking: "【無料】北谷町公共停車場，車位極多且免費。", parkingLink: "https://maps.app.goo.gl/f2XzY2qG9Y2qG9Y2qG9",
+                    time: "18:30", tag: "Dinner", title: "美國村", icon: "fa-ferris-wheel", map: "美國村", mapcode: "33 526 450*63", hours: "10:00-22:00", desc: "這裡集結了約350間商店、餐廳、電影院、遊樂場。Depot Island 是熱門拍照點。", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiTiTfQo0lBlgTRpdltj6PVc5eW9G2C3yEnjJ1xGmWk4jOKmDTNTzZ2R_xqaPAyYjX5dMRSuV9NebKGmZ4-Mq_FJDrI3B2ET5Ayha8cSG77fo5rc-U4Nydp1NdGhsFkXBX0ZOXpsFZiu7I9jdCAv2FBpriMbWQHpuZ7PTNvKkc1rU7okfqbvRItGQvUmVjA/s1600-rw/Okinawa-American-Village-3.jpg", lat: 26.316, lng: 127.755, parking: "【無料】北谷町公共停車場，車位極多且免費。", parkingLink: "https://maps.app.goo.gl/f2XzY2qG9Y2qG9Y2qG9",
                     subs: [
-                        { type: "晚餐", name: "迴轉壽司市場", hours: "11:30-21:00", map: "迴轉壽司市場 美浜店", desc: "排隊名店，海鮮拼盤、炙燒阿古豬握壽司必吃。", img: "https://img.poibank.com/SaGXj-6gjSM1TuYYdXJzs8NU7Kg=/W3siZm9ybWF0IjoianBnIn0seyJrZXkiOiJzdWdnZXN0aW9uLzI2NDM3NDQyLzEwNTAxNjI3LzE2OTE4NTY0NDI4MDIifSx7InJlc2l6ZSI6eyJ3aWR0aCI6IjE0NzcifX1d" },
+                        { type: "晚餐", name: "迴轉壽司市場", hours: "11:30-21:00", map: "迴轉壽司市場 美浜店", desc: "美國村內的高 CP 值壽司店，食材皆為漁港直送，新鮮度與份量都讓這家店成為北谷區域的排隊名店。", img: "https://img.poibank.com/SaGXj-6gjSM1TuYYdXJzs8NU7Kg=/W3siZm9ybWF0IjoianBnIn0seyJrZXkiOiJzdWdnZXN0aW9uLzI2NDM3NDQyLzEwNTAxNjI3LzE2OTE4NTY0NDI4MDIifSx7InJlc2l6ZSI6eyJ3aWR0aCI6IjE0NzcifX1d" },
                         { type: "晚餐", name: "A&W 漢堡", hours: "09:00-22:00", map: "A&W 美浜店", desc: "日本限定，麥根沙士與 Mozza 漢堡必吃。", img: "https://pimg.1px.tw/muzuochen/1448980489-647390745.jpg" }
                     ]
                 }
@@ -165,19 +168,19 @@
                 { 
                     time: "11:30", tag: "Cave", title: "玉泉洞 / 沖繩世界", icon: "fa-mountain-sun", map: "玉泉洞", mapcode: "232 495 330*28", hours: "09:00-17:30", desc: "歷經30萬年形成的日本第二大鐘乳洞，擁有超過百萬根鐘乳石與神秘地下水景觀，全長5000公尺，遊客可漫步於對外開放的約890公尺步道欣賞奇景。", img: "https://images.unsplash.com/photo-1612476919598-a233d3692cc6?q=80&w=1170&auto=format&fit=crop", lat: 26.139, lng: 127.750, parking: "【無料】園內大型免費停車場。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG1",
                     subs: [
-                        { type: "表演", name: "12:30 太鼓表演", hours: "約30分鐘", desc: "展現琉球傳統祭典的力與美。強而有力的鼓聲與吆喝聲，震撼人心。", img: "https://www.okitour.co.jp/uploads/contents/product/Ifz2McHD8" },
-                        { type: "午餐", name: "屋宜家 (老屋沖繩麵)", hours: "11:00-15:30", mapcode: "232 465 718*33", map: "屋宜家", desc: "位於百年老宅中，一邊品嚐豆乳沖繩麵一邊欣賞庭園。", img: "https://icrvb3jy.xinmedia.com/solomo/article/d/4/a/d4aa36b2-01f1-439d-adbd-fd33ab8ac0be.jpeg", parking: "【無料】門口專用位。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG2" }
+                        { type: "表演", name: "12:30 太鼓表演", hours: "約30分鐘", img: "https://www.okitour.co.jp/uploads/contents/product/Ifz2McHD8" },
+                        { type: "午餐", name: "屋宜家 (老屋沖繩麵)", hours: "11:00-15:30", mapcode: "232 465 718*33", map: "屋宜家", desc: "位於百年老宅中，一邊品嚐豆乳沖繩麵一邊欣賞日式庭園。", img: "https://icrvb3jy.xinmedia.com/solomo/article/d/4/a/d4aa36b2-01f1-439d-adbd-fd33ab8ac0be.jpeg", parking: "【無料】門口專用位。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG2" }
                     ]
                 },
                 { 
-                    time: "14:30", tag: "View", title: "瀨長島", icon: "fa-plane-up", map: "瀨長島", mapcode: "33 002 602*06", hours: "10:00-21:00", desc: "純白地中海風格建築群「海風露台(Umikaji Terrace)」聞名，能近距離觀賞飛機起降。", img: "https://visitokinawajapan.com/wp-content/themes/visit-okinawa_multi-language/lang/zh-hant/assets/img/destinations/okinawa-main-island/southern-okinawa-main-island/senaga-island/de36_kv_senaga-island-umikaji-terrace.webp", lat: 26.174, lng: 127.646, parking: "【無料】沿島環狀道路兩側，下午一位難求。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG3",
+                    time: "14:30", tag: "View", title: "瀨長島", icon: "fa-plane-up", map: "瀨長島", mapcode: "33 002 602*06", hours: "10:00-21:00", desc: "純白地中海風格建築群「海風露台(Umikaji Terrace)」聞名，能近距離觀賞飛機起降。", img: "https://visitokinawajapan.com/wp-content/themes/visit-okinawa_multi-language/lang/zh-hant/assets/img/destinations/okinawa-main-island/southern-okinawa-main-island/senaga-island/de36_kv_senaga-island-umikaji-terrace.webp", lat: 26.174, lng: 127.646, parking: "【無料】沿島環狀道路兩側，下午極難停車。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG3",
                     subs: [{ type: "甜點", name: "幸福鬆餅", hours: "11:00-19:00", img: "https://dina.tw/wp-content/uploads/2024/04/10%E5%B9%B8%E7%A6%8F%E9%AC%86%E9%A4%85.jpg" }]
                 },
                 { time: "16:00", tag: "Shrine", title: "波上宮 & 波之上海灘", icon: "fa-torii-gate", map: "波上宮", mapcode: "33 185 022*00", hours: "09:00-17:00", desc: "建立在珊瑚礁懸崖上的古老神社，琉球八社之首。神社下方的波之上海灘是市內唯一的天然沙灘。", img: "https://s3-ap-northeast-1.amazonaws.com/thegate/2021/02/09/18/08/05/namino_ue_gu_shrine.jpg", lat: 26.220, lng: 127.671, parking: "【有料】濱海收費停車場。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG4" },
-                { time: "18:30", tag: "Task", title: "租車還車 (DFS)", icon: "fa-gas-pump", map: "DFS T Galleria", desc: `結束自駕之旅。\n\n【加油規範】\n還車前請至鄰近加油站 (推薦 ENEOS 或 Shell 新都心店) 將油箱加滿並保留收據備查。`, img: "https://www.otsinternational.jp/otsrentacar/img/upload/car_office/4_dfs_1.png" },
+                { time: "18:30", tag: "Task", title: "租車還車 (DFS)", icon: "fa-gas-pump", map: "DFS T Galleria", desc: "結束自駕旅程。", img: "https://www.otsinternational.jp/otsrentacar/img/upload/car_office/4_dfs_1.png", notes: `【加油規範】\n還車前請至鄰近加油站 (推薦 ENEOS 或 Shell 新都心店) 將油箱加滿並保留收據備查。` },
                 { 
-                    time: "19:00", tag: "Shopping", title: "新都心商圈 (Omoromachi)", icon: "fa-bag-shopping", map: "新都心", hours: "10:00-22:00", desc: "那霸現代化購物與生活中心，集結 DFS、UQ、GU、家電與美食。還車點就在飯店對面。", img: "https://www.tabirai.net/tabirai-uploader/img/0016739/s1_0016739.jpg", lat: 26.224, lng: 127.693, parking: "【無料】Naha Main Place 大型停車場。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG5",
-                    subs: [{ type: "晚餐", name: "目利銀次", hours: "17:00-01:00",  map: "目利きの銀次 新都心本舗", desc: "裝潢特色木桶，產地直送生魚片拼盤、海膽飯糰必點。", img: "https://mimigo.tw/wp-content/uploads/20190328181052_47.jpg" }]
+                    time: "19:00", tag: "Shopping", title: "新都心商圈 (Omoromachi)", icon: "fa-bag-shopping", map: "新都心", hours: "10:00-22:00", desc: "那霸現代化購物中心，集結 DFS、UQ、GU、家電與美食。還車點就在飯店對面。", img: "https://www.tabirai.net/tabirai-uploader/img/0016739/s1_0016739.jpg", lat: 26.224, lng: 127.693, parking: "【無料】Naha Main Place 大型停車場。", parkingLink: "https://maps.app.goo.gl/A2XzY2qG9Y2qG9Y2qG5",
+                    subs: [{ type: "晚餐", name: "目利銀次", hours: "17:00-01:00",  map: "目利きの銀次 新都心本舗", desc: "裝潢特色木桶，產地直送生魚片拼盤、海膽飯糰必吃。", img: "https://mimigo.tw/wp-content/uploads/20190328181052_47.jpg" }]
                 }
             ],
             4: [
@@ -189,17 +192,17 @@
                         { type: "午餐", name: "海鮮大餐 (代客料理)", hours: "11:00-19:00", desc: "一樓挑海鮮，二樓料理。必吃夜光貝、龍蝦、巨型扇貝。", img: "https://i1.wp.com/itravelblog.net/wp-content/uploads/2024/05/First-Makishi-Public-Market-16.jpg" }
                     ]
                 },
-                { time: "14:00", tag: "Transit", title: "前往機場", icon: "fa-train", map: "那霸機場", desc: "搭單軌前往機場，告別沖繩。別忘了領取預定飯糰。", img: "https://static.gltjp.com/glt/data/directory/18000/17994/20251008_082552_97874209_w1920.webp", lat: 26.206, lng: 127.646 }
+                { time: "14:00", tag: "Transit", title: "前往機場", icon: "fa-train", map: "那霸機場", desc: "搭單軌前往機場，告別沖繩。別忘了領取預定飯糰。", img: "https://static.gltjp.com/data/directory/18000/17994/20251008_082552_97874209_w1920.webp", lat: 26.206, lng: 127.646 }
             ]
         };
 
         const packingList = [
-            { cat: "隨身行李", items: ["護照 (效期6個月以上)", "錢包/外幣 (2-3萬日圓現金)", "ICOCA/Suica (實體卡備用)", "駕照正本+日文譯本", "機票/訂房/租車憑證", "行動電源", "日本網卡/eSIM", "個人藥品", "外套/圍巾/帽子", "相機/腳架", "隨身面紙/夾鏈袋"] },
+            { cat: "隨身行李", items: ["護護照 (效期6個月以上)", "錢包/外幣 (2-3萬日圓現金)", "ICOCA/Suica (實體卡)", "駕照正本+日文譯本", "機票/訂房/租車憑證", "行動電源", "日本網卡/eSIM", "個人藥品", "外套/圍巾/帽子", "相機/腳架", "隨身面紙"] },
             { cat: "託運行李", items: ["充電器/轉接頭", "刮鬍刀", "牙刷/牙膏", "換洗衣物 (3-4套)", "內衣褲/襪子", "睡衣", "摺疊傘", "環保購物袋", "髒衣收納袋"] }
         ];
 
         const shoppingList = [
-            { cat: "沖繩伴手禮", items: ["御菓子御殿 紅芋塔", "南風堂 雪鹽金楚糕", "邊銀食堂 石垣島辣油", "35 Coffee 扶桑花茶包", "Orion 啤酒/零嘴", "沖繩泡麵 (そば風味)", "LuLuLun 限定面膜", "SuiSavon 首里石鹼", "曬黑 Hello Kitty", "美麗海 鯨鯊扭蛋"] }
+            { cat: "必買伴手禮", items: ["御菓子御殿 紅芋塔", "南風堂 雪鹽金楚糕", "邊銀食堂 石垣島辣油", "35 Coffee 扶桑花茶", "Orion 啤酒/零嘴", "沖繩泡麵 (そば風味)", "LuLuLun 限定面膜", "SuiSavon 首里石鹼", "美麗海 鯨鯊扭蛋"] }
         ];
 
         const phrases = [
@@ -219,7 +222,7 @@
             { name: "飯店 Omoromachi", tel: "098-862-1045" }
         ];
 
-        // --- 功能指令區 (全數接通) ---
+        // --- 功能與渲染邏輯 ---
         async function fetchWeather() {
             try {
                 const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=26.2124&longitude=127.6809&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo");
@@ -231,12 +234,14 @@
                 }
             } catch (e) {}
         }
+
         function getWeatherIcon(code) {
             if (code <= 1) return "fa-sun text-orange-400";
             if (code <= 3) return "fa-cloud-sun text-yellow-500";
             if (code <= 65) return "fa-cloud-showers-heavy text-blue-400";
             return "fa-cloud text-gray-400";
         }
+
         async function autoSyncFromCloud() {
             if (activeTab !== 'ledger') return;
             try {
@@ -247,6 +252,7 @@
                 }
             } catch (e) {}
         }
+
         async function syncToCloudSilently() {
             try { await fetch(SYNC_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(expenses) });
             } catch (e) {}
@@ -305,9 +311,8 @@
             activeTab = view;
             const lt = document.getElementById('ledger-toggle');
             const ct = document.getElementById('checklist-toggle');
-            if (lt) lt.className = `flex flex-col items-center pb-0.5 transition-all ${activeTab === 'ledger' ? 'nav-btn-active' : 'text-gray-300'}`;
-            if (ct) ct.className = `flex flex-col items-center pb-0.5 transition-all ${activeTab === 'checklist' ? 'nav-btn-active' : 'text-gray-300'}`;
-
+            lt.className = `flex flex-col items-center pb-0.5 transition-all ${activeTab === 'ledger' ? 'nav-btn-active' : 'text-gray-300'}`;
+            ct.className = `flex flex-col items-center pb-0.5 transition-all ${activeTab === 'checklist' ? 'nav-btn-active' : 'text-gray-300'}`;
             if (view === 'ledger') { renderLedger(); autoSyncFromCloud(); } 
             else if (view === 'checklist') { renderAssistant(); } 
             else { renderDatePicker(); renderItinerary(); }
@@ -316,6 +321,7 @@
         function renderAssistant() {
             const container = document.getElementById('content');
             let html = `<div class="space-y-6">`;
+            // 渲染行李清單
             packingList.forEach(group => {
                 html += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-orange-100"><h3 class="text-sm font-bold text-red-500 mb-4 flex items-center uppercase tracking-wider"><i class="fas fa-check-circle mr-2"></i> ${group.cat}</h3><div class="space-y-3">`;
                 group.items.forEach(item => {
@@ -324,19 +330,24 @@
                 });
                 html += `</div></div>`;
             });
-            html += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-blue-100"><h3 class="text-sm font-bold text-blue-500 mb-4 flex items-center uppercase tracking-wider"><i class="fas fa-shopping-bag mr-2"></i> 沖繩購物清單</h3><div class="space-y-3">`;
+            // 渲染購物清單
             shoppingList.forEach(group => {
+                html += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-blue-100"><h3 class="text-sm font-bold text-blue-500 mb-4 flex items-center uppercase tracking-wider"><i class="fas fa-shopping-bag mr-2"></i> ${group.cat}</h3><div class="space-y-3">`;
                 group.items.forEach(item => {
                     const isChecked = checklistState[item] ? 'checked' : '';
                     html += `<label class="flex items-center justify-between p-3 bg-blue-50/30 rounded-xl transition-all active:bg-blue-100"><span class="text-sm font-medium text-gray-700">${item}</span><input type="checkbox" onchange="toggleCheckItem('${item}')" ${isChecked} class="w-5 h-5 accent-blue-500"></label>`;
                 });
+                html += `</div></div>`;
             });
-            html += `</div></div>`;
-            html += `<div class="bg-gray-800 p-5 rounded-2xl shadow-lg text-white"><h3 class="text-sm font-bold mb-4 flex items-center text-orange-400"><i class="fas fa-language mr-2"></i> 小白沉浸式求救卡 (點擊放大)</h3><div class="grid grid-cols-1 gap-3">`;
+            // 渲染對話卡
+            html += `<div class="bg-gray-800 p-5 rounded-2xl shadow-lg text-white"><h3 class="text-sm font-bold mb-4 flex items-center text-orange-400"><i class="fas fa-language mr-2"></i> 小白沉浸式求救卡</h3><div class="grid grid-cols-1 gap-3">`;
             phrases.forEach(p => { html += `<div class="bg-gray-700 p-4 rounded-xl active:scale-95 transition-all" onclick="showPhrase('${p.e}', '${p.j}', '${p.r}')"><p class="text-[10px] text-gray-400 mb-1 font-bold uppercase tracking-wider">${p.e}</p><p class="text-base font-bold">${p.j}</p></div>`; });
-            html += `</div></div><div class="bg-red-50 p-5 rounded-2xl shadow-sm border border-red-100"><h3 class="text-xs font-bold text-red-600 mb-4 flex items-center uppercase tracking-widest"><i class="fas fa-phone-alt mr-2"></i> 緊急聯絡專區</h3><div class="grid grid-cols-2 gap-3">`;
+            html += `</div></div>`;
+            // 渲染緊急電話
+            html += `<div class="bg-red-50 p-5 rounded-2xl shadow-sm border border-red-100"><h3 class="text-xs font-bold text-red-600 mb-4 flex items-center uppercase tracking-widest"><i class="fas fa-phone-alt mr-2"></i> 緊急聯絡專區</h3><div class="grid grid-cols-2 gap-3">`;
             emergencyContacts.forEach(c => { html += `<div onclick="confirmCall('${c.name}', '${c.tel}')" class="bg-white p-3 rounded-xl border border-red-100 flex flex-col items-center justify-center active:bg-red-100 transition-all cursor-pointer"><span class="text-[10px] text-gray-500 font-bold mb-1">${c.name}</span><span class="text-xs font-mono font-bold text-red-600">${c.tel}</span></div>`; });
-            container.innerHTML = html + `</div></div></div>`;
+            html += `</div></div></div>`;
+            container.innerHTML = html;
         }
 
         function renderLedger() {
@@ -353,10 +364,12 @@
             expenses.unshift({ id: Date.now(), date, amount, currency, twdAmount, desc, payer, splitWith }); localStorage.setItem('okinawa_expenses', JSON.stringify(expenses)); 
             renderLedger(); await syncToCloudSilently();
         }
+
         function deleteExpense(id) { expenses = expenses.filter(e => e.id !== id); localStorage.setItem('okinawa_expenses', JSON.stringify(expenses)); renderLedger(); syncToCloudSilently(); }
         function calculateBalances() { let totals = {}; members.forEach(m => totals[m] = 0); expenses.forEach(exp => { const perPerson = exp.twdAmount / exp.splitWith.length; totals[exp.payer] += exp.twdAmount; exp.splitWith.forEach(m => { totals[m] -= perPerson; }); }); return members.map(m => `<div class="flex justify-between font-bold bg-white p-3 rounded-xl shadow-sm border border-gray-100"><span>${m}</span><span class="${Math.round(totals[m]) >= 0 ? 'text-green-600' : 'text-red-500'}">${Math.round(totals[m]) >= 0 ? '應收回' : '應支付'} $${Math.abs(Math.round(totals[m]))}</span></div>`).join(''); }
         function renderExpenseList() { if (expenses.length === 0) return '<div class="text-center text-gray-300 py-10 text-sm font-bold">尚無紀錄</div>'; return expenses.map(exp => `<div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center mb-2"><div><div class="text-[10px] text-gray-400 font-bold mb-1 font-mono text-xs">${exp.date}</div><div class="text-sm font-bold text-gray-800">${exp.desc}</div><div class="text-[9px] text-gray-400 font-bold uppercase mt-1">${exp.payer} 支付 ${exp.amount} ${exp.currency}</div></div><div class="text-right flex items-center gap-3"><span class="text-xs font-mono font-bold text-gray-600">≈ $${Math.round(exp.twdAmount)}</span><button onclick="deleteExpense(${exp.id})" class="text-gray-200 hover:text-red-400"><i class="fas fa-trash-alt"></i></button></div></div>`).join(''); }
         function updateRate(val) { currentRate = parseFloat(val) || 0.21; localStorage.setItem('okinawa_jpy_rate', currentRate); }
+
         function showModal(itemStr) {
             const item = JSON.parse(decodeURIComponent(itemStr));
             const modal = document.getElementById('detail-modal');
@@ -384,7 +397,7 @@
             } else nc.classList.add('hidden');
             const mc = document.getElementById('modal-mapcode-btn');
             if (item.mapcode) { document.getElementById('modal-mapcode').textContent = item.mapcode; mc.classList.remove('hidden'); mc.onclick = () => { navigator.clipboard.writeText(item.mapcode); alert('MapCode 已複製！'); }; } else mc.classList.add('hidden');
-            document.getElementById('modal-google-link').href = `https://www.google.com/maps/search/?api=1&query=LOCATION_NAME3{encodeURIComponent(item.map || item.title)}`;
+            document.getElementById('modal-google-link').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.map || item.title)}`;
             modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); modal.querySelector('div').classList.remove('translate-y-full'); }, 10);
             document.body.style.overflow = 'hidden';
         }
@@ -393,6 +406,7 @@
         function closePhrase() { document.getElementById('phrase-modal').classList.add('hidden'); }
         function confirmCall(name, tel) { if (confirm(`確定要撥打電話給「${name}」嗎？`)) { window.location.href = `tel:${tel}`; } }
         function toggleCheckItem(item) { checklistState[item] = !checklistState[item]; localStorage.setItem('okinawa_checklist', JSON.stringify(checklistState)); }
+        
         window.addEventListener('load', initApp);
     </script>
 </body>
