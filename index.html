@@ -113,7 +113,7 @@
     </div>
 
     <script>
-        // --- 核心變數歸位 ---
+        // --- 核心變數 (全部恢復) ---
         const startDate = new Date('2026-01-19T15:20:00');
         const members = ['CN', 'SW', 'William']; 
         const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -126,7 +126,7 @@
         let checklistState = JSON.parse(localStorage.getItem('okinawa_checklist') || '{}');
         let map = null;
 
-        // --- 鎖定內容：100% 採用您的文案 ---
+        // --- 核心行程資料 (修正重複 key 與換行問題) ---
         const tripData = {
              1: [
                 { time: "15:20", tag: "Departure", title: "台灣桃園機場起飛 (MM926)", icon: "fa-plane-departure", map: "桃園國際機場", desc: "開啟南國沖繩極致之旅。建議旅客於起飛前2小時抵達桃園國際機場辦理登機與行李託運。飛行時間約1.5小時，可於機上稍作休息", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000", lat: 25.079, lng: 121.234 },
@@ -156,7 +156,7 @@
                     ]
                 },
                 { 
-                    time: "18:30", tag: "Dinner", title: "美國村", icon: "fa-ferris-wheel", map: "美國村", mapcode: "33 526 450*63", hours: "10:00-22:00", desc: "由美軍基地歸還土地開發而成，充滿色彩繽紛的美式建築、街頭藝術與異國氛圍。這裡集結了約350間商店、餐廳、電影院、遊樂場，提供美式與沖繩特色美食。\n\nDepot Island：紅磚道、異國風建築，充滿時尚感，是拍照熱點。\nAmerica Depot：美式復古風格，有許多特色店舖和遊戲中心。", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiTiTfQo0lBlgTRpdltj6PVc5eW9G2C3yEnjJ1xGmWk4jOKmDTNTzZ2R_xqaPAyYjX5dMRSuV9NebKGmZ4-Mq_FJDrI3B2ET5Ayha8cSG77fo5rc-U4Nydp1NdGhsFkXBX0ZOXpsFZiu7I9jdCAv2FBpriMbWQHpuZ7PTNvKkc1rU7okfqbvRItGQvUmVjA/s1600-rw/Okinawa-American-Village-3.jpg", lat: 26.316, lng: 127.755, parking: "【無料】北谷町公共停車場，車位極多且免費。", parkingLink: parkingLink: "https://www.google.com/maps?q=26.314869352936903,127.75960562346825",
+                    time: "18:30", tag: "Dinner", title: "美國村", icon: "fa-ferris-wheel", map: "美國村", mapcode: "33 526 450*63", hours: "10:00-22:00", desc: "由美軍基地歸還土地開發而成，充滿色彩繽紛的美式建築、街頭藝術與異國氛圍。這裡集結了約350間商店、餐廳、電影院、遊樂場，提供美式與沖繩特色美食。\n\nDepot Island：紅磚道、異國風建築，充滿時尚感，是拍照熱點。\nAmerica Depot：美式復古風格，有許多特色店舖和遊戲中心。", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiTiTfQo0lBlgTRpdltj6PVc5eW9G2C3yEnjJ1xGmWk4jOKmDTNTzZ2R_xqaPAyYjX5dMRSuV9NebKGmZ4-Mq_FJDrI3B2ET5Ayha8cSG77fo5rc-U4Nydp1NdGhsFkXBX0ZOXpsFZiu7I9jdCAv2FBpriMbWQHpuZ7PTNvKkc1rU7okfqbvRItGQvUmVjA/s1600-rw/Okinawa-American-Village-3.jpg", lat: 26.316, lng: 127.755, parking: "【無料】北谷町公共停車場，車位極多且免費。", parkingLink: "https://www.google.com/maps?q=26.314869352936903,127.75960562346825",
                     subs: [
                         { type: "晚餐", name: "迴轉壽司市場", hours: "11:30-21:00", map: "迴轉壽司市場 美浜店", desc: "美國村內的高 CP 值壽司店，食材皆為漁港直送，新鮮度與份量都讓這家店成為北谷區域的排隊名店。\n\n建議必吃：海鮮拼盤、炙燒阿古豬握壽司、沖繩近海產金槍魚。", img: "https://img.poibank.com/SaGXj-6gjSM1TuYYdXJzs8NU7Kg=/W3siZm9ybWF0IjoianBnIn0seyJrZXkiOiJzdWdnZXN0aW9uLzI2NDM3NDQyLzEwNTAxNjI3LzE2OTE4NTY0NDI4MDIifSx7InJlc2l6ZSI6eyJ3aWR0aCI6IjE0NzcifX1d" },
                         { type: "晚餐", name: "A&W 漢堡", hours: "09:00-22:00", map: "A&W 美浜店", desc: "日本第一家連鎖速食店（僅沖繩限定），充滿 50 年代復古美式氣息。\n\n建議必吃：麥根沙士 (Root Beer，可無限續杯)、捲捲薯條 (Curly Fries)、Mozza 漢堡。", img: "https://pimg.1px.tw/muzuochen/1448980489-647390745.jpg" }
@@ -199,11 +199,9 @@
             { cat: "隨身行李", items: ["護護照 (效期6個月以上)", "錢包/外幣 (2-3萬日圓現金)", "ICOCA/Suica (可手機綁定)", "駕照正本+日文譯本", "機票/訂房/租車憑證", "行動電源", "日本網卡/eSIM", "個人藥品", "外套/圍巾/帽子", "相機/腳架", "隨身面紙"] },
             { cat: "託運行李", items: ["充電器/轉接頭", "刮鬍刀", "牙刷/牙膏", "換洗衣物 (3-4套)", "內衣褲/襪子", "睡衣", "摺疊傘", "環保購物袋", "髒衣收納袋"] }
         ];
-
-
         // --- 指定格式：品項｜地點 ---
         const shoppingList = [
-            { cat: "沖繩熱門購物 Top 15", items: [
+            { cat: "沖繩伴手禮 Top 15", items: [
                 "御菓子御殿 紅芋塔｜國際通、沖繩機場",
                 "南風堂 辣味蝦餅｜唐吉訶德、土產店",
                 "邊銀食堂 石垣島辣油｜唐吉訶德、超市",
@@ -211,14 +209,14 @@
                 "純天然 沖繩黑糖｜各土產店、機場",
                 "Calbee+ 限定零食｜國際通直營店",
                 "SuiSavon 首里石鹼｜國際通、百貨專櫃",
-                "Royce 石垣島巧克力｜機場保稅區、國際通",
-                "沖繩限定 即食海帶芽｜唐吉訶德、各土產店",
+                "Royce 石垣島巧克力｜機場、國際通",
+                "沖繩限定 即食海帶芽｜唐吉訶德、土產店",
                 "LuLuLun 限定面膜｜國際通各大藥妝店",
                 "Orion 啤酒及其零嘴｜超市、便利商店",
                 "Kabaya 旨鹽餅乾棒｜土產店、超市",
                 "泡盛酒 / 辣椒油｜唐吉訶德、國際通",
                 "Fukugiya 年輪蛋糕｜國際通門市",
-                "沖繩泡麵 (袋裝)｜各大超市、唐吉訶德"
+                "沖繩泡麵 (袋裝)｜超市、唐吉訶德"
             ]}
         ];
 
@@ -239,7 +237,7 @@
             { name: "飯店 Omoromachi", tel: "098-862-1045" }
         ];
 
-        // --- 功能指令區 ---
+        // --- 功能邏輯與渲染 ---
         async function fetchWeather() {
             try {
                 const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=26.2124&longitude=127.6809&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo");
@@ -332,7 +330,6 @@
         function renderAssistant() {
             const container = document.getElementById('content');
             let html = `<div class="space-y-6">`;
-            // 渲染行李清單
             packingList.forEach(group => {
                 html += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-orange-100"><h3 class="text-sm font-bold text-red-500 mb-4 flex items-center uppercase tracking-wider"><i class="fas fa-check-circle mr-2"></i> ${group.cat}</h3><div class="space-y-3">`;
                 group.items.forEach(item => {
@@ -341,7 +338,6 @@
                 });
                 html += `</div></div>`;
             });
-            // 渲染購物清單 (指定格式對齊修正)
             shoppingList.forEach(group => {
                 html += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-blue-100"><h3 class="text-sm font-bold text-blue-500 mb-4 flex items-center uppercase tracking-wider"><i class="fas fa-shopping-bag mr-2"></i> ${group.cat}</h3><div class="space-y-3">`;
                 group.items.forEach(item => {
@@ -358,12 +354,9 @@
                 });
                 html += `</div></div>`;
             });
-            // 渲染對話卡
             html += `<div class="bg-gray-800 p-5 rounded-2xl shadow-lg text-white"><h3 class="text-sm font-bold mb-4 flex items-center text-orange-400"><i class="fas fa-language mr-2"></i> 小白沉浸式求救卡</h3><div class="grid grid-cols-1 gap-3">`;
             phrases.forEach(p => { html += `<div class="bg-gray-700 p-4 rounded-xl active:scale-95 transition-all" onclick="showPhrase('${p.e}', '${p.j}', '${p.r}')"><p class="text-[10px] text-gray-400 mb-1 font-bold uppercase tracking-wider">${p.e}</p><p class="text-base font-bold">${p.j}</p></div>`; });
-            html += `</div></div>`;
-            // 渲染緊急電話
-            html += `<div class="bg-red-50 p-5 rounded-2xl shadow-sm border border-red-100"><h3 class="text-xs font-bold text-red-600 mb-4 flex items-center uppercase tracking-widest"><i class="fas fa-phone-alt mr-2"></i> 緊急聯絡專區</h3><div class="grid grid-cols-2 gap-3">`;
+            html += `</div></div><div class="bg-red-50 p-5 rounded-2xl shadow-sm border border-red-100"><h3 class="text-xs font-bold text-red-600 mb-4 flex items-center uppercase tracking-widest"><i class="fas fa-phone-alt mr-2"></i> 緊急聯絡專區</h3><div class="grid grid-cols-2 gap-3">`;
             emergencyContacts.forEach(c => { html += `<div onclick="confirmCall('${c.name}', '${c.tel}')" class="bg-white p-3 rounded-xl border border-red-100 flex flex-col items-center justify-center active:bg-red-100 transition-all cursor-pointer"><span class="text-[10px] text-gray-500 font-bold mb-1">${c.name}</span><span class="text-xs font-mono font-bold text-red-600">${c.tel}</span></div>`; });
             html += `</div></div></div>`;
             container.innerHTML = html;
@@ -415,7 +408,7 @@
             } else nc.classList.add('hidden');
             const mc = document.getElementById('modal-mapcode-btn');
             if (item.mapcode) { document.getElementById('modal-mapcode').textContent = item.mapcode; mc.classList.remove('hidden'); mc.onclick = () => { navigator.clipboard.writeText(item.mapcode); alert('MapCode 已複製！'); }; } else mc.classList.add('hidden');
-            document.getElementById('modal-google-link').href = `https://www.google.com/maps/search/?api=1&query=LOCATION_NAME3{encodeURIComponent(item.map || item.title)}`;
+            document.getElementById('modal-google-link').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.map || item.title)}`;
             modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); modal.querySelector('div').classList.remove('translate-y-full'); }, 10);
             document.body.style.overflow = 'hidden';
         }
