@@ -35,7 +35,7 @@
         .ledger-row-label { font-size: 0.7rem; font-weight: 800; border-radius: 0.4rem; padding: 0.2rem 0; width: 100%; text-align: center; }
         .row-gray { background-color: #f3f4f6; color: #6b7280; }
         .row-orange { background-color: #ffedd5; color: #c2410c; }
-        .ledger-row-input { width: 100%; min-width: 0; border: none; font-size: 1rem; font-weight: 600; color: #374151; outline: none; background: transparent; text-align: right; }
+        .ledger-row-input { width: 100%; min-width: 0; border: none; font-size: 1rem; font-weight: 600; color: #374151; outline: none; background: transparent; text-align: center; text-align-last: center; }
     </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
@@ -339,21 +339,22 @@
                 html += `</div></div>`;
             });
             shoppingList.forEach(group => {
-                html += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-blue-100"><h3 class="text-sm font-bold text-blue-500 mb-4 flex items-center uppercase tracking-wider"><i class="fas fa-shopping-bag mr-2"></i> ${group.cat}</h3><div class="space-y-3">`;
-                group.items.forEach(item => {
-                    const parts = item.split('｜');
-                    const isChecked = checklistState[item] ? 'checked' : '';
-                    html += `
-                        <label class="flex items-center p-3 bg-blue-50/30 rounded-xl transition-all active:bg-blue-100 mb-2">
-                            <div class="flex flex-1 items-baseline">
-                                <span class="text-sm font-bold text-gray-800 w-2/5 shrink-0">${parts[0]}</span>
-                                <span class="text-[10px] text-gray-500 flex-1 ml-2 border-l border-gray-200 pl-2 leading-tight">${parts[1] || ''}</span>
-                            </div>
-                            <input type="checkbox" onchange="toggleCheckItem('${item}')" ${isChecked} class="w-5 h-5 accent-blue-500 ml-2">
-                        </label>`;
-                });
-                html += `</div></div>`;
-            });
+    html += `<div class="bg-white p-5 rounded-2xl shadow-sm border border-blue-100"><h3 class="text-sm font-bold text-blue-500 mb-4 flex items-center uppercase tracking-wider"><i class="fas fa-shopping-bag mr-2"></i> ${group.cat}</h3><div class="space-y-3">`;
+    group.items.forEach(item => {
+        const parts = item.split('｜');
+        const isChecked = checklistState[item] ? 'checked' : '';
+        html += `
+            <label class="flex items-center p-3 bg-blue-50/30 rounded-xl transition-all active:bg-blue-100 mb-2">
+                <div class="flex flex-1 items-center overflow-hidden">
+                    <span class="text-[13px] font-bold text-gray-800 w-[45%] shrink-0 leading-tight pr-1">${parts[0]}</span>
+                    
+                    <span class="text-[10px] text-gray-500 flex-1 ml-1 border-l border-gray-200 pl-2 leading-tight py-0.5">${parts[1] || ''}</span>
+                </div>
+                <input type="checkbox" onchange="toggleCheckItem('${item}')" ${isChecked} class="w-4 h-4 accent-blue-500 ml-2 shrink-0">
+            </label>`;
+    });
+    html += `</div></div>`;
+});
             html += `<div class="bg-gray-800 p-5 rounded-2xl shadow-lg text-white"><h3 class="text-sm font-bold mb-4 flex items-center text-orange-400"><i class="fas fa-language mr-2"></i> 小白沉浸式求救卡</h3><div class="grid grid-cols-1 gap-3">`;
             phrases.forEach(p => { html += `<div class="bg-gray-700 p-4 rounded-xl active:scale-95 transition-all" onclick="showPhrase('${p.e}', '${p.j}', '${p.r}')"><p class="text-[10px] text-gray-400 mb-1 font-bold uppercase tracking-wider">${p.e}</p><p class="text-base font-bold">${p.j}</p></div>`; });
             html += `</div></div><div class="bg-red-50 p-5 rounded-2xl shadow-sm border border-red-100"><h3 class="text-xs font-bold text-red-600 mb-4 flex items-center uppercase tracking-widest"><i class="fas fa-phone-alt mr-2"></i> 緊急聯絡專區</h3><div class="grid grid-cols-2 gap-3">`;
@@ -363,11 +364,68 @@
         }
 
         function renderLedger() {
-            const container = document.getElementById('content');
-            const todayStr = new Date().toISOString().split('T')[0];
-            let balanceHtml = calculateBalances();
-            container.innerHTML = `<div class="space-y-5"><div class="bg-white p-6 rounded-3xl border border-orange-50 shadow-sm space-y-3"><h3 class="text-base font-bold text-gray-800 flex items-center mb-2"><i class="fas fa-plus-circle mr-2 text-red-400"></i> 新增支出 (自動同步)</h3><div class="ledger-row"><span class="ledger-row-label row-gray">日期</span><input type="date" id="exp-date" value="${todayStr}" class="ledger-row-input font-mono"></div><div class="ledger-row"><span class="ledger-row-label row-orange">匯率</span><input type="number" id="manual-rate" value="${currentRate}" step="0.001" onchange="updateRate(this.value)" class="ledger-row-input font-mono"></div><div class="ledger-row"><span class="ledger-row-label row-gray">金額</span><div class="flex items-center gap-2 flex-1 justify-end"><select id="exp-currency" class="bg-gray-100 px-2 py-0.5 rounded font-bold text-xs"><option value="TWD">TWD</option><option value="JPY">JPY</option></select><input type="number" id="exp-amount" placeholder="0" class="ledger-row-input" style="flex: 0 1 80px;"></div></div><div class="ledger-row"><span class="ledger-row-label row-gray">項目內容</span><input type="text" id="exp-desc" placeholder="例如：燒肉、藥妝" class="ledger-row-input"></div><div class="ledger-row"><span class="ledger-row-label row-gray">支付者</span><select id="exp-payer" class="ledger-row-input">${members.map(m => `<option value="${m}">${m}</option>`).join('')}</select></div><div class="pt-2 text-center"><span class="text-[10px] font-bold text-gray-400 tracking-widest uppercase block mb-2">分攤對象</span><div class="flex justify-center gap-5">${members.map(m => `<label class="flex items-center gap-1 font-bold text-sm text-gray-600"><input type="checkbox" name="split-member" value="${m}" checked class="accent-red-500 w-4 h-4"> ${m}</label>`).join('')}</div></div><button onclick="addExpense()" class="w-full bg-red-500 text-white py-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all mt-4">儲存紀錄</button></div><div class="bg-amber-50/50 p-5 rounded-3xl border border-amber-100"><span class="ledger-row-label row-orange mx-auto block w-max mb-3 uppercase">Settlement (TWD)</span><div class="space-y-2">${balanceHtml}</div></div><div class="space-y-3 pb-10" id="expense-list">${renderExpenseList()}</div></div>`;
-        }
+    const container = document.getElementById('content');
+    const todayStr = new Date().toISOString().split('T')[0];
+    let balanceHtml = calculateBalances();
+    
+    container.innerHTML = `
+        <div class="space-y-5">
+            <div class="bg-white p-6 rounded-3xl border border-orange-50 shadow-sm space-y-3">
+                <h3 class="text-base font-bold text-gray-800 flex items-center mb-2">
+                    <i class="fas fa-plus-circle mr-2 text-red-400"></i> 新增支出 (自動同步)
+                </h3>
+                
+                <div class="ledger-row">
+                    <span class="ledger-row-label row-gray">日期</span>
+                    <input type="date" id="exp-date" value="${todayStr}" class="ledger-row-input font-mono">
+                </div>
+                
+                <div class="ledger-row">
+                    <span class="ledger-row-label row-orange">匯率</span>
+                    <input type="number" id="manual-rate" value="${currentRate}" step="0.001" onchange="updateRate(this.value)" class="ledger-row-input font-mono">
+                </div>
+                
+                <div class="ledger-row">
+                    <span class="ledger-row-label row-gray">金額</span>
+                    <div class="flex items-center gap-2 flex-1 justify-center">
+                        <select id="exp-currency" class="bg-gray-100 px-2 py-0.5 rounded font-bold text-xs">
+                            <option value="TWD">TWD</option>
+                            <option value="JPY">JPY</option>
+                        </select>
+                        <input type="number" id="exp-amount" placeholder="0" class="ledger-row-input" style="width: 80px; flex: none;">
+                    </div>
+                </div>
+                
+                <div class="ledger-row">
+                    <span class="ledger-row-label row-gray">項目內容</span>
+                    <input type="text" id="exp-desc" placeholder="例如：燒肉、藥妝" class="ledger-row-input">
+                </div>
+                
+                <div class="ledger-row">
+                    <span class="ledger-row-label row-gray">支付者</span>
+                    <select id="exp-payer" class="ledger-row-input">
+                        ${members.map(m => `<option value="${m}">${m}</option>`).join('')}
+                    </select>
+                </div>
+                
+                <div class="pt-2 text-center">
+                    <span class="text-[10px] font-bold text-gray-400 tracking-widest uppercase block mb-2">分攤對象</span>
+                    <div class="flex justify-center gap-5">
+                        ${members.map(m => `<label class="flex items-center gap-1 font-bold text-sm text-gray-600"><input type="checkbox" name="split-member" value="${m}" checked class="accent-red-500 w-4 h-4"> ${m}</label>`).join('')}
+                    </div>
+                </div>
+                
+                <button onclick="addExpense()" class="w-full bg-red-500 text-white py-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all mt-4">儲存紀錄</button>
+            </div>
+            
+            <div class="bg-amber-50/50 p-5 rounded-3xl border border-amber-100">
+                <span class="ledger-row-label row-orange mx-auto block w-max mb-3 uppercase">Settlement (TWD)</span>
+                <div class="space-y-2">${balanceHtml}</div>
+            </div>
+            
+            <div class="space-y-3 pb-10" id="expense-list">${renderExpenseList()}</div>
+        </div>`;
+}
 
         async function addExpense() {
             const amount = parseFloat(document.getElementById('exp-amount').value); const currency = document.getElementById('exp-currency').value; const desc = document.getElementById('exp-desc').value; const payer = document.getElementById('exp-payer').value; const date = document.getElementById('exp-date').value; const checkedBoxes = document.querySelectorAll('input[name="split-member"]:checked'); const splitWith = Array.from(checkedBoxes).map(cb => cb.value);
@@ -421,3 +479,4 @@
     </script>
 </body>
 </html>
+
