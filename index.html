@@ -95,7 +95,7 @@
                 </div>
                 <div id="modal-notes-container" class="hidden mb-6 bg-amber-50 p-4 rounded-xl border border-amber-100">
                     <h4 class="text-[10px] font-bold text-amber-600 uppercase mb-1"><i class="fas fa-pen-fancy mr-1"></i> 重要資訊</h4>
-                    <p id="modal-notes" class="text-xs text-amber-800 leading-relaxed mb-3"></p>
+                    <p id="modal-notes" class="text-xs text-amber-800 leading-relaxed mb-3 whitespace-pre-line"></p>
                     <div id="modal-link-btn" class="hidden"><a id="modal-pdf-link" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-amber-600 text-white py-2 rounded-lg text-xs font-bold shadow-sm"><i class="fas fa-file-pdf"></i> 查看憑證</a></div>
                 </div>
                 <div id="modal-mapcode-btn" class="hidden bg-red-50 p-4 rounded-xl border border-red-100 flex items-center justify-between cursor-pointer mb-3">
@@ -280,10 +280,15 @@
             try {
                 const res = await fetch(SYNC_URL);
                 const data = await res.json();
+                if (activeTab !== 'ledger') return; 
                 if (data && data.length > 0) {
-                    expenses = data; localStorage.setItem('okinawa_expenses', JSON.stringify(expenses)); renderLedger();
+                    expenses = data;
+                    localStorage.setItem('okinawa_expenses', JSON.stringify(expenses)); 
+                    renderLedger();
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.error("雲端同步失敗", e);
+            }
         }
         async function syncToCloudSilently() {
             try { await fetch(SYNC_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(expenses) });
@@ -339,12 +344,21 @@
             activeTab = view;
             const lt = document.getElementById('ledger-toggle');
             const ct = document.getElementById('checklist-toggle');
+            // 處理導覽按鈕顏色
             if (lt) lt.className = `flex flex-col items-center pb-0.5 transition-all ${activeTab === 'ledger' ? 'nav-btn-active' : 'text-gray-300'}`;
             if (ct) ct.className = `flex flex-col items-center pb-0.5 transition-all ${activeTab === 'checklist' ? 'nav-btn-active' : 'text-gray-300'}`;
-
-            if (view === 'ledger') { renderLedger(); autoSyncFromCloud(); } 
-            else if (view === 'checklist') { renderAssistant(); } 
-            else { renderDatePicker(); renderItinerary(); }
+            // 根據視圖渲染內容
+            if (view === 'ledger') {
+                renderLedger();
+                autoSyncFromCloud();
+            } 
+            else if (view === 'checklist') { 
+                renderAssistant(); 
+            } 
+            else { 
+                renderItinerary(); 
+            }
+            // 無論切換到哪，都更新日期列的選中狀態
             renderDatePicker();
         }
 
@@ -500,6 +514,7 @@
     </script>
 </body>
 </html>
+
 
 
 
